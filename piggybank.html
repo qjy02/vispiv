@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vispiv Piggy Bank</title>
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #7e8f80;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        font-family: "Quicksand", Verdana, sans-serif;
+      }
+
+      button {
+        font-family: "Quicksand", Verdana, sans-serif;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        position: relative;
+        background-color: #25322957;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+      .navbar a:hover {
+        background-color: #6f8c74;
+        border-radius: 5px;
+      }
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+      .vispiv-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+
+      .menu-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-button {
+        background: linear-gradient(145deg, #5b7360, #4e6252);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15),
+          -2px -2px 4px rgba(255, 255, 255, 0.15);
+        transition: all 0.2s ease-in-out;
+        font-size: 1rem;
+        font-weight: bold;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .menu-button:hover {
+        background: linear-gradient(145deg, #718c75, #5f7663);
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1),
+          -1px -1px 3px rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1),
+          inset -1px -1px 3px rgba(255, 255, 255, 0.15);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #2e4a38, #446b53);
+        border: 1px solid #365e48;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #365e48, -1px -1px 2px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #365e48, #4e8a69);
+        box-shadow: 4px 4px 6px #2e4a38, -1px -1px 2px rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #2e4a38;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+      .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+      .popup-menu.dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(113, 113, 113);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 5px solid black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+      .popup-menu.dialog a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        background-color: #3a4045;
+        border-radius: 5px;
+        margin: 8px 0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      .popup-menu.dialog a:hover {
+        background-color: #52575c;
+        transform: scale(1.02);
+      }
+      .popup-menu {
+        position: relative;
+      }
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+        background: none;
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+      @media (max-width: 768px) {
+        .popup-menu.dialog {
+          width: 80%;
+        }
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .left,
+      .middle,
+      .right {
+        flex: 1;
+        min-width: 280px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin: 10px;
+        background-color: #3c4e4257;
+        text-align: center;
+      }
+
+      .left button,
+      .middle button,
+      .right button {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .left {
+        background-color: #3c4e4257;
+      }
+      .middle {
+        background-color: #3c4e4257;
+      }
+      .right {
+        background-color: #3c4e4257;
+      }
+
+      input[type="number"],
+      input[type="text"] {
+        width: calc(100% - 10px);
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 2px solid #ccc;
+        background: #ffffff;
+        transition: all 0.3s ease-in-out;
+        font-size: 16px;
+        color: #333;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      input[type="number"]:hover,
+      input[type="text"]:hover {
+        border-image: linear-gradient(to right, #0056b3, #008060);
+        border-image-slice: 1;
+        background: #f8f9fa;
+      }
+
+      input[type="number"]:focus,
+      input[type="text"]:focus {
+        border-image: linear-gradient(to right, #0056b3, #008060);
+        border-image-slice: 1;
+        box-shadow: 0 0 8px rgba(0, 86, 179, 0.6), 0 0 8px rgba(0, 128, 96, 0.6);
+        transform: scale(1.02);
+        outline: none;
+      }
+
+      .content-button {
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(145deg, #5b7360, #506853);
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3),
+          -3px -3px 6px rgba(255, 255, 255, 0.2);
+      }
+
+      .content-button:hover {
+        background: linear-gradient(145deg, #718c75, #607564);
+        transform: translateY(-2px);
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4),
+          -2px -2px 4px rgba(255, 255, 255, 0.3);
+      }
+
+      .content-button:active {
+        transform: translateY(1px);
+        background: linear-gradient(145deg, #66846e, #576f5c);
+        box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.4),
+          inset -3px -3px 6px rgba(255, 255, 255, 0.2);
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        text-align: left;
+        margin-left: 10px;
+        font-size: 14px;
+      }
+
+      table {
+        cursor: pointer;
+      }
+
+      #savingsTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+      }
+
+      #savingsTable th,
+      #savingsTable td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+
+      #savingsTable th {
+        background-color: #28342a5b;
+        font-weight: bold;
+        cursor: default;
+      }
+
+      #savingsTable td:first-child {
+        font-weight: bold;
+      }
+
+      #savingsTable td:last-child {
+        text-align: right;
+      }
+
+      #savingsTable tbody tr:nth-child(odd) {
+        background-color: #68796a;
+      }
+
+      #savingsTable tbody tr:nth-child(even) {
+        background-color: #7e8f80;
+      }
+
+      #savingsTable tbody td:last-child:hover {
+        background-color: rgb(93, 124, 105);
+      }
+
+      .editable {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        cursor: default;
+        color: white;
+        font-size: 16px;
+        border-bottom: 1px solid transparent;
+        transition: border-bottom 0.2s ease-in-out;
+      }
+
+      .editable:focus,
+      .editable.active {
+        border-bottom: 1px solid white;
+        outline: none;
+      }
+
+      #summaryTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+      }
+
+      #summaryTable td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      #summaryTable td:first-child {
+        background-image: linear-gradient(to right, #425546, #637767);
+        text-align: left;
+        color: white;
+        cursor: default;
+      }
+
+      #summaryTable td:last-child {
+        background-image: linear-gradient(to right, #859f89, #6f8c74);
+        text-align: right;
+        color: white;
+      }
+
+      #summaryTable tr:hover td:last-child {
+        background-image: linear-gradient(to right, #9fb4a3, #b8cdb8);
+      }
+
+      .target-summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+      }
+
+      .target-summary-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      /* Header Styling */
+      .target-summary-table .header-cell {
+        background-image: linear-gradient(
+          to right,
+          #425546,
+          #637767
+        ) !important;
+        text-align: center;
+        color: white;
+        cursor: default;
+      }
+
+      .target-summary-table .data-cell {
+        background-image: linear-gradient(
+          to right,
+          #859f89,
+          #6f8c74
+        ) !important;
+        text-align: center;
+        color: white;
+      }
+
+      .target-summary-table tr:hover .data-cell {
+        background-image: linear-gradient(
+          to right,
+          #9fb4a3,
+          #b8cdb8
+        ) !important;
+      }
+
+      .notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: none;
+        transition: opacity 0.5s ease;
+      }
+
+      .success {
+        background-color: #28a745;
+      }
+
+      .error {
+        background-color: #dc3545;
+      }
+
+      .fade-out {
+        opacity: 0;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        height: 25px;
+        background-color: #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 21px 0;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(
+          45deg,
+          #4caf50 25%,
+          #66bb6a 25%,
+          #66bb6a 50%,
+          #4caf50 50%,
+          #4caf50 75%,
+          #66bb6a 75%
+        );
+        background-size: 40px 40px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        line-height: 25px;
+        transition: width 0.5s ease-in-out;
+      }
+
+      .progress-bar-striped {
+        animation: progress-animation 2s linear infinite;
+      }
+
+      @keyframes progress-animation {
+        from {
+          background-position: 40px 0;
+        }
+        to {
+          background-position: 0 0;
+        }
+      }
+
+      @keyframes glow {
+        0% {
+          box-shadow: 0 0 5px #4caf50;
+        }
+        50% {
+          box-shadow: 0 0 15px #4caf50;
+        }
+        100% {
+          box-shadow: 0 0 5px #4caf50;
+        }
+      }
+
+      .progress-bar-glow {
+        animation: glow 1.5s infinite alternate;
+      }
+
+      #motivationMessage {
+        background-color: #cadbcb;
+        border-left: 5px solid #88a27d;
+        border-right: 5px solid #88a27d;
+        padding: 15px;
+        margin-top: 15px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        border-radius: 8px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .image-overlay {
+        width: 200px;
+        height: 115px;
+        display: inline-block;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+      }
+
+      .image-overlay img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: auto;
+        object-fit: contain;
+      }
+
+      .image-overlay img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .image-overlay img:hover {
+        cursor: pointer;
+      }
+
+      @media (max-width: 375px) {
+        .container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .left,
+        .middle,
+        .right {
+          width: 90%;
+          max-width: 320px;
+          text-align: center;
+          margin: 10px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-menu dialog" id="popupMenu">
+      <span><h2>Vispiv Links</h2></span>
+      <span
+        ><button onclick="togglePopup()" class="close-btn">
+          <i class="fas fa-times"></i></button
+      ></span>
+      <a href="list.html">Vispiv List</a>
+      <a href="jsonformatter.html">Json Formatter</a>
+      <a href="jsongrid.html">Json2Grid</a>
+      <a href="text_viewer_pdf.html">Text File Viewer</a>
+      <a href="qrcodereader.html">QR Code Reader</a>
+      <a href="calendar_view.html">Vispiv Calendar</a>
+      <a href="musicplayer.html">Music Player</a>
+    </div>
+
+    <div class="navbar">
+      <div class="vispiv-container">
+        <a href="list.html" style="text-decoration: none">
+          <img
+            src="Vispiv.png"
+            alt="Vispiv Icon"
+            class="vispiv-icon"
+          />
+        </a>
+        <span>Vispiv Piggy Bank</span>
+      </div>
+      <div class="menu-container">
+        <button class="menu-button" onclick="togglePopup()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="left">
+        <h2>Fixed Deposit Calculator</h2>
+
+        <label for="depositAmount">Deposit Amount (RM)</label>
+        <input type="number" placeholder="0.00" id="depositAmount" />
+
+        <label for="interestRate">Annual Interest Rate (%)</label>
+        <input type="number" placeholder="0.00" id="interestRate" />
+
+        <label for="period">Period (in months)</label>
+        <input type="number" placeholder="0" id="period" />
+
+        <button class="content-button" onclick="calculateFixedDeposit()">
+          Submit
+        </button>
+
+        <!-- Summary Table with Fixed Deposit Result and Earned Profit Result -->
+        <table id="summaryTable">
+          <tbody>
+            <tr>
+              <td>Total Amount</td>
+              <td id="fixedDepositResult">RM 0.00</td>
+            </tr>
+            <tr>
+              <td>Earned Profit</td>
+              <td id="earnedProfitResult">RM&nbsp; 0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="middle">
+        <h2>Savings Table</h2>
+
+        <table id="savingsTable">
+          <thead>
+            <tr>
+              <th>Savings Type</th>
+              <th>Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody id="savingsTableBody">
+            <!-- Content will be generated dynamically -->
+          </tbody>
+        </table>
+
+        <!-- Summary Table with Total Savings & Total Earnings -->
+        <table id="summaryTable">
+          <tbody>
+            <tr>
+              <td>Total Savings</td>
+              <td id="totalSavingsResult">RM 0.00</td>
+            </tr>
+            <tr>
+              <td>Total Earnings</td>
+              <td id="totalEarningsAmount">RM&nbsp;&nbsp; 0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="right">
+        <h2>2025 Target Savings</h2>
+
+        <div class="image-overlay">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/015/441/058/small/saving-money-save-box-and-jar-collection-set-png.png"
+            alt="Wallet with Money"
+          />
+        </div>
+
+        <table class="target-summary-table">
+          <tbody>
+            <tr class="header-row">
+              <td class="header-cell">Target Savings</td>
+              <td class="header-cell">Current Savings</td>
+              <td class="header-cell">Remaining Amount</td>
+            </tr>
+            <tr class="data-row">
+              <td class="data-cell" id="targetSavingsDisplay">RM 0.00</td>
+              <td class="data-cell" id="currentSavings">RM 0.00</td>
+              <td class="data-cell" id="remainingAmount">RM 0.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Bootstrap-Style Progress Bar -->
+        <div class="progress-bar-container">
+          <div id="progressBar" class="progress-bar progress-bar-striped">
+            <span>0%</span>
+          </div>
+        </div>
+
+        <div id="motivationMessage">
+          <span>Keep going! You're on track to hit your goal! 🚀</span>
+        </div>
+
+        <button class="content-button" onclick="previewSavingsPDF()">
+          Preview Savings PDF
+        </button>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+      /* Piggy Bank Savings Data */
+      let savingsData = [
+        { label: "CIMB Bank Amount", amount: 0.00 },
+        { label: "Fixed Deposit Amount", amount: 0.00 },
+        { label: "Maybank Amount", amount: 0.00 },
+        { label: "Touch N Go E Wallet", amount: 0.00 },
+        { label: "Touch N Go Card", amount: 0.00 },
+        { label: "My Wallet", amount: 0.00 },
+      ];
+
+      const targetSavings = 0.00;
+
+      document.getElementById("targetSavingsDisplay").textContent =
+        "RM " +
+        targetSavings.toLocaleString(undefined, { minimumFractionDigits: 2 });
+
+      function updateSavingsProgress(savingsData) {
+        let currentSavings = savingsData.reduce(
+          (sum, item) => sum + item.amount,
+          0
+        );
+        let progress = (currentSavings / targetSavings) * 100;
+
+        let progressBar = document.getElementById("progressBar");
+        progressBar.style.width = Math.min(progress, 100) + "%";
+        progressBar.textContent = Math.min(progress, 100).toFixed(1) + "%";
+
+        document.getElementById("currentSavings").textContent =
+          "RM " +
+          currentSavings.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          });
+
+        let remainingAmount = Math.max(targetSavings - currentSavings, 0);
+        document.getElementById("remainingAmount").textContent =
+          "RM " +
+          remainingAmount.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          });
+
+        let message = "Keep going! You're on track! 🚀";
+        if (progress >= 100) {
+          message = "🎉 Congratulations! You've reached your savings goal! 🏆";
+          progressBar.classList.add("progress-bar-glow");
+        } else if (progress >= 75) {
+          message = "Almost there! Just a little more to reach your goal! 🎯";
+        } else if (progress >= 50) {
+          message = "Halfway there! Keep up the great work! 💪";
+        } else if (progress >= 25) {
+          message = "Great start! Stay consistent! 📈";
+        }
+
+        document.getElementById("motivationMessage").textContent = message;
+      }
+
+      // Call the function after defining it
+      updateSavingsProgress(savingsData);
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      document.querySelectorAll(".editable").forEach((span) => {
+        span.addEventListener("click", function () {
+          this.contentEditable = true;
+          this.classList.add("active");
+          this.focus();
+        });
+
+        span.addEventListener("blur", function () {
+          this.contentEditable = false;
+          this.classList.remove("active");
+
+          // Ensure value is valid (optional)
+          if (isNaN(this.innerText) || this.innerText.trim() === "") {
+            this.innerText = this.dataset.value;
+          } else {
+            this.dataset.value = this.innerText;
+          }
+        });
+
+        //span.addEventListener("keypress", function (e) {
+        //if (e.key === "Enter") {
+        //this.blur();
+        //}
+        //});
+      });
+
+      function togglePopup() {
+        const popupMenu = document.getElementById("popupMenu");
+        if (
+          popupMenu.style.display === "none" ||
+          popupMenu.style.display === ""
+        ) {
+          popupMenu.style.display = "block";
+        } else {
+          popupMenu.style.display = "none";
+        }
+      }
+
+      window.addEventListener("click", (event) => {
+        const popupMenu = document.getElementById("popupMenu");
+        const menuButton = document.querySelector(".menu-button");
+        if (
+          !popupMenu.contains(event.target) &&
+          event.target !== menuButton &&
+          !menuButton.contains(event.target)
+        ) {
+          popupMenu.style.display = "none";
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const tableBody = document.getElementById("savingsTableBody");
+        const totalSavingsResult =
+          document.getElementById("totalSavingsResult");
+
+        function generateTable() {
+          tableBody.innerHTML = "";
+
+          savingsData.forEach((item, index) => {
+            const row = document.createElement("tr");
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = item.label;
+
+            const valueCell = document.createElement("td");
+            const span = createEditableSpan(item.amount, index);
+
+            valueCell.appendChild(span);
+            row.appendChild(nameCell);
+            row.appendChild(valueCell);
+            tableBody.appendChild(row);
+          });
+
+          calculateTotalSavings();
+        }
+
+        function createEditableSpan(value, index) {
+          const span = document.createElement("span");
+          span.classList.add("editable");
+          span.dataset.index = index;
+          span.textContent = value.toFixed(2);
+          span.contentEditable = true;
+
+          span.addEventListener("focus", function () {
+            this.classList.add("active");
+          });
+
+          span.addEventListener("blur", function () {
+            let newValue = parseFloat(this.innerText.trim()) || 0;
+            savingsData[index].amount = newValue;
+            this.innerText = newValue.toFixed(2);
+            this.classList.remove("active");
+            calculateTotalSavings();
+          });
+
+          //span.addEventListener("keypress", function (e) {
+          //if (e.key === "Enter") {
+          //e.preventDefault();
+          //this.blur();
+          //}
+          //});
+
+          return span;
+        }
+
+        function calculateTotalSavings() {
+          let total = savingsData.reduce((sum, item) => sum + item.amount, 0);
+          document.getElementById(
+            "totalSavingsResult"
+          ).innerHTML = `RM ${total.toFixed(2)}`;
+
+          updateDepositAmount();
+        }
+
+        generateTable();
+      });
+
+      function previewSavingsPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Savings Report", 105, 20, { align: "center" });
+
+        const editableSpans = document.querySelectorAll(".editable");
+        const labels = document.querySelectorAll(
+          "#savingsTable td:first-child"
+        );
+        let totalSavings = 0;
+        let tableData = [];
+
+        editableSpans.forEach((span, index) => {
+          const value = parseFloat(span.innerText.trim() || 0).toFixed(2);
+          totalSavings += parseFloat(value);
+          tableData.push([labels[index].innerText, `RM ${value}`]);
+        });
+
+        doc.autoTable({
+          head: [["Category", "Amount"]],
+          body: tableData,
+          theme: "grid",
+          startY: 30,
+          styles: { font: "helvetica", fontSize: 12, halign: "center" },
+          columnStyles: {
+            0: { cellWidth: 90, halign: "center" },
+            1: { cellWidth: 90, halign: "center" },
+          },
+          margin: { left: 15, right: 15 },
+          didParseCell: function (data) {
+            if (data.row.index % 2 === 0 && data.section === "body") {
+              data.cell.styles.fillColor = [204, 255, 204];
+            } else if (data.row.index % 2 !== 0 && data.section === "body") {
+              data.cell.styles.fillColor = [230, 255, 230];
+            }
+          },
+        });
+
+        const targetSavings = 25000;
+        const remainingSavings = targetSavings - totalSavings;
+        const startY = doc.autoTable.previous.finalY + 15;
+
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(0, 128, 128);
+        doc.text("Savings Summary", 105, startY, { align: "center" });
+
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 0, 0);
+
+        const remainingColor = remainingSavings > 0 ? [255, 0, 0] : [0, 150, 0];
+
+        doc.setFillColor(240, 240, 240);
+        doc.rect(15, startY + 5, 180, 60, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.text("Target Savings:", 20, startY + 15);
+        doc.text("Total Savings:", 20, startY + 25);
+        doc.text("Remaining Savings:", 20, startY + 35);
+
+        const currentMonth = new Date().getMonth() + 2;
+        const monthsLeft = 12 - currentMonth + 1;
+        const salaryLeft = 1532.07 * monthsLeft;
+        const yearlyFee = salaryLeft - remainingSavings;
+
+        doc.text("Salary Left:", 20, startY + 45);
+        doc.text("Yearly Fee:", 20, startY + 55);
+
+        doc.setFont("helvetica", "normal");
+        doc.text(`RM ${targetSavings.toFixed(2)}`, 80, startY + 15);
+        doc.text(`RM ${totalSavings.toFixed(2)}`, 80, startY + 25);
+        doc.setTextColor(...remainingColor);
+        doc.text(`RM ${remainingSavings.toFixed(2)}`, 80, startY + 35);
+        doc.setTextColor(0, 0, 0);
+        doc.text(`RM ${salaryLeft.toFixed(2)}`, 80, startY + 45);
+        doc.text(`RM ${yearlyFee.toFixed(2)}`, 80, startY + 55);
+
+        const pageHeight = doc.internal.pageSize.height;
+        const footerText = `Last generated by: ${new Date().toLocaleString()}`;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        const textWidth = doc.getTextWidth(footerText);
+        doc.text(
+          footerText,
+          doc.internal.pageSize.width - textWidth - 15,
+          pageHeight - 10
+        );
+
+        // Preview PDF
+        doc.output("dataurlnewwindow");
+      }
+
+      function calculateFixedDeposit() {
+        const depositInput = document.getElementById("depositAmount");
+        const interestInput = document.getElementById("interestRate");
+        const periodInput = document.getElementById("period");
+
+        const depositAmount =
+          parseFloat(depositInput.value) ||
+          parseFloat(depositInput.placeholder);
+        const interestRate = parseFloat(interestInput.value) || 2.3;
+        const period = parseFloat(periodInput.value) || 1;
+
+        const totalAmount =
+          depositAmount + depositAmount * (interestRate / 100) * (period / 12);
+        const earnedProfit = totalAmount - depositAmount;
+
+        document.getElementById("fixedDepositResult").innerText = `RM ${(!isNaN(
+          totalAmount
+        )
+          ? totalAmount
+          : 0
+        ).toFixed(2)}`;
+
+        document.getElementById("earnedProfitResult").innerText = `RM ${(!isNaN(
+          earnedProfit
+        )
+          ? earnedProfit
+          : 0
+        ).toFixed(2)}`;
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateDepositAmount();
+        setDefaults();
+        calculateFixedDeposit();
+      });
+
+      function updateDepositAmount() {
+        let cimbBankAmount =
+          savingsData.find((item) => item.label === "CIMB Bank Amount")
+            ?.amount || 0;
+        let fixedDepositAmount =
+          savingsData.find((item) => item.label === "Fixed Deposit Amount")
+            ?.amount || 0;
+
+        let suggestedDeposit = cimbBankAmount + fixedDepositAmount - 2500;
+
+        document.getElementById("depositAmount").value =
+          suggestedDeposit.toFixed(2);
+      }
+
+      function setDefaults() {
+        document.getElementById("interestRate").value = "2.3";
+        document.getElementById("period").value = "1";
+      }
+
+      function showNotification(message, type = "error") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = "block";
+
+        setTimeout(() => {
+          notification.classList.add("fade-out");
+        }, 1000);
+
+        notification.addEventListener(
+          "transitionend",
+          () => {
+            notification.style.display = "none";
+            notification.classList.remove("fade-out");
+          },
+          { once: true }
+        );
+      }
+
+      function copyToClipboard() {
+        const depositAmount = document.getElementById("depositAmount");
+        if (depositAmount.value.trim() === "") {
+          showNotification("Deposit Amount is empty.", "error");
+          return;
+        }
+
+        depositAmount.select();
+        document.execCommand("copy");
+        showNotification("📢 Copied to clipboard!", "success");
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          copyToClipboard();
+        }
+      });
+    </script>
+  </body>
+</html>
