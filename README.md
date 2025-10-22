@@ -1,2 +1,26 @@
-# vispiv
-My vispiv html projects
+# 🌐 Vispiv Mini Project
+
+Welcome to **Vispiv**, my personal mini web project! 🎉  
+A playful collection of small web tools and features — all built with pure HTML, CSS, and JavaScript.
+
+---
+
+## 🚀 Live Demo
+👉 [**Visit Vispiv Project**](https://qjy02.github.io/vispiv/list.html)
+
+---
+
+## 🧩 Features
+- 📅 **Calendar**
+- 🏦 **Piggy Bank**
+- 📖 **Novel Reader**
+- 🎬 **Video Player**
+- 🧮 and more mini pages inspired by my everyday life!
+
+---
+
+## 🛠️ How to Use Locally
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/qjy02/vispiv.git
