@@ -1,6 +1,5 @@
-# 🌐 Vispiv Mini Project
-
-Welcome to **Vispiv**, my personal mini web project! 🎉  
+# 🌐 Vispiv Collectives
+Welcome to **Vispiv Collectives**, my personal mini web project! 🎉  
 A playful collection of small web tools and features — all built with pure HTML, CSS, and JavaScript.
 
 ---
