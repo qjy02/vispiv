@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcode Generator Table</title>
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+      body {
+        font-family: "Nunito", Verdana, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      h2 {
+        color: #4CAF50;
+        font-size: 2rem;
+        margin-top: 20px;
+        font-family: "Nunito", Verdana, sans-serif;
+      }
+
+      label {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 10px;
+        display: block;
+        text-align: center;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        width: 60%;
+        margin: 10px auto;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        display: block;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #4CAF50;
+      }
+
+      button {
+        background-color: #4CAF50;
+        font-family: "Nunito", Verdana, sans-serif;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      button:active {
+        background-color: #388e3c;
+      }
+
+      table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+        font-size: 1rem;
+      }
+
+      th {
+        background-color: #4CAF50;
+        color: white;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f1f1f1;
+      }
+
+      tr:hover {
+        background-color: #e9f7e9;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 1rem;
+        color: #888;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        input[type="text"] {
+          width: 80%;
+        }
+
+        button {
+          width: 80%;
+        }
+
+        table {
+          width: 95%;
+        }
+
+        th, td {
+          font-size: 0.9rem;
+          padding: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h2 {
+          font-size: 1.2rem;
+        }
+
+        input[type="text"], button {
+          width: 90%;
+        }
+
+        th, td {
+          font-size: 0.8rem;
+          padding: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Barcode Generator</h2>
+
+    <label for="referenceNumber">Enter Reference Number:</label>
+    <input type="text" id="referenceNumber" placeholder="Enter reference number" aria-label="Reference Number Input" />
+    <button onclick="generateBarcode()" aria-label="Generate Barcode">Generate</button>
+
+    <table id="barcodeTable" aria-label="Barcode Table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Reference Number</th>
+          <th>Barcode</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Generated barcodes will appear here -->
+      </tbody>
+    </table>
+
+    <footer>
+      <p>&copy; 2025 Barcode Generator, made by ChatGPT, enhanced by Deepseek</p>
+    </footer>
+
+    <script>
+      let counter = 1;
+      const defaultRefNumbers = [
+        'GCHINV250201780',
+        'GCHINV250201781',
+        'GCHINV250201782',
+        'GCHINV250201783',
+        'GCHINV250201784',
+      ];
+
+      function initializeTable() {
+        let tableBody = document.querySelector("#barcodeTable tbody");
+
+        defaultRefNumbers.forEach(refNumber => {
+          addBarcodeRow(tableBody, refNumber);
+        });
+      }
+
+      window.onload = initializeTable;
+
+      document
+        .getElementById("referenceNumber")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            generateBarcode();
+          }
+        });
+
+      function generateBarcode() {
+        let refNumber = document.getElementById("referenceNumber").value.trim();
+        if (refNumber === "") {
+          alert("Please enter a reference number.");
+          return;
+        }
+
+        let tableBody = document.querySelector("#barcodeTable tbody");
+        addBarcodeRow(tableBody, refNumber);
+
+        document.getElementById("referenceNumber").value = "";
+      }
+
+      function addBarcodeRow(tableBody, refNumber) {
+        let newRow = document.createElement("tr");
+
+        let serialCell = document.createElement("td");
+        serialCell.textContent = counter++;
+
+        let refCell = document.createElement("td");
+        refCell.textContent = refNumber;
+
+        let barcodeCell = document.createElement("td");
+        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        barcodeCell.appendChild(svg);
+
+        let actionsCell = document.createElement("td");
+        let downloadButton = document.createElement("button");
+        downloadButton.textContent = "Download";
+        downloadButton.onclick = function() { downloadBarcode(svg); };
+        let copyButton = document.createElement("button");
+        copyButton.textContent = "Copy";
+        copyButton.onclick = function() { copyBarcode(svg); };
+
+        actionsCell.appendChild(downloadButton);
+        actionsCell.appendChild(copyButton);
+
+        newRow.appendChild(serialCell);
+        newRow.appendChild(refCell);
+        newRow.appendChild(barcodeCell);
+        newRow.appendChild(actionsCell);
+
+        tableBody.appendChild(newRow);
+
+        JsBarcode(svg, refNumber, {
+          format: "CODE128",
+          lineColor: "#000",
+          width: 2,
+          height: 50,
+          displayValue: true,
+        });
+      }
+
+      function downloadBarcode(svg) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const img = new Image();
+        const svgBlob = new Blob([svgData], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(svgBlob);
+
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob(function(blob) {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "barcode.png";
+            link.click();
+          });
+        };
+        img.src = url;
+      }
+
+      function copyBarcode(svg) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const img = new Image();
+        const svgBlob = new Blob([svgData], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(svgBlob);
+
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          canvas.toBlob(function(blob) {
+            navigator.clipboard.write([new ClipboardItem({ "image/png": blob })])
+              .then(() => {
+                alert("Barcode copied to clipboard!");
+              })
+              .catch(err => console.error('Error copying to clipboard:', err));
+          });
+        };
+        img.src = url;
+      }
+    </script>
+  </body>
+</html>

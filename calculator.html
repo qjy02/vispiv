@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vispiv Calculator</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        position: relative;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .vispiv-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+
+      .calculator-container {
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 15px;
+        background-color: #4f5b66;
+        border-radius: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        max-width: 400px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Added shadow for 3D effect */
+      }
+
+      .calculator {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        width: 100%;
+      }
+
+      .calculator input {
+        grid-column: span 7;
+        height: 50px;
+        text-align: right;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        border: none;
+        padding: 5px;
+        background: #fff; /* Light background for input */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for input */
+      }
+
+      .calculator button {
+        height: 50px;
+        font-size: 1.2rem;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        font-weight: 500;
+        font-family: "Quicksand", Verdana, sans-serif;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .calculator button.default-button {
+        background: linear-gradient(145deg, #007bff, #0056b3);
+      }
+
+      .calculator button.red-button {
+        background-color: red !important;
+      }
+
+      .calculator button.orange-button {
+        background-color: orange !important;
+        grid-column: span 3;
+      }
+
+      .calculator button.green-button {
+        background-color: green !important;
+        grid-column: span 4;
+      }
+
+      .calculator button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+      }
+
+      .calculator button:active {
+        transform: translateY(
+          2px
+        ); /* Simulate button press by shifting it down */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow when pressed */
+      }
+
+      .menu-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-button {
+        background: linear-gradient(145deg, #007b9e, #005d7e);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2),
+          -3px -3px 6px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease-in-out;
+        font-size: 1rem;
+        font-weight: bold;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .menu-button:hover {
+        background: linear-gradient(145deg, #0092b2, #006f96);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+          -2px -2px 5px rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3),
+          inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+      }
+
+      .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .popup-menu.dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(113, 113, 113);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 5px solid black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .popup-menu.dialog a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        background-color: #3a4045;
+        border-radius: 5px;
+        margin: 8px 0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .popup-menu.dialog a:hover {
+        background-color: #52575c;
+        transform: scale(1.02);
+      }
+
+      .popup-menu {
+        position: relative;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background-color: #3c5e93;
+        color: white;
+        border: 1px solid #203454;
+        border-radius: 10px;
+        box-shadow: 2px 2px 2px 2px #203454;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      .calculator-container footer {
+        text-align: right;
+        width: 100%;
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .popup-menu.dialog {
+          width: 80%;
+        }
+      }
+
+      @media (orientation: portrait) {
+        .calculator {
+          grid-template-columns: repeat(4, 1fr);
+        }
+
+        .calculator input {
+          grid-column: span 4;
+        }
+
+        .calculator button.orange-button {
+          grid-column: span 2;
+        }
+
+        .calculator button.green-button {
+          grid-column: span 2;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="popup-menu dialog" id="popupMenu">
+      <span><h2>Vispiv Links</h2></span>
+      <span
+        ><button onclick="togglePopup()" class="close-btn">
+          <i class="fas fa-times"></i></button
+      ></span>
+
+      <a href="list.html">Vispiv List</a>
+      <a href="jsonformatter.html">Json Formatter</a>
+      <a href="jsongrid.html">Json2Grid</a>
+      <a href="text_viewer_pdf.html">Text File Viewer</a>
+      <a href="qrcodereader.html">QR Code Reader</a>
+      <a href="calendar_view.html">Vispiv Calendar</a>
+      <a href="musicplayer.html">Music Player</a>
+    </div>
+
+    <div class="navbar">
+      <div class="vispiv-container">
+        <a href="list.html" target="_blank" style="text-decoration: none">
+          <img
+            src="Vispiv.png"
+            alt="Vispiv Icon"
+            class="vispiv-icon"
+          />
+        </a>
+        <span>Vispiv Calculator</span>
+      </div>
+      <div class="menu-container">
+        <button class="menu-button" onclick="togglePopup()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="calculator-container">
+      <div class="calculator">
+        <input type="text" id="display" oninput="sanitizeInput()" />
+        <button
+          class="default-button"
+          id="radDegButton"
+          onclick="toggleRadDeg()"
+        >
+          Rad
+        </button>
+        <button
+          class="default-button"
+          id="degRadButton"
+          onclick="toggleRadDeg()"
+        >
+          Deg
+        </button>
+        <button
+          class="default-button"
+          id="factorialButton"
+          onclick="appendValue('!')"
+        >
+          x!
+        </button>
+        <button
+          class="default-button"
+          id="leftParenButton"
+          onclick="appendValue('(')"
+        >
+          (
+        </button>
+        <button
+          class="default-button"
+          id="rightParenButton"
+          onclick="appendValue(')')"
+        >
+          )
+        </button>
+        <button
+          class="default-button"
+          id="percentButton"
+          onclick="appendValue('%')"
+        >
+          %
+        </button>
+        <button class="red-button" id="acButton" onclick="clearDisplay()">
+          AC
+        </button>
+        <button
+          class="default-button"
+          id="invButton"
+          onclick="appendValue('Inv')"
+        >
+          Inv
+        </button>
+        <button
+          class="default-button"
+          id="sinButton"
+          onclick="appendValue('Math.sin(')"
+        >
+          sin
+        </button>
+        <button
+          class="default-button"
+          id="lnButton"
+          onclick="appendValue('Math.ln(')"
+        >
+          ln
+        </button>
+        <button
+          class="default-button"
+          id="sevenButton"
+          onclick="appendValue('7')"
+        >
+          7
+        </button>
+        <button
+          class="default-button"
+          id="eightButton"
+          onclick="appendValue('8')"
+        >
+          8
+        </button>
+        <button
+          class="default-button"
+          id="nineButton"
+          onclick="appendValue('9')"
+        >
+          9
+        </button>
+        <button
+          class="default-button"
+          id="divideButton"
+          onclick="appendValue('/')"
+        >
+          ÷
+        </button>
+        <button
+          class="default-button"
+          id="piButton"
+          onclick="appendValue('Math.PI')"
+        >
+          π
+        </button>
+        <button
+          class="default-button"
+          id="cosButton"
+          onclick="appendValue('Math.cos(')"
+        >
+          cos
+        </button>
+        <button
+          class="default-button"
+          id="logButton"
+          onclick="appendValue('Math.log(')"
+        >
+          log
+        </button>
+        <button
+          class="default-button"
+          id="fourButton"
+          onclick="appendValue('4')"
+        >
+          4
+        </button>
+        <button
+          class="default-button"
+          id="fiveButton"
+          onclick="appendValue('5')"
+        >
+          5
+        </button>
+        <button
+          class="default-button"
+          id="sixButton"
+          onclick="appendValue('6')"
+        >
+          6
+        </button>
+        <button
+          class="default-button"
+          id="multiplyButton"
+          onclick="appendValue('*')"
+        >
+          ×
+        </button>
+        <button
+          class="default-button"
+          id="eButton"
+          onclick="appendValue('Math.E')"
+        >
+          e
+        </button>
+        <button
+          class="default-button"
+          id="tanButton"
+          onclick="appendValue('Math.tan(')"
+        >
+          tan
+        </button>
+        <button
+          class="default-button"
+          id="sqrtButton"
+          onclick="appendValue('Math.sqrt(')"
+        >
+          √
+        </button>
+        <button
+          class="default-button"
+          id="oneButton"
+          onclick="appendValue('1')"
+        >
+          1
+        </button>
+        <button
+          class="default-button"
+          id="twoButton"
+          onclick="appendValue('2')"
+        >
+          2
+        </button>
+        <button
+          class="default-button"
+          id="threeButton"
+          onclick="appendValue('3')"
+        >
+          3
+        </button>
+        <button
+          class="default-button"
+          id="minusButton"
+          onclick="appendValue('-')"
+        >
+          -
+        </button>
+        <button
+          class="default-button"
+          id="ansButton"
+          onclick="insertLastAnswer()"
+        >
+          ⟳
+        </button>
+        <button
+          class="default-button"
+          id="expButton"
+          onclick="appendValue('EXP')"
+        >
+          EXP
+        </button>
+        <button
+          class="default-button"
+          id="exponentButton"
+          onclick="appendValue('**')"
+        >
+          xʸ
+        </button>
+        <button
+          class="default-button"
+          id="zeroButton"
+          onclick="appendValue('0')"
+        >
+          0
+        </button>
+        <button
+          class="default-button"
+          id="dotButton"
+          onclick="appendValue('.')"
+        >
+          .
+        </button>
+        <button
+          class="default-button"
+          id="plusButton"
+          onclick="appendValue('+')"
+        >
+          +
+        </button>
+        <button
+          class="red-button"
+          id="backspaceButton"
+          onclick="deleteLastChar()"
+        >
+          ⌫
+        </button>
+        <button onclick="roundResult()" class="orange-button" id="roundButton">
+          🔣 Round
+        </button>
+        <button
+          onclick="calculateResult()"
+          class="green-button"
+          id="ansResultButton"
+        >
+          =
+        </button>
+      </div>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <div>
+      <footer style="text-align: center">
+        <span>
+          Copyright © 2024 Vispiv Collectives | Powered by Vispiv Collectives
+        </span>
+      </footer>
+    </div>
+
+    <script>
+      const clickSound = new Audio(
+        "https://www.soundjay.com/button/beep-07.wav"
+      ); // Example URL for a beep sound
+
+      function playClickSound() {
+        clickSound.play();
+      }
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      function togglePopup() {
+        const popupMenu = document.getElementById("popupMenu");
+
+        if (
+          popupMenu.style.display === "none" ||
+          popupMenu.style.display === ""
+        ) {
+          popupMenu.style.display = "block";
+        } else {
+          popupMenu.style.display = "none";
+        }
+      }
+
+      window.addEventListener("click", (event) => {
+        const popupMenu = document.getElementById("popupMenu");
+        const menuButton = document.querySelector(".menu-button");
+
+        if (
+          !popupMenu.contains(event.target) &&
+          event.target !== menuButton &&
+          !menuButton.contains(event.target)
+        ) {
+          popupMenu.style.display = "none";
+        }
+      });
+
+      let isRadians = true;
+
+      function toggleRadDeg() {
+        isRadians = !isRadians;
+        alert(isRadians ? "Radians mode" : "Degrees mode");
+      }
+
+      function appendValue(value) {
+        const display = document.getElementById("display");
+
+        playClickSound();
+
+        if (
+          display.value === lastAnswer?.toString() ||
+          display.value === "Error"
+        ) {
+          display.value = "";
+        }
+
+        if (value === "x!") {
+          display.value = factorial(parseFloat(display.value) || 0);
+        } else if (value === "Math.sin(") {
+          display.value += `Math.sin(`;
+        } else if (value === "Math.cos(") {
+          display.value += `Math.cos(`;
+        } else if (value === "Math.tan(") {
+          display.value += `Math.tan(`;
+        } else {
+          display.value += value;
+        }
+
+        // Only clear the display if it's "Error" but not if it's the last answer
+        if (display.value === "Error") {
+          display.value = "";
+        }
+
+        display.focus();
+      }
+
+      function factorial(num) {
+        if (num < 0) return "Error";
+        return num === 0 ? 1 : num * factorial(num - 1);
+      }
+
+      function deleteLastChar() {
+        const display = document.getElementById("display");
+        display.value = display.value.slice(0, -1);
+      }
+
+      function round(value, decimalPlaces) {
+        if (isNaN(value) || isNaN(decimalPlaces)) {
+          return "Error"; // Handle invalid inputs
+        }
+        const factor = Math.pow(10, decimalPlaces);
+        return Math.round(value * factor) / factor;
+      }
+
+      function roundResult() {
+        const display = document.getElementById("display");
+        if (!display.value.trim()) {
+          display.value = ""; // If the display is empty, do nothing
+          return;
+        }
+
+        const num = parseFloat(display.value);
+        if (isNaN(num)) {
+          display.value = "Error"; // Handle invalid numbers
+          return;
+        }
+
+        const decimalPlaces = parseInt(
+          prompt("Enter the number of decimal places:", "2"),
+          10
+        );
+        if (isNaN(decimalPlaces) || decimalPlaces < 0) {
+          display.value = "Error"; // Handle invalid input
+          return;
+        }
+
+        display.value = round(num, decimalPlaces);
+      }
+
+      let lastAnswer = null;
+
+      function insertLastAnswer() {
+        const display = document.getElementById("display");
+        if (lastAnswer !== null) {
+          display.value += lastAnswer;
+        } else {
+          display.value = "No Answer";
+        }
+        display.focus();
+      }
+
+      function adjustLayoutForOrientation() {
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const calculator = document.querySelector(".calculator");
+        const buttons = Array.from(calculator.children);
+
+        // Original order of buttons (from the HTML)
+        const originalOrder = [
+          "radDegButton",
+          "degRadButton",
+          "factorialButton",
+          "leftParenButton",
+          "rightParenButton",
+          "percentButton",
+          "acButton",
+          "invButton",
+          "sinButton",
+          "lnButton",
+          "sevenButton",
+          "eightButton",
+          "nineButton",
+          "divideButton",
+          "piButton",
+          "cosButton",
+          "logButton",
+          "fourButton",
+          "fiveButton",
+          "sixButton",
+          "multiplyButton",
+          "eButton",
+          "tanButton",
+          "sqrtButton",
+          "oneButton",
+          "twoButton",
+          "threeButton",
+          "minusButton",
+          "ansButton",
+          "expButton",
+          "exponentButton",
+          "zeroButton",
+          "dotButton",
+          "plusButton",
+          "backspaceButton",
+          "roundButton",
+          "ansResultButton",
+        ];
+
+        if (isPortrait) {
+          // Define the order of buttons in portrait mode
+          const portraitOrder = [
+            "radDegButton",
+            "degRadButton",
+            "factorialButton",
+            "acButton",
+            "leftParenButton",
+            "rightParenButton",
+            "invButton",
+            "percentButton",
+            "nineButton",
+            "eightButton",
+            "sevenButton",
+            "cosButton",
+            "sixButton",
+            "fiveButton",
+            "fourButton",
+            "tanButton",
+            "threeButton",
+            "twoButton",
+            "oneButton",
+            "sinButton",
+            "zeroButton",
+            "dotButton",
+            "multiplyButton",
+            "divideButton",
+            "piButton",
+            "logButton",
+            "plusButton",
+            "minusButton",
+            "lnButton",
+            "eButton",
+            "sqrtButton",
+            "ansButton",
+            "expButton",
+            "exponentButton",
+            "backspaceButton",
+            "roundButton",
+            "ansResultButton",
+          ];
+
+          portraitOrder.forEach((id) => {
+            const button = document.getElementById(id);
+            calculator.appendChild(button);
+          });
+
+          const backspaceButton = document.getElementById("backspaceButton");
+          if (backspaceButton) {
+            backspaceButton.style.gridColumn = "span 2";
+          }
+        } else {
+          originalOrder.forEach((id) => {
+            const button = document.getElementById(id);
+            calculator.appendChild(button);
+          });
+
+          const backspaceButton = document.getElementById("backspaceButton");
+          if (backspaceButton) {
+            backspaceButton.style.gridColumn = "";
+          }
+        }
+      }
+
+      window.addEventListener("load", adjustLayoutForOrientation);
+      window.addEventListener("resize", adjustLayoutForOrientation);
+
+      function calculateResult() {
+        const display = document.getElementById("display");
+        if (!display.value.trim()) {
+          display.value = "";
+          return;
+        }
+
+        try {
+          let expression = display.value.replace(/%/g, "/100");
+
+          if (!isRadians) {
+            expression = expression.replace(
+              /Math\.(sin|cos|tan)\(([^)]+)\)/g,
+              (match, p1, p2) => {
+                return `Math.${p1}(${p2} * Math.PI / 180)`;
+              }
+            );
+          }
+
+          display.value = eval(expression);
+
+          const result = eval(display.value);
+          lastAnswer = result;
+        } catch (error) {
+          display.value = "Error";
+        }
+      }
+
+      function clearDisplay() {
+        const display = document.getElementById("display");
+        display.value = "";
+      }
+
+      function sanitizeInput() {
+        const display = document.getElementById("display");
+        display.value = display.value.replace(/[^0-9+\-*/().%eπ\s]/g, "");
+      }
+
+      window.onload = function () {
+        document.getElementById("display").focus();
+      };
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          calculateResult();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === ",") {
+          insertLastAnswer();
+        }
+      });
+    </script>
+  </body>
+</html>

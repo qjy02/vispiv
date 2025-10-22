@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vispiv Preview Image</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+      }
+
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .vispiv-icon {
+        width: 200px;
+        border: 3px solid #444;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        margin: 20px auto;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      .vispiv-icon:hover {
+        transform: scale(1.05);
+      }
+
+      .button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px;
+        transition: background 0.3s ease;
+      }
+
+      .button:hover {
+        background: #2980b9;
+      }
+
+      .button:active {
+        transform: translateY(2px);
+      }
+
+      .button.secondary {
+        background: #2ecc71;
+      }
+
+      .button.secondary:hover {
+        background: #27ae60;
+      }
+
+      .instructions {
+        text-align: left;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 30px;
+        border-left: 4px solid #3498db;
+      }
+
+      .preview {
+        margin-top: 30px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .preview-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #2c3e50;
+      }
+
+      #resultCanvas {
+        border: 1px dashed #ccc;
+        margin-top: 10px;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Vispiv Image Preview</h1>
+
+      <img id="vispiv" src="Vispiv.png" alt="Vispiv Icon" class="vispiv-icon" />
+
+      <div>
+        <button id="download" class="button">Generate Image</button>
+        <button id="preview" class="button secondary">Preview Result</button>
+      </div>
+
+      <div class="preview">
+        <div class="preview-title">Preview will appear here:</div>
+        <canvas id="resultCanvas"></canvas>
+      </div>
+
+      <div class="instructions">
+        <h3>How it works:</h3>
+        <ol>
+          <li>
+            The original image is loaded with CSS border, border-radius, and
+            box-shadow effects
+          </li>
+          <li>
+            When you click "Generate Image", we create a canvas with the
+            same dimensions as your styled image
+          </li>
+          <li>We draw the image with all border effects applied</li>
+          <li>
+            The canvas is converted to a data URL and able to be downloaded as a PNG file
+          </li>
+          <li>
+            Use "Preview Result" to see the result and right click to download the image
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("download").addEventListener("click", () => {
+        generateImage(true);
+      });
+
+      document.getElementById("preview").addEventListener("click", () => {
+        generateImage(false);
+      });
+
+      function generateImage(download) {
+        const img = document.getElementById("vispiv");
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const borderWidth = 3;
+        const borderRadius = 10;
+        const padding = 30; // space for shadow
+
+        canvas.width = img.width + padding * 2;
+        canvas.height = img.height + padding * 2;
+
+        const x = padding;
+        const y = padding;
+        const w = img.width;
+        const h = img.height;
+
+        // --- draw "3D effect" background (two layered shadows) ---
+        // Light top-left highlight
+        ctx.shadowColor = "rgba(255,255,255,0.6)";
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = -3;
+        ctx.shadowOffsetY = -3;
+
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, borderRadius);
+        ctx.fill();
+
+        // Dark bottom-right shadow
+        ctx.shadowColor = "rgba(0,0,0,0.4)";
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
+
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, borderRadius);
+        ctx.fill();
+
+        // --- draw border ---
+        ctx.shadowColor = "transparent";
+        ctx.lineWidth = borderWidth;
+        ctx.strokeStyle = "#444";
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, borderRadius);
+        ctx.stroke();
+
+        // --- draw image clipped inside rounded rect ---
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, borderRadius);
+        ctx.clip();
+        ctx.drawImage(img, x, y, w, h);
+        ctx.restore();
+
+        if (download) {
+          const link = document.createElement("a");
+          link.download = "vispiv-with-3d.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        } else {
+          const previewCanvas = document.getElementById("resultCanvas");
+          const previewCtx = previewCanvas.getContext("2d");
+          previewCanvas.width = canvas.width;
+          previewCanvas.height = canvas.height;
+          previewCtx.drawImage(canvas, 0, 0);
+        }
+      }
+    </script>
+  </body>
+</html>

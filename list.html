@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vispiv List</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .vispiv-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+
+      .links-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 0 10px;
+        background-color: #34495e;
+        border-radius: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .notepad-container {
+        background-color: #8f9498;
+        color: #333;
+        width: 80%;
+        padding: 20px;
+        border: 2px solid #bdc3c7;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        height: 300px;
+        font-family: "Quicksand", Verdana, sans-serif;
+        margin: 20px 0;
+        direction: rtl;
+      }
+
+      .notepad-container a {
+        color: #333;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 5px;
+        margin: 5px 0;
+        font-size: 16px;
+        text-align: center;
+        color: white;
+        transition: background-color 0.3s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+        direction: ltr;
+      }
+
+      .notepad-container a:nth-child(odd) {
+        background-color: #3a4045; /* Brighter yellow for odd rows */
+      }
+
+      .notepad-container a:nth-child(even) {
+        background-color: #52575c; /* Darker yellow for even rows */
+      }
+
+      .notepad-container a:hover {
+        background-color: #2b5a8d82;
+        transform: scale(1);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #1a3a6d, #2e5a9a);
+        border: 1px solid #203454;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #203454, -1px -1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #204a7d, #3b6db1);
+        box-shadow: 4px 4px 6px #1a2c4a, -1px -1px 2px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #1a2c4a;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .links-container a {
+          font-size: 14px;
+        }
+      }
+
+      @media screen and (orientation: portrait) {
+        .notepad-container,
+        .links-container {
+          height: 100vh;
+          overflow-y: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="vispiv-container">
+        <a href="list.html" style="text-decoration: none">
+          <img
+            src="Vispiv.png"
+            alt="Vispiv Icon"
+            class="vispiv-icon"
+          />
+        </a>
+        <span>Vispiv List</span>
+      </div>
+    </div>
+
+    <div class="links-container">
+      <!-- Notepad container -->
+      <div class="notepad-container">
+        <a href="list.html" target="_blank">Vispiv List 📋</a>
+        <a href="novelreader.html" target="_blank">Novel Reader 🖥️</a>
+        <a href="jsonformatter.html" target="_blank">Json Formatter 🔧</a>
+        <a href="jsongrid.html" target="_blank">Json2Grid 🪟</a>
+        <a href="datafixer.html" target="=_blank">Data Fixer 🛠️</a>
+        <a href="diffchecker.html" target="_blank">Difference Checker 📚</a>
+        <a href="quotegenerator.html" target="_blank">Quote Generator 📜</a>
+        <a href="asktheball.html" target="_blank">Ask the Ball 🔮</a>
+        <a href="piggybank.html" target="_blank">Vispiv Piggy Bank 💸</a>
+        <a href="dailyplanner.html" target="_blank">Vispiv Daily Planner 📖</a>
+        <a href="text_viewer_pdf.html" target="_blank">Text File Viewer 📒</a>
+        <a href="qrcodereader.html" target="_blank">QR Code Reader 📲</a>
+        <a href="calendar_view.html" target="_blank">Vispiv Calendar 📅</a>
+        <a href="calculator.html" target="_blank">Vispiv Calculator 🧮</a>
+        <a href="personal_item.html" target="_blank">Personal Item List 🏷️</a>
+        <a href="life_target.html" target="_blank">Life Target 🎂</a>
+        <a href="map.html" target="_blank">Vispiv Map 🗺️</a>
+        <a href="musicplayer.html" target="_blank">Vispiv Music Player 🪗</a>
+        <a href="videoplayer.html" target="_blank">Vispiv Video Player 📹</a>
+        <a href="wish_checkout.html" target="_blank"
+          >Wishlist and Checkout List 📝</a
+        >
+      </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: white">
+        <span>Copyright © 2024 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script>
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vispiv Difference Checker</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .header h3 {
+        flex-grow: 1;
+        text-align: center;
+        margin: 0;
+        line-height: 50px;
+      }
+      .header img {
+        margin-top: 5px;
+        align-self: center;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+      .navbar a.active {
+        background-color: #04366d;
+        border-radius: 5px;
+      }
+
+      @media (max-width: 1000px) {
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+        }
+        navbar {
+          margin: 0;
+        }
+        .navbar.active .navbar-links {
+          width: 100%;
+          display: flex;
+        }
+        .navbar .menu-icon {
+          display: block;
+        }
+        .navbar.active .vispiv-container {
+          display: none;
+        }
+        .header {
+          flex-direction: column;
+          align-items: center;
+        }
+        .header img {
+          margin-top: 10px;
+        }
+        .container {
+          flex-direction: column;
+          margin: 0 10px;
+        }
+        .box {
+          min-width: 100%;
+          max-width: 100%;
+        }
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #1a3a6d, #2e5a9a);
+        border: 1px solid #203454;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #203454, -1px -1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #204a7d, #3b6db1);
+        box-shadow: 4px 4px 6px #1a2c4a, -1px -1px 2px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #1a2c4a;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      .diff_container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #34495e;
+        border-radius: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .textarea-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 10px;
+      }
+
+      .textarea-container textarea {
+        flex: 1;
+        width: 100%;
+        background-color: #e0f7fa;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        resize: none;
+        box-sizing: border-box;
+      }
+
+      .textarea-container textarea::placeholder {
+        font-family: "Quicksand", Verdana, sans-serif;
+      }
+
+      .text-area-group {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 300px;
+      }
+
+      .text-area-group span {
+        font-weight: 600;
+        margin-left: 5px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .diff_container button {
+        background: #1e3a8a;
+        background: linear-gradient(
+          to bottom,
+          #1e3a8a 0%,
+          rgba(30, 58, 138, 1) 66%,
+          #1e3a8a 100%
+        );
+        color: white;
+        font-family: "Quicksand", Verdana, sans-serif;
+        padding: 8px 12px;
+        border-radius: 6px;
+        width: 120px;
+        margin: 10px auto;
+        display: block;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5),
+          -1px -1px 1px rgba(255, 255, 255, 0.08);
+      }
+
+      .diff_container button:hover {
+        background: linear-gradient(
+          to bottom,
+          #132f6f 0%,
+          rgba(19, 47, 111, 1) 66%,
+          #132f6f 100%
+        );
+        transform: scale(1.05);
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.55),
+          -1px -1px 1px rgba(255, 255, 255, 0.1);
+      }
+
+      #diffResults {
+        white-space: pre-wrap;
+        background-color: #1e272e;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        width: 98%;
+        font-size: 16px;
+        min-height: 150px;
+      }
+
+      .added {
+        background-color: #1dd1a1;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+
+      .removed {
+        background-color: #ff6b6b;
+        text-decoration: line-through;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+
+      .result-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 24px;
+        color: white;
+        width: 100%;
+        position: relative;
+      }
+
+      .result-container::before,
+      .result-container::after {
+        content: "🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼🐾🐾🐼";
+        font-size: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      .result_text {
+        text-align: center !important;
+        font-weight: 600;
+        font-size: 20px;
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .textarea-container {
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+        }
+
+        .textarea-container textarea {
+          width: 100%;
+        }
+
+        #diffResults {
+          width: 90%;
+        }
+      }
+
+      .vispiv-container {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-links">
+        <a href="jsonformatter.html">Json Formatter</a>
+        <a href="jsongrid.html">Json2Grid</a>
+        <a href="datafixer.html">Data Fixer</a>
+        <a href="text_viewer_pdf.html">Text File Viewer</a>
+        <a href="qrcodereader.html">QR Code Reader</a>
+        <a href="calendar_view.html">Vispiv Calendar</a>
+        <a href="diffchecker.html" class="active">Diff Checker</a>
+        <a href="wish_checkout.html">Wishlist and Checkout List</a>
+      </div>
+      <div>
+        <div class="vispiv-container">
+          <a href="list.html" style="text-decoration: none">
+            <img
+              src="Vispiv.png"
+              alt="Vispiv Icon"
+              class="vispiv-icon"
+            />
+          </a>
+          <span>Vispiv Help Tools</span>
+        </div>
+      </div>
+      <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+    </div>
+    <div class="header">
+      <h3>Vispiv Difference Checker</h3>
+    </div>
+
+    <div class="diff_container">
+      <div class="textarea-container">
+        <div class="text-area-group">
+          <span>Previous</span>
+          <textarea
+            id="text1"
+            placeholder="Enter first text here..."
+          ></textarea>
+        </div>
+        <div class="text-area-group">
+          <span>Current</span>
+          <textarea
+            id="text2"
+            placeholder="Enter second text here..."
+          ></textarea>
+        </div>
+      </div>
+
+      <button onclick="compareTexts()">Compare</button>
+
+      <div class="result-container">
+        <div class="result_text">Result</div>
+      </div>
+
+      <div id="diffResults"></div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.2.0/diff.min.js"></script>
+
+    <script>
+      window.onload = function () {
+        const textarea = document.getElementById("text1");
+        textarea.focus();
+        textarea.select();
+      };
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      let diffIndex = -1;
+      let diffs = [];
+
+      function compareTexts() {
+        let text1 = document.getElementById("text1").value;
+        let text2 = document.getElementById("text2").value;
+        let diffResults = document.getElementById("diffResults");
+
+        if (typeof Diff === "undefined") {
+          console.error("Diff library not loaded!");
+          return;
+        }
+
+        let diff = Diff.diffWordsWithSpace(text1, text2);
+        diffs = [];
+        diffIndex = -1;
+        let resultHTML = "";
+
+        diff.forEach((part, index) => {
+          let spanClass = part.added ? "added" : part.removed ? "removed" : "";
+
+          if ((part.added || part.removed) && part.value.trim().length > 0) {
+            diffs.push(index);
+          }
+
+          let span = `<span class="${spanClass}" data-index="${index}">${part.value}</span>`;
+          resultHTML += span;
+        });
+
+        diffResults.innerHTML = resultHTML;
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "F1" && diffs.length > 0) {
+          event.preventDefault();
+
+          let spans = document.querySelectorAll("#diffResults span");
+          if (spans.length === 0) return;
+
+          spans.forEach((span) => span.classList.remove("highlighted"));
+
+          diffIndex = (diffIndex + 1) % diffs.length;
+          let nextDiff = diffs[diffIndex];
+          let targetSpan = spans[nextDiff];
+
+          if (targetSpan) {
+            targetSpan.classList.add("highlighted");
+            targetSpan.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Shift") {
+          compareTexts();
+        }
+      });
+
+      function toggleMenu() {
+        const navbar = document.querySelector(".navbar");
+        navbar.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

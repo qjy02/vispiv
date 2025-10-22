@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vispiv Daily Planner</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #7e8f80;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        position: relative;
+        background-color: #25322957;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      .navbar a:hover {
+        background-color: #6f8c74;
+        border-radius: 5px;
+      }
+
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .vispiv-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 50px;
+        height: auto;
+      }
+
+      .menu-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-button {
+        background: linear-gradient(145deg, #5b7360, #4e6252);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15),
+          -2px -2px 4px rgba(255, 255, 255, 0.15);
+        transition: all 0.2s ease-in-out;
+        font-size: 1rem;
+        font-weight: bold;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .menu-button:hover {
+        background: linear-gradient(145deg, #718c75, #5f7663);
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1),
+          -1px -1px 3px rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1),
+          inset -1px -1px 3px rgba(255, 255, 255, 0.15);
+      }
+
+      .planner-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      table {
+        table-layout: fixed;
+        width: 100%;
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 400px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+      }
+
+      th,
+      td {
+        border: 1px solid white;
+        padding: 10px;
+        text-align: center;
+      }
+
+      td {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        max-width: 400px;
+      }
+
+      th {
+        background-color: rgb(73, 91, 74);
+      }
+
+      /* Style for even rows */
+      #plannerBody tr:nth-child(even) {
+        background-color: rgba(102, 130, 111, 0.5);
+      }
+
+      /* Style for odd rows */
+      #plannerBody tr:nth-child(odd) {
+        background-color: rgba(138, 166, 141, 0.596);
+      }
+
+      .save-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #3c4e42;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .save-btn:hover {
+        background-color: #4e6252;
+      }
+
+      .current-time {
+        background-color: rgba(60, 78, 66, 0.8) !important;
+        color: white;
+        font-weight: 600;
+      }
+
+      .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .popup-menu.dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(113, 113, 113);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 5px solid black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .popup-menu.dialog a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        background-color: #3a4045;
+        border-radius: 5px;
+        margin: 8px 0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .popup-menu.dialog a:hover {
+        background-color: #52575c;
+        transform: scale(1.02);
+      }
+
+      .popup-menu {
+        position: relative;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #2e4a38, #446b53);
+        border: 1px solid #365e48;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #365e48, -1px -1px 2px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #365e48, #4e8a69);
+        box-shadow: 4px 4px 6px #2e4a38, -1px -1px 2px rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #2e4a38;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      .date-time {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .popup-menu.dialog {
+          width: 80%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+          width: 250px;
+          max-width: 250px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        th:nth-child(2),
+        td:nth-child(2) {
+          width: 150px;
+          max-width: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-menu dialog" id="popupMenu">
+      <span><h2>Vispiv Links</h2></span>
+      <span
+        ><button onclick="togglePopup()" class="close-btn">
+          <i class="fas fa-times"></i></button
+      ></span>
+
+      <a href="list.html">Vispiv List</a>
+      <a href="jsonformatter.html">Json Formatter</a>
+      <a href="jsongrid.html">Json2Grid</a>
+      <a href="text_viewer_pdf.html">Text File Viewer</a>
+      <a href="qrcodereader.html">QR Code Reader</a>
+      <a href="calendar_view.html">Vispiv Calendar</a>
+      <a href="musicplayer.html">Music Player</a>
+    </div>
+
+    <div class="navbar">
+      <div class="vispiv-container">
+        <a href="list.html" style="text-decoration: none">
+          <img
+            src="Vispiv.png"
+            alt="Vispiv Icon"
+            class="vispiv-icon"
+          />
+        </a>
+        <span>Vispiv Daily Planner</span>
+      </div>
+      <div class="menu-container">
+        <button class="menu-button" onclick="togglePopup()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="planner-container">
+      <div id="currentDateTime" class="date-time"></div>
+
+      <table id="plannerTable">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Routine</th>
+          </tr>
+        </thead>
+        <tbody id="plannerBody"></tbody>
+      </table>
+      <button class="save-btn" onclick="saveSchedule()">Save Schedule</button>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: white;">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script>
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      function togglePopup() {
+        const popupMenu = document.getElementById("popupMenu");
+
+        // Toggle the visibility of the popup menu
+        if (
+          popupMenu.style.display === "none" ||
+          popupMenu.style.display === ""
+        ) {
+          popupMenu.style.display = "block";
+        } else {
+          popupMenu.style.display = "none";
+        }
+      }
+
+      window.addEventListener("click", (event) => {
+        const popupMenu = document.getElementById("popupMenu");
+        const menuButton = document.querySelector(".menu-button");
+
+        // Close the popup if clicked outside
+        if (
+          !popupMenu.contains(event.target) &&
+          event.target !== menuButton &&
+          !menuButton.contains(event.target)
+        ) {
+          popupMenu.style.display = "none";
+        }
+      });
+
+      const timeSlots = [
+        "7:00 a.m.",
+        "8:00 a.m.",
+        "9:00 a.m.",
+        "10:00 a.m.",
+        "11:00 a.m.",
+        "12:00 p.m.",
+        "1:00 p.m.",
+        "2:00 p.m.",
+        "3:00 p.m.",
+        "4:00 p.m.",
+        "5:00 p.m.",
+        "6:00 p.m.",
+        "7:00 p.m.",
+        "8:00 p.m.",
+        "9:00 p.m.",
+        "10:00 p.m.",
+        "11:00 p.m.",
+        "12:00 a.m.",
+      ];
+
+      function loadSchedule() {
+        const savedData =
+          JSON.parse(localStorage.getItem("dailyPlanner")) || {};
+        const plannerBody = document.getElementById("plannerBody");
+        plannerBody.innerHTML = "";
+
+        timeSlots.forEach((time) => {
+          const tr = document.createElement("tr");
+          const timeTd = document.createElement("td");
+          const routineTd = document.createElement("td");
+
+          timeTd.textContent = time;
+          routineTd.contentEditable = "true";
+          routineTd.textContent = savedData[time] || "";
+
+          tr.appendChild(timeTd);
+          tr.appendChild(routineTd);
+          plannerBody.appendChild(tr);
+        });
+      }
+
+      function saveSchedule() {
+        const plannerBody = document.getElementById("plannerBody");
+        const rows = plannerBody.getElementsByTagName("tr");
+        const scheduleData = {};
+
+        for (let row of rows) {
+          const time = row.cells[0].textContent;
+          const routine = row.cells[1].textContent;
+          scheduleData[time] = routine;
+        }
+
+        localStorage.setItem("dailyPlanner", JSON.stringify(scheduleData));
+        alert("Schedule saved!");
+      }
+
+      window.onload = loadSchedule;
+
+      function highlightCurrentTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? "p.m." : "a.m.";
+
+        if (hours > 12) hours -= 12;
+        if (hours === 0) hours = 12;
+
+        const currentTime = `${hours}:00 ${ampm}`;
+        const rows = document.querySelectorAll("#plannerBody tr");
+
+        rows.forEach((row) => {
+          const timeCell = row.cells[0].textContent;
+          if (timeCell === currentTime) {
+            row.classList.add("current-time");
+          } else {
+            row.classList.remove("current-time");
+          }
+        });
+      }
+
+      setInterval(highlightCurrentTime, 60000);
+      window.onload = () => {
+        loadSchedule();
+        highlightCurrentTime();
+      };
+
+      function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: "long" };
+        const dayOfWeek = now.toLocaleDateString("en-GB", options);
+        const datePart = now.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+        const formattedTime = now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        });
+
+        document.getElementById(
+          "currentDateTime"
+        ).innerText = `${dayOfWeek} ${datePart} ${formattedTime}`;
+      }
+
+      updateDateTime();
+      setInterval(updateDateTime, 1000);
+    </script>
+  </body>
+</html>

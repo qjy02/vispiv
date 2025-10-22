@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vispiv Novel Reader</title>
+    <link rel="icon" href="Vispiv.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        position: relative;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .vispiv-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+
+      .menu-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-button {
+        background: linear-gradient(145deg, #007b9e, #005d7e);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2),
+          -3px -3px 6px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease-in-out;
+        font-size: 1rem;
+        font-weight: bold;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .menu-button:hover {
+        background: linear-gradient(145deg, #0092b2, #006f96);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+          -2px -2px 5px rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3),
+          inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+      }
+
+      .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .popup-menu.dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(113, 113, 113);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 5px solid black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .popup-menu.dialog a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        background-color: #3a4045;
+        border-radius: 5px;
+        margin: 8px 0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .popup-menu.dialog a:hover {
+        background-color: #52575c;
+        transform: scale(1.02);
+      }
+
+      .popup-menu {
+        position: relative;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #1a3a6d, #2e5a9a);
+        border: 1px solid #203454;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #203454, -1px -1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #204a7d, #3b6db1);
+        box-shadow: 4px 4px 6px #1a2c4a, -1px -1px 2px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #1a2c4a;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      /* Novel Reader Styles */
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #34495e;
+        border-radius: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 70vh;
+      }
+
+      .upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        border: 2px dashed #5dade2;
+        border-radius: 10px;
+        background-color: rgba(52, 73, 94, 0.7);
+        text-align: center;
+        margin-bottom: 20px;
+        width: 80%;
+      }
+
+      .upload-btn {
+        background: linear-gradient(145deg, #5a9bd6, #3f7fc2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(63, 127, 194, 0.3);
+      }
+
+      .upload-btn:hover {
+        background: linear-gradient(145deg, #a3d5ff, #6faee9);
+        box-shadow: 0 6px 14px rgba(111, 174, 233, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .upload-icon {
+        font-size: 48px;
+        color: #3f7fc2;
+        margin-bottom: 15px;
+        transition: color 0.3s ease;
+      }
+
+      .upload-btn:hover + .upload-icon,
+      .upload-icon:hover {
+        color: #6faee9;
+      }
+
+      .reader-container {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .reader-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .novel-title {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 15px;
+        color: #5dade2;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .reading-progress {
+        width: 80%;
+        height: 8px;
+        background-color: #2c3e50;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .chapter-info {
+        font-size: 16px;
+        color: #bdc3c7;
+        margin-bottom: 10px;
+      }
+
+      .reader-content {
+        display: flex;
+        width: 100%;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .table-of-contents {
+        width: 250px;
+        background-color: #2c3e50;
+        border-radius: 10px;
+        margin-top: 5px;
+        padding: 15px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .toc-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #5dade2;
+        text-align: center;
+      }
+
+      .toc-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .toc-item {
+        padding: 10px;
+        border-bottom: 1px solid #34495e;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .toc-item:hover {
+        background-color: #34495e;
+      }
+
+      .toc-item.current {
+        background-color: #3498db;
+        color: white;
+      }
+
+      .chapter-display {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chapter-content {
+        background-color: #2c3e50;
+        padding: 25px;
+        border-radius: 10px;
+        line-height: 1.6;
+        font-size: 18px;
+        white-space: pre-wrap;
+        flex: 1;
+        overflow-y: auto;
+        max-height: 80vh;
+      }
+
+      .navigation-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .nav-btn {
+        background: linear-gradient(145deg, #5a9bd6, #3f7fc2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        min-width: 150px;
+        box-shadow: 0 4px 6px rgba(63, 127, 194, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .nav-btn:disabled {
+        background: #7f8c8d;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .nav-btn:not(:disabled):hover {
+        background: linear-gradient(145deg, #a3d5ff, #6faee9);
+        box-shadow: 0 6px 14px rgba(111, 174, 233, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+      }
+
+      .nav-btn:not(:disabled):active {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 6px rgba(63, 127, 194, 0.4),
+          inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 20px;
+        width: 100%;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      /* Font size control styles */
+      .font-control-container {
+        position: relative;
+        display: flex;
+      }
+
+      .font-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #3a4045;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 5px;
+      }
+
+      .font-dropdown a {
+        color: white;
+        padding: 10px 14px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        font-size: 14px;
+        border-bottom: 1px solid #4a5055;
+      }
+
+      .font-dropdown a:last-child {
+        border-bottom: none;
+      }
+
+      .font-dropdown a:hover {
+        background-color: #52575c;
+      }
+
+      .show-dropdown {
+        display: block;
+      }
+
+      .action-btn {
+        background: linear-gradient(145deg, #5a9bd6, #3f7fc2);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(63, 127, 194, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .action-btn:hover {
+        background: linear-gradient(145deg, #a3d5ff, #6faee9);
+        box-shadow: 0 6px 14px rgba(111, 174, 233, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+      }
+
+      .action-btn:active {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 6px rgba(63, 127, 194, 0.4),
+          inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .table-of-contents.hidden {
+        display: none;
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+
+        .chapter-content {
+          font-size: 16px;
+          padding: 15px;
+        }
+
+        .reader-content {
+          flex-direction: column;
+          align-items: center;
+          padding: 0 10px;
+        }
+
+        .table-of-contents {
+          width: 100%;
+          max-width: 100%;
+          margin: 0;
+          box-sizing: border-box;
+        }
+
+        .chapter-display {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .popup-menu.dialog {
+          width: 80%;
+        }
+
+        .navigation-controls {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .nav-btn {
+          width: 100%;
+        }
+
+        .upload-container {
+          padding: 20px;
+        }
+
+        .table-of-contents,
+        .chapter-display {
+          padding: 10px;
+        }
+
+        .toc-title {
+          font-size: 16px;
+        }
+
+        .action-buttons {
+          justify-content: center;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .action-btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .font-control-container {
+          width: 100%;
+        }
+
+        .font-dropdown {
+          left: 50%;
+          right: auto;
+          transform: translateX(-50%);
+          width: 90%;
+          max-width: 250px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .btn-text {
+          display: none;
+        }
+
+        .action-btn {
+          padding: 12px;
+          width: auto;
+        }
+
+        .action-buttons {
+          flex-direction: row;
+          justify-content: space-around;
+        }
+
+        .font-control-container {
+          justify-content: center;
+        }
+      }
+
+      @supports (-webkit-touch-callout: none) {
+        .action-btn {
+          padding: 14px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-menu dialog" id="popupMenu">
+      <span><h2>Vispiv Links</h2></span>
+      <span
+        ><button onclick="togglePopup()" class="close-btn">
+          <i class="fas fa-times"></i></button
+      ></span>
+
+      <a href="list.html">Vispiv List</a>
+      <a href="jsonformatter.html">Json Formatter</a>
+      <a href="jsongrid.html">Json2Grid</a>
+      <a href="text_viewer_pdf.html">Text File Viewer</a>
+      <a href="qrcodereader.html">QR Code Reader</a>
+      <a href="calendar_view.html">Vispiv Calendar</a>
+      <a href="musicplayer.html">Music Player</a>
+    </div>
+
+    <div class="navbar">
+      <div class="vispiv-container">
+        <a href="list.html" style="text-decoration: none">
+          <img src="Vispiv.png" alt="Vispiv Icon" class="vispiv-icon" />
+        </a>
+        <span>Vispiv Novel Reader</span>
+      </div>
+      <div class="menu-container">
+        <button class="menu-button" onclick="togglePopup()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div class="upload-container" id="uploadContainer">
+        <div class="upload-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h2>Upload Your Novel</h2>
+        <p>
+          Select a folder containing your novel's chapter files (chapter1.txt,
+          chapter2.txt, etc.)
+        </p>
+        <input
+          type="file"
+          id="folderInput"
+          webkitdirectory
+          directory
+          multiple
+          style="display: none"
+        />
+        <button
+          class="upload-btn"
+          onclick="document.getElementById('folderInput').click()"
+        >
+          <i class="fas fa-folder-open"></i> Choose Folder
+        </button>
+      </div>
+
+      <div class="reader-container" id="readerContainer">
+        <div class="reader-header">
+          <h1 class="novel-title" id="novelTitle">Novel Title</h1>
+
+          <div class="reading-progress">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+
+          <div class="chapter-info" id="chapterInfo">Chapter 0 of 10</div>
+
+          <div class="action-buttons">
+            <!-- All buttons aligned to the right -->
+            <button
+              class="action-btn"
+              id="uploadNewBtn"
+              onclick="resetReader()"
+            >
+              <i class="fas fa-folder-plus"></i>
+              <span class="btn-text">Upload New Novel</span>
+            </button>
+            <button
+              class="action-btn"
+              id="toggleTocBtn"
+              onclick="toggleTableOfContents()"
+            >
+              <i class="fas fa-list"></i>
+              <span class="btn-text">Toggle Contents</span>
+            </button>
+
+            <!-- Font control dropdown -->
+            <div class="font-control-container">
+              <button class="action-btn" id="fontSizeBtn">
+                <i class="fas fa-text-height"></i>
+                <span class="btn-text">Font Size</span>
+              </button>
+              <div class="font-dropdown" id="fontDropdown">
+                <a href="#" data-size="0.6">60% (Smallest)</a>
+                <a href="#" data-size="0.8">80% (Smaller)</a>
+                <a href="#" data-size="1.0">100% (Default)</a>
+                <a href="#" data-size="1.2">120% (Bigger)</a>
+                <a href="#" data-size="1.4">140% (Larger)</a>
+                <a href="#" data-size="1.6">160% (Largest)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reader-content">
+          <div class="table-of-contents" id="tableOfContents">
+            <h3 class="toc-title">目录 (Table of Contents)</h3>
+            <ul class="toc-list" id="tocList"></ul>
+          </div>
+
+          <div class="chapter-display">
+            <div class="chapter-content" id="chapterContent">
+              Chapter content will appear here...
+            </div>
+
+            <div class="navigation-controls">
+              <button class="nav-btn" id="prevChapter" disabled>
+                <i class="fas fa-arrow-left"></i> Previous Chapter
+              </button>
+              <button class="nav-btn" id="nextChapter">
+                Next Chapter <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: white">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script>
+      // DOM elements
+      const folderInput = document.getElementById("folderInput");
+      const uploadContainer = document.getElementById("uploadContainer");
+      const readerContainer = document.getElementById("readerContainer");
+      const novelTitle = document.getElementById("novelTitle");
+      const chapterContent = document.getElementById("chapterContent");
+      const prevChapterBtn = document.getElementById("prevChapter");
+      const nextChapterBtn = document.getElementById("nextChapter");
+      const chapterInfo = document.getElementById("chapterInfo");
+      const tableOfContents = document.getElementById("tableOfContents");
+      const tocList = document.getElementById("tocList");
+      const progressBar = document.getElementById("progressBar");
+      const uploadNewBtn = document.getElementById("uploadNewBtn");
+      const toggleTocBtn = document.getElementById("toggleTocBtn");
+
+      // Novel data
+      let novelData = {
+        title: "",
+        chapters: [],
+        currentChapter: 0,
+      };
+
+      // Event listeners
+      folderInput.addEventListener("change", handleFolderUpload);
+      prevChapterBtn.addEventListener("click", goToPrevChapter);
+      nextChapterBtn.addEventListener("click", goToNextChapter);
+
+      // Handle folder upload
+      function handleFolderUpload(event) {
+        const files = event.target.files;
+        if (!files.length) return;
+
+        // Extract novel title from folder name
+        const folderPath = files[0].webkitRelativePath;
+        novelData.title = folderPath.split("/")[0];
+
+        // Process files
+        novelData.chapters = Array.from(files)
+          .filter((file) => file.name.match(/chapter\d+\.txt$/i))
+          .sort((a, b) => {
+            // Extract chapter numbers for sorting
+            const aNum = parseInt(a.name.match(/\d+/)[0]);
+            const bNum = parseInt(b.name.match(/\d+/)[0]);
+            return aNum - bNum;
+          });
+
+        if (novelData.chapters.length === 0) {
+          alert(
+            "No chapter files found! Please make sure your files are named like chapter1.txt, chapter2.txt, etc."
+          );
+          return;
+        }
+
+        // Update UI
+        novelTitle.textContent = novelData.title;
+        uploadContainer.style.display = "none";
+        readerContainer.style.display = "flex";
+
+        // Load all chapters to extract titles first
+        loadAllChapterTitles().then(() => {
+          // Then load first chapter
+          novelData.currentChapter = 0;
+          loadChapter(0);
+          updateTableOfContents();
+          updateProgressBar();
+        });
+      }
+
+      // Load all chapter titles
+      function loadAllChapterTitles() {
+        const promises = [];
+
+        novelData.chapters.forEach((chapter, index) => {
+          const promise = new Promise((resolve) => {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+              const content = e.target.result;
+
+              // Extract chapter title if it starts with **
+              const firstLine = content.split("\n")[0].trim();
+              if (firstLine.startsWith("**") && firstLine.endsWith("**")) {
+                // Store the chapter title without ** markers
+                novelData.chapters[index].title = firstLine.replace(
+                  /\*\*/g,
+                  ""
+                );
+              } else {
+                novelData.chapters[index].title = `Chapter ${index + 1}`;
+              }
+              resolve();
+            };
+
+            reader.readAsText(chapter);
+          });
+
+          promises.push(promise);
+        });
+
+        return Promise.all(promises);
+      }
+
+      // Load chapter content
+      // Load chapter content
+      function loadChapter(index) {
+        if (index < 0 || index >= novelData.chapters.length) return;
+
+        const file = novelData.chapters[index];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          let content = e.target.result;
+
+          // Check if we've already extracted the title
+          if (!novelData.chapters[index].title) {
+            // Extract chapter title if it starts with **
+            const firstLine = content.split("\n")[0].trim();
+            if (firstLine.startsWith("**") && firstLine.endsWith("**")) {
+              // Remove the title line from content
+              content = content.split("\n").slice(1).join("\n");
+
+              // Store the chapter title without ** markers
+              novelData.chapters[index].title = firstLine.replace(/\*\*/g, "");
+            } else {
+              novelData.chapters[index].title = `Chapter ${index + 1}`;
+            }
+          }
+
+          chapterContent.textContent = content;
+          novelData.currentChapter = index;
+          updateChapterInfo();
+          updateNavigation();
+          updateTableOfContents();
+          updateProgressBar();
+
+          // Scroll to top
+          chapterContent.scrollTop = 0;
+        };
+
+        reader.readAsText(file);
+      }
+
+      // Navigation functions
+      function goToPrevChapter() {
+        if (novelData.currentChapter > 0) {
+          loadChapter(novelData.currentChapter - 1);
+        }
+      }
+
+      function goToNextChapter() {
+        if (novelData.currentChapter < novelData.chapters.length - 1) {
+          loadChapter(novelData.currentChapter + 1);
+        }
+      }
+
+      function updateNavigation() {
+        prevChapterBtn.disabled = novelData.currentChapter === 0;
+        nextChapterBtn.disabled =
+          novelData.currentChapter === novelData.chapters.length - 1;
+      }
+
+      function updateChapterInfo() {
+        chapterInfo.textContent = `Chapter ${novelData.currentChapter + 1} of ${
+          novelData.chapters.length
+        }`;
+      }
+
+      function updateProgressBar() {
+        const progress =
+          ((novelData.currentChapter + 1) / novelData.chapters.length) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+
+      // Table of Contents functions
+      function toggleTableOfContents() {
+        tableOfContents.classList.toggle("hidden");
+      }
+
+      function updateTableOfContents() {
+        tocList.innerHTML = "";
+
+        novelData.chapters.forEach((chapter, index) => {
+          const listItem = document.createElement("li");
+          listItem.className = "toc-item";
+          if (index === novelData.currentChapter) {
+            listItem.classList.add("current");
+          }
+
+          // Use the stored title if available, otherwise use default
+          listItem.textContent = chapter.title || `Chapter ${index + 1}`;
+          listItem.addEventListener("click", () => {
+            loadChapter(index);
+          });
+
+          tocList.appendChild(listItem);
+        });
+      }
+
+      // Reset reader to upload new novel
+      function resetReader() {
+        // Clear file input
+        folderInput.value = "";
+
+        // Reset novel data
+        novelData = {
+          title: "",
+          chapters: [],
+          currentChapter: 0,
+        };
+
+        // Reset UI
+        uploadContainer.style.display = "flex";
+        readerContainer.style.display = "none";
+        chapterContent.textContent = "Chapter content will appear here...";
+      }
+
+      // Original template functions
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      function togglePopup() {
+        const popupMenu = document.getElementById("popupMenu");
+
+        // Toggle the visibility of the popup menu
+        if (
+          popupMenu.style.display === "none" ||
+          popupMenu.style.display === ""
+        ) {
+          popupMenu.style.display = "block";
+        } else {
+          popupMenu.style.display = "none";
+        }
+      }
+
+      window.addEventListener("click", (event) => {
+        const popupMenu = document.getElementById("popupMenu");
+        const menuButton = document.querySelector(".menu-button");
+
+        // Close the popup if clicked outside
+        if (
+          !popupMenu.contains(event.target) &&
+          event.target !== menuButton &&
+          !menuButton.contains(event.target)
+        ) {
+          popupMenu.style.display = "none";
+        }
+      });
+
+      // Font size control functionality
+      document
+        .getElementById("fontSizeBtn")
+        .addEventListener("click", function () {
+          document
+            .getElementById("fontDropdown")
+            .classList.toggle("show-dropdown");
+        });
+
+      // Close dropdown when clicking elsewhere
+      window.addEventListener("click", function (e) {
+        if (
+          !e.target.matches("#fontSizeBtn") &&
+          !e.target.closest("#fontSizeBtn")
+        ) {
+          const dropdown = document.getElementById("fontDropdown");
+          if (dropdown.classList.contains("show-dropdown")) {
+            dropdown.classList.remove("show-dropdown");
+          }
+        }
+      });
+
+      // Handle font size selection
+      document.querySelectorAll(".font-dropdown a").forEach((item) => {
+        item.addEventListener("click", function (e) {
+          e.preventDefault();
+          const size = this.getAttribute("data-size");
+          changeFontSize(size);
+
+          // Remove highlighting from all options
+          document.querySelectorAll(".font-dropdown a").forEach((option) => {
+            option.style.backgroundColor = "";
+          });
+
+          // Highlight selected option
+          this.style.backgroundColor = "#3498db";
+
+          document
+            .getElementById("fontDropdown")
+            .classList.remove("show-dropdown");
+        });
+      });
+
+      function changeFontSize(size) {
+        const content = document.getElementById("chapterContent");
+        const baseSize = 18;
+
+        const newSize = baseSize * parseFloat(size);
+        content.style.fontSize = `${newSize}px`;
+
+        localStorage.setItem("fontSizeMultiplier", size);
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const savedSize = localStorage.getItem("fontSizeMultiplier");
+        if (savedSize) {
+          changeFontSize(savedSize);
+
+          document.querySelectorAll(".font-dropdown a").forEach((item) => {
+            if (item.getAttribute("data-size") === savedSize) {
+              item.style.backgroundColor = "#3498db";
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ask the Ball 🔮</title>
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Nunito", Verdana, sans-serif;
+        text-align: center;
+        background-color: #ffecb3;
+        padding: 20px;
+      }
+      h1 {
+        color: #ff4081;
+        transition: transform 0.3s ease-in-out;
+      }
+      h1:hover {
+        transform: scale(1.1);
+      }
+      #question {
+        width: 80%;
+        padding: 12px;
+        font-size: 18px;
+        border-radius: 10px;
+        border: 2px solid #ff4081;
+        text-align: center;
+        transition: 0.3s;
+      }
+      #question:focus {
+        outline: none;
+        border-color: #ff80ab;
+        box-shadow: 0 0 10px #ff80ab;
+      }
+      button {
+        margin-top: 10px;
+        padding: 15px;
+        font-size: 20px;
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        transform: perspective(1px) translateZ(0);
+      }
+      button:hover {
+        background-color: #ff80ab;
+        transform: scale(1.1);
+      }
+      button:active {
+        transform: scale(0.9) translateY(3px);
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+      }
+      #response {
+        margin-top: 20px;
+        font-size: 24px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+      img {
+        width: 300px;
+        margin-top: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        transition: transform 0.3s ease-in-out;
+      }
+      img:hover {
+        cursor: pointer;
+      }
+      .shake {
+        animation: shake 0.5s;
+      }
+      @keyframes shake {
+        0%, 100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        50% {
+          transform: translateX(10px);
+        }
+        75% {
+          transform: translateX(-10px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="list.html" style="text-decoration: none"><h1>🔮 Ask the Magic Ball! 🎱</h1></a>
+    <input
+      type="text"
+      id="question"
+      placeholder="Type your question here..."
+      onkeypress="handleKeyPress(event)"
+    />
+    <img id="gif" src="" alt="Magic Ball Says..." style="display: none" />
+    <div id="response"></div>
+    <br />
+    <button onclick="getAnswer()">Ask!</button>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: #ff4081;">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <script>
+      function getAnswer() {
+        const question = document.getElementById("question").value.trim();
+        if (question === "") {
+          alert("Ask something first! 😊");
+          return;
+        }
+        const gif = document.getElementById("gif");
+        const responseText = document.getElementById("response");
+        gif.style.display = "none";
+        responseText.innerHTML = "🔮 Thinking...";
+        responseText.style.opacity = "1";
+        gif.classList.add("shake");
+        fetch("https://yesno.wtf/api")
+          .then((response) => response.json())
+          .then((data) => {
+            responseText.innerHTML = `🎱 ${data.answer.toUpperCase()}!`;
+            gif.src = data.image;
+            gif.style.display = "block";
+            gif.classList.remove("shake");
+          })
+          .catch((error) => {
+            responseText.innerHTML = "Oops! The magic ball is sleeping... 😴";
+          });
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") {
+          getAnswer();
+        }
+      }
+    </script>
+  </body>
+</html>

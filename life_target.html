@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Life Target</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        position: relative;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .vispiv-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+
+      #lifePlanTable {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #34495e;
+        border-radius: 10px;
+        text-align: center;
+        justify-content: center;
+      }
+
+      #lifePlanTable:hover {
+        cursor: grab;
+      }
+
+      #lifePlanTable tbody tr:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+      }
+
+      #lifePlanTable tbody tr:hover td {
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      #lifePlanTable th,
+      #lifePlanTable td {
+        padding: 15px;
+        text-align: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #f9f9f9;
+      }
+
+      #lifePlanTable th {
+        background: linear-gradient(
+          135deg,
+          #1e90ff,
+          #00bfff,
+          #4169e1,
+          #6495ed,
+          #87cefa
+        );
+        background-size: 400% 400%;
+        animation: gradientShift 5s ease infinite;
+        color: white;
+        font-weight: bold;
+        border: none;
+        text-align: center;
+        position: relative;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      #lifePlanTable th::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #3e8ecb;
+        opacity: 0.5;
+      }
+
+      #lifePlanTable td {
+        background-color: #2c3e50;
+        border: 1px solid #ddd;
+      }
+
+      #lifePlanTable td.goal {
+        color: #f39c12;
+      }
+
+      #lifePlanTable td input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      #lifePlanTable td .goal-text {
+        color: #f9f9f9;
+        font-size: 16px;
+      }
+
+      #lifePlanTable td input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin: 0 5px 0 0;
+        vertical-align: middle;
+      }
+
+      #lifePlanTable td label {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+
+      .save-plan-button {
+        display: inline-block;
+        padding: 12px 25px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #2e8b57, #006400, #228b22);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Quicksand", Verdana, sans-serif;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 20px;
+        width: auto;
+      }
+
+      .save-plan-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      .save-plan-button:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 20px 20px;
+        background-color: #34495e;
+        border-radius: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #fff;
+      }
+
+      .menu-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-button {
+        background: linear-gradient(145deg, #007b9e, #005d7e);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2),
+          -3px -3px 6px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease-in-out;
+        font-size: 1rem;
+        font-weight: bold;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .menu-button:hover {
+        background: linear-gradient(145deg, #0092b2, #006f96);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+          -2px -2px 5px rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3),
+          inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+      }
+
+      .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .popup-menu.dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(113, 113, 113);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 5px solid black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .popup-menu.dialog a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        background-color: #3a4045;
+        border-radius: 5px;
+        margin: 8px 0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .popup-menu.dialog a:hover {
+        background-color: #52575c;
+        transform: scale(1.02);
+      }
+
+      .popup-menu {
+        position: relative;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #1a3a6d, #2e5a9a);
+        border: 1px solid #203454;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #203454, -1px -1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #204a7d, #3b6db1);
+        box-shadow: 4px 4px 6px #1a2c4a, -1px -1px 2px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #1a2c4a;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .popup-menu.dialog {
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-menu dialog" id="popupMenu">
+      <span><h2>Vispiv Links</h2></span>
+      <span>
+        <button onclick="togglePopup()" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </span>
+
+      <a href="list.html">Vispiv List</a>
+      <a href="jsonformatter.html">Json Formatter</a>
+      <a href="jsongrid.html">Json2Grid</a>
+      <a href="text_viewer_pdf.html">Text File Viewer</a>
+      <a href="qrcodereader.html">QR Code Reader</a>
+      <a href="calendar_view.html">Vispiv Calendar</a>
+      <a href="musicplayer.html">Music Player</a>
+    </div>
+
+    <div class="navbar">
+      <div class="vispiv-container">
+        <a href="list.html" style="text-decoration: none">
+          <img
+            src="Vispiv.png"
+            alt="Vispiv Icon"
+            class="vispiv-icon"
+          />
+        </a>
+        <span>Life Target</span>
+      </div>
+      <div class="menu-container">
+        <button class="menu-button" onclick="togglePopup()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="main-container" id="main-container">
+      <!-- The dynamic table will be added here by JavaScript -->
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: white">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script>
+      const lifePlan = [
+        {
+          age: 23,
+          goal: ["Solo trip to KL", "Save RM25,000"],
+          achieved: [false, false],
+        },
+        {
+          age: 24,
+          goal: ["Buy Nintendo Switch 2 Lite", "Save RM40,000"],
+          achieved: [false, false],
+        },
+        {
+          age: 25,
+          goal: ["Trip to Japan", "Buy new Xiaomi phone", "Save RM60,000"],
+          achieved: [false, false, false],
+        },
+      ];
+
+      function generateLifePlanTable() {
+        const tableContainer = document.getElementById("main-container");
+
+        const existingTable = document.getElementById("lifePlanTable");
+        if (existingTable) {
+          existingTable.remove();
+        }
+
+        const existingButton = document.querySelector(".save-plan-button");
+        if (existingButton) {
+          existingButton.remove();
+        }
+
+        const table = document.createElement("table");
+        table.setAttribute("border", "1");
+        table.setAttribute("id", "lifePlanTable");
+
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        const headerAge = document.createElement("th");
+        headerAge.textContent = "Age 🎂";
+        const headerGoal = document.createElement("th");
+        headerGoal.textContent = "Target Goals 🎯";
+        const headerAchieved = document.createElement("th");
+        headerAchieved.textContent = "Completion Status ✅";
+        headerRow.appendChild(headerAge);
+        headerRow.appendChild(headerGoal);
+        headerRow.appendChild(headerAchieved);
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+        lifePlan.forEach((entry) => {
+          const row = document.createElement("tr");
+
+          const ageCell = document.createElement("td");
+          ageCell.textContent = entry.age;
+
+          const goalCell = document.createElement("td");
+          const achievedCell = document.createElement("td");
+
+          // Loop through each goal
+          entry.goal.forEach((goal, index) => {
+            const goalText = document.createElement("span");
+            goalText.classList.add("goal-text");
+            goalText.textContent = goal;
+            goalCell.appendChild(goalText);
+            if (index < entry.goal.length - 1) {
+              goalCell.appendChild(document.createElement("br"));
+            }
+
+            const achievedCheckbox = document.createElement("input");
+            achievedCheckbox.type = "checkbox";
+            achievedCheckbox.checked = entry.achieved[index] || false;
+            achievedCheckbox.id = `achieved${entry.age}-${index}`;
+
+            // Create a label for the checkbox
+            const checkboxLabel = document.createElement("label");
+            checkboxLabel.setAttribute("for", `achieved${entry.age}-${index}`);
+            checkboxLabel.textContent = " Done";
+            achievedCell.appendChild(achievedCheckbox);
+            achievedCell.appendChild(checkboxLabel);
+            achievedCell.appendChild(document.createElement("br")); // Line break after checkbox
+          });
+
+          row.appendChild(ageCell);
+          row.appendChild(goalCell);
+          row.appendChild(achievedCell);
+          tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        tableContainer.appendChild(table);
+
+        const saveButton = document.createElement("button");
+        saveButton.textContent = "Save Plan";
+        saveButton.classList.add("save-plan-button");
+        saveButton.onclick = savePlan;
+        tableContainer.appendChild(saveButton);
+      }
+
+      function savePlan() {
+        const updatedGoals = [];
+        const updatedAchievedStatus = [];
+
+        lifePlan.forEach((entry) => {
+          const goalValues = Array.from(
+            document.querySelectorAll(`#goal${entry.age}`)
+          ).map((input) => input.value);
+
+          const achievedStatuses = entry.goal.map((_, index) => {
+            return document.getElementById(`achieved${entry.age}-${index}`)
+              .checked;
+          });
+
+          updatedGoals.push({ age: entry.age, goals: goalValues });
+          updatedAchievedStatus.push({
+            age: entry.age,
+            achieved: achievedStatuses,
+          });
+        });
+
+        console.log("Updated Goals:", updatedGoals);
+        console.log("Updated Achieved Status:", updatedAchievedStatus);
+      }
+
+      window.onload = generateLifePlanTable;
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      function togglePopup() {
+        const popupMenu = document.getElementById("popupMenu");
+
+        // Toggle the visibility of the popup menu
+        if (
+          popupMenu.style.display === "none" ||
+          popupMenu.style.display === ""
+        ) {
+          popupMenu.style.display = "block";
+        } else {
+          popupMenu.style.display = "none";
+        }
+      }
+
+      window.addEventListener("click", (event) => {
+        const popupMenu = document.getElementById("popupMenu");
+        const menuButton = document.querySelector(".menu-button");
+
+        // Close the popup if clicked outside
+        if (
+          !popupMenu.contains(event.target) &&
+          event.target !== menuButton &&
+          !menuButton.contains(event.target)
+        ) {
+          popupMenu.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

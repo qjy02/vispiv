@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vispiv Personal</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        margin: 0;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        position: relative;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .vispiv-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+
+      .personal-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 0 10px;
+        background-color: #34495e;
+        border-radius: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .menu-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-button {
+        background: linear-gradient(145deg, #007b9e, #005d7e);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2),
+          -3px -3px 6px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease-in-out;
+        font-size: 1rem;
+        font-weight: bold;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .menu-button:hover {
+        background: linear-gradient(145deg, #0092b2, #006f96);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+          -2px -2px 5px rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3),
+          inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+      }
+
+      .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .popup-menu.dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(113, 113, 113);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 5px solid black;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .popup-menu.dialog a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        background-color: #3a4045;
+        border-radius: 5px;
+        margin: 8px 0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .popup-menu.dialog a:hover {
+        background-color: #52575c;
+        transform: scale(1.02);
+      }
+
+      .popup-menu {
+        position: relative;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        font-weight: bold;
+        color: red;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #1a3a6d, #2e5a9a);
+        border: 1px solid #203454;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #203454, -1px -1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #204a7d, #3b6db1);
+        box-shadow: 4px 4px 6px #1a2c4a, -1px -1px 2px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #1a2c4a;
+      }
+
+      .card-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 20px;
+      }
+
+      .card {
+        background: rgb(76, 95, 105);
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        font-size: 17px;
+        text-align: center;
+        width: 340px;
+        height: 480px;
+        box-shadow: none;
+        transition: transform 0.3s ease;
+      }
+
+      .card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      }
+
+      .card img:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+
+      #favIcon {
+        display: inline-block;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .fav {
+        color: yellow;
+        transform: scale(1.2);
+      }
+
+      .nav-button {
+        background: none;
+        color: white;
+        border: none;
+        padding: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+      .nav-button:hover {
+        transform: translateY(-3px);
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      #rotate-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 18px;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 15px;
+        border-radius: 5px;
+        z-index: 1000;
+      }
+
+      @media (max-width: 450px) {
+        #rotate-message {
+          display: block;
+        }
+
+        .main-content {
+          display: none;
+        }
+      }
+
+      @media (min-width: 451px) {
+        #rotate-message {
+          display: none;
+        }
+
+        .main-content {
+          display: block;
+        }
+      }
+
+      @media (max-width: 890px) {
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .popup-menu.dialog {
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-menu dialog" id="popupMenu">
+      <span><h2>Vispiv Links</h2></span>
+      <span
+        ><button onclick="togglePopup()" class="close-btn">
+          <i class="fas fa-times"></i></button
+      ></span>
+
+      <a href="list.html">Vispiv List</a>
+      <a href="jsonformatter.html">Json Formatter</a>
+      <a href="jsongrid.html">Json2Grid</a>
+      <a href="text_viewer_pdf.html">Text File Viewer</a>
+      <a href="qrcodereader.html">QR Code Reader</a>
+      <a href="calendar_view.html">Vispiv Calendar</a>
+      <a href="musicplayer.html">Music Player</a>
+    </div>
+
+    <div class="main-content">
+      <div class="navbar">
+        <div class="vispiv-container">
+          <a href="list.html" style="text-decoration: none">
+            <img
+              src="Vispiv.png"
+              alt="Vispiv Icon"
+              class="vispiv-icon"
+            />
+          </a>
+          <span>Vispiv Personal</span>
+        </div>
+        <div class="menu-container">
+          <button class="menu-button" onclick="togglePopup()">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-container">
+        <button class="nav-button" id="prevBtn">⮜</button>
+        <div class="card" id="itemCard">
+          <img
+            id="itemImage"
+            src="https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png"
+            alt="Item Image"
+          />
+          <span
+            style="
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+              align-items: center;
+            "
+          >
+            <p id="itemName" style="flex-grow: 1; text-align: center"></p>
+            <i
+              id="favIcon"
+              class="fas fa-star"
+              style="font-size: 18px; margin-left: auto"
+            ></i>
+          </span>
+
+          <p id="itemDesc"></p>
+        </div>
+        <button class="nav-button" id="nextBtn">⮞</button>
+      </div>
+    </div>
+
+    <div id="rotate-message" class="hidden">
+      <p>
+        <i class="fas fa-mobile-alt"></i>
+        <i class="fas fa-exclamation" style="transform: rotate(10deg)"></i>
+        <br /><br />Please rotate your phone horizontally
+      </p>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: white;">
+        <span>Copyright © 2025 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script>
+      const items = [
+        {
+          image:
+            "https://perodua.my/wp-content/uploads/2024/01/axia-silver.jpg",
+          name: "Perodua Axia",
+          desc: `
+            <div style="text-align: left; color: #fff;">
+              <p><strong>Version:</strong> AV</p>
+              <p><strong>Color:</strong> Glittering Silver</p>
+              <p><strong>OTR Price:</strong> RM 51,047.17</p>
+              <p><strong>Engine Type:</strong> 1.0L</p>
+              <p><strong>Power:</strong> 67 HP</p>
+              <p><strong>Features:</strong> Touchscreen Infotainment, Advanced Driver Assistance System (ADAS)</p>
+            </div>
+          `,
+          favourite: true,
+        },
+        {
+          image:
+            "https://protoncahaya.com/wp-content/uploads/2023/12/s70-white-01.png",
+          name: "Proton S70",
+          desc: `
+            <div style="text-align: left; color: #fff;">
+              <p><strong>Version:</strong> Flagship</p>
+              <p><strong>Color:</strong> Space Grey</p>
+              <p><strong>OTR Price:</strong> RM92,309.00</p>
+              <p><strong>Engine Type:</strong> 1.5L Turbocharged</p>
+              <p><strong>Power:</strong> 180 HP</p>
+              <p><strong>Features:</strong> Touchscreen Infotainment, Advanced Driver Assistance System (ADAS)</p>
+            </div>
+          `,
+          favourite: true,
+        },
+        {
+          image: "https://www.automachi.com/wp-content/uploads/2024/10/Geely-Xingyuan-4.jpg",
+          name: "Proton EMas 5 (Geely Star Wish)",
+          desc: `
+            <div style="text-align: left; color: #fff;">
+              <p><strong>Version:</strong> Explorer</p>
+              <p><strong>Color:</strong> Mint Green</p>
+              <p><strong>OTR Price:</strong> RM??</p>
+              <p><strong>Engine Type:</strong> Fully Electric</p>
+              <p><strong>Power:</strong> 114 HP</p>
+              <p><strong>Features:</strong> Touchscreen Infotainment, Advanced Driver Assistance System (ADAS)</p>
+            </div>
+          `,
+          favourite: true,
+        }
+      ];
+
+      let currentIndex = 0;
+
+      function updateCard() {
+        const imgElement = document.getElementById("itemImage");
+        imgElement.src =
+          items[currentIndex].image ||
+          "https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png";
+        document.getElementById("itemName").textContent =
+          items[currentIndex].name;
+        document.getElementById("itemDesc").innerHTML =
+          items[currentIndex].desc;
+
+        // Update the favourite icon based on the current item's favourite state
+        const favIcon = document.getElementById("favIcon");
+        if (items[currentIndex].favourite) {
+          favIcon.classList.add("fav");
+        } else {
+          favIcon.classList.remove("fav");
+        }
+      }
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updateCard();
+      });
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % items.length;
+        updateCard();
+      });
+
+      document.getElementById("favIcon").addEventListener("click", () => {
+        items[currentIndex].favourite = !items[currentIndex].favourite;
+        updateCard();
+      });
+
+      updateCard();
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      function togglePopup() {
+        const popupMenu = document.getElementById("popupMenu");
+
+        // Toggle the visibility of the popup menu
+        if (
+          popupMenu.style.display === "none" ||
+          popupMenu.style.display === ""
+        ) {
+          popupMenu.style.display = "block";
+        } else {
+          popupMenu.style.display = "none";
+        }
+      }
+
+      window.addEventListener("click", (event) => {
+        const popupMenu = document.getElementById("popupMenu");
+        const menuButton = document.querySelector(".menu-button");
+
+        // Close the popup if clicked outside
+        if (
+          !popupMenu.contains(event.target) &&
+          event.target !== menuButton &&
+          !menuButton.contains(event.target)
+        ) {
+          popupMenu.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

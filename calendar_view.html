@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vispiv Calendar</title>
+
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Nunito", Verdana, sans-serif;
+        /*background-color: #2c3e50;*/
+        background: url("https://myinvoice.biz-edoc.com/kuala-lumpur2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        color: white;
+        padding: 20px;
+        height: auto;
+        margin: 0;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px 0px,
+          rgba(0, 0, 0, 0.5) 0px 0px 0px 1000px inset;
+      }
+
+      .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .header .title {
+        flex-grow: 1;
+        text-align: center;
+        vertical-align: center;
+        line-height: 20px;
+        margin-left: 25px;
+        font-weight: 600;
+        font-size: 26px;
+      }
+      .header img {
+        margin-top: 5px;
+        align-self: center;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      #countdown {
+        background-color: #cadbcb;
+        border-left: 5px solid #88a27d;
+        border-right: 5px solid #88a27d;
+        padding: 5px 5px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 0;
+        border-radius: 5px;
+        max-width: 250px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+
+      .hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #clock {
+        text-align: center;
+        margin-left: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: "Nunito", Verdana, sans-serif;
+        border: none;
+        width: 100%;
+      }
+      .calendar-container {
+        background-color: #34495e;
+        border-radius: 10px;
+        padding: 20px;
+        color: #fff;
+      }
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .calendar-header h4 {
+        margin: 0;
+      }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        text-align: center;
+      }
+
+      .calendar div {
+        padding: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #2980b9;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+
+      .calendar div:hover {
+        background: #3498db;
+        transform: translateY(-3px);
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .calendar div:active {
+        transform: translateY(1px);
+        box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.4);
+      }
+
+      .calendar .highlighted {
+        background-color: rgb(193, 158, 2) !important;
+        font-weight: 600 !important;
+      }
+
+      .default-highlight {
+        background-color: #2980b9 !important;
+        font-weight: 600 !important;
+      }
+
+      .select-highlight {
+        background-color: rgb(193, 158, 2) !important;
+        font-weight: 600 !important;
+      }
+
+      .today-highlight {
+        background-color: rgb(218, 113, 8) !important;
+        font-weight: 600 !important;
+      }
+
+      .current-highlight {
+        background-color: rgb(193, 158, 2) !important;
+        font-weight: 600 !important;
+      }
+
+      .custom-highlight {
+        background-color: #1abc9c !important;
+        font-weight: 600 !important;
+      }
+
+      .plan-highlight {
+        background-color: rgb(28, 98, 113) !important;
+        font-weight: 600 !important;
+      }
+
+      .birthday-highlight {
+        background-color: rgb(255, 43, 43) !important;
+        font-weight: 600 !important;
+      }
+
+      .company-holiday-highlight {
+        background-color: rgb(113, 146, 109) !important;
+        font-weight: 600 !important;
+      }
+
+      .blackday-highlight {
+        background-color: rgb(41, 39, 39) !important;
+        font-weight: 600 !important;
+      }
+
+      textarea {
+        width: 100%;
+        height: 50px;
+        background-color: #e0f7fa;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        resize: none;
+        box-sizing: border-box;
+        text-align: center;
+        vertical-align: center;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+      .navbar a.active {
+        background-color: #04366d;
+        border-radius: 5px;
+      }
+
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #1a3a6d, #2e5a9a);
+        border: 1px solid #203454;
+        color: white;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 3px 3px 5px #203454, -1px -1px 2px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #scrollToTopBtn:hover {
+        background: linear-gradient(135deg, #204a7d, #3b6db1);
+        box-shadow: 4px 4px 6px #1a2c4a, -1px -1px 2px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #scrollToTopBtn:active {
+        transform: translateY(2px);
+        box-shadow: inset 2px 2px 4px #1a2c4a;
+      }
+
+      #scrollToTopBtn::before {
+        content: "\2B06";
+      }
+
+      .button-display {
+        display: flex;
+        align-items: center;
+      }
+
+      @media (max-width: 1000px) {
+        .header {
+          flex-direction: column;
+          align-items: center;
+        }
+        .header img {
+          margin-top: 10px;
+        }
+        .navbar .menu-icon {
+          display: block;
+        }
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+        }
+        .navbar.active .navbar-links {
+          display: grid;
+        }
+        .calendar {
+          grid-template-columns: repeat(7, 1fr);
+          gap: 5px;
+        }
+
+        .calendar div {
+          padding: 10px;
+          font-size: 12px;
+        }
+
+        .navbar.active .vispiv-container {
+          display: none;
+        }
+
+        #scrollToTopBtn {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+
+        .button-display {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          align-items: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .calendar-navigation {
+          font-size: 12px !important;
+          padding: 8px 10px !important;
+        }
+
+        .calendar {
+          grid-template-columns: repeat(7, 1fr);
+          gap: 4px;
+        }
+
+        .calendar div {
+          padding: 8px;
+          font-size: 10px;
+        }
+
+        .button-display {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+          align-items: center;
+        }
+      }
+      .vispiv-container {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+      
+      .calendar-navigation {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: "Nunito", Verdana, sans-serif;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.15s ease-in-out;
+      }
+
+      .calendar-navigation:hover {
+        background-color: #0056b3;
+      }
+
+      .calendar-navigation:active {
+        transform: scale(1.1);
+      }
+
+      .day-label {
+        font-weight: bold;
+        padding: 10px 0;
+        background-color: transparent !important;
+        border: none !important;
+        cursor: context-menu !important;
+        pointer-events: none !important;
+        box-shadow: none !important;
+      }
+
+      .today {
+        background-color: rgb(218, 113, 8) !important;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+
+      /* General styles for the modal backdrop */
+      #modalBackdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      #monthYearModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        z-index: 1000;
+        width: 300px;
+        text-align: center;
+        vertical-align: center;
+        font-family: "Nunito", Verdana, sans-serif;
+      }
+
+      #monthYearModal h3 {
+        margin: 0 0 15px;
+        font-size: 20px;
+        color: #333;
+      }
+
+      #monthYearModal button {
+        background-color: #0a3142;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        flex: 1;
+      }
+
+      #prevYearBtn {
+        background-color: #1abc9c !important;
+        font-weight: 600;
+      }
+
+      #nextYearBtn {
+        background-color: #1abc9c !important;
+        font-weight: 600;
+      }
+
+      #monthYearModal button:hover {
+        background-color: #0056b3;
+      }
+
+      #monthButtons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 10px 0;
+      }
+
+      #monthButtons button {
+        flex: 1 0 30%;
+        margin: 5px;
+      }
+
+      #modalYear {
+        color: black;
+        font-weight: 600;
+        text-align: center;
+        padding: 10px;
+        margin: 5px;
+      }
+      button.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      .popup {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        width: 120px;
+        font-size: 16px;
+        background: linear-gradient(145deg, #ffffff, #e6e6e6);
+        color: #333;
+        border: none;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.85); /* Reduced shadow */
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .popup:hover {
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.88); /* Slightly increased shadow on hover */
+        cursor: pointer;
+      }
+
+      .popup-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .close-popup {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 24px;
+        color: #ff4d4d;
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+
+      .close-popup:hover {
+        color: #ff1a1a;
+        transform: scale(1.2);
+      }
+
+      #datePopup {
+        display: none;
+      }
+
+      #pandaHelpText {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-links">
+        <a href="jsonformatter.html">Json Formatter</a>
+        <a href="jsongrid.html">Json2Grid</a>
+        <a href="datafixer.html">Data Fixer</a>
+        <a href="text_viewer_pdf.html">Text File Viewer</a>
+        <a href="qrcodereader.html">QR Code Reader</a>
+        <a href="calendar_view.html" class="active">Vispiv Calendar</a>
+        <a href="diffchecker.html">Diff Checker</a>
+        <a href="wish_checkout.html">Wishlist and Checkout List</a>
+      </div>
+
+      <div class="vispiv-container">
+        <a href="list.html" style="text-decoration: none">
+          <img
+            id="vispiv"
+            src="Vispiv.png"
+            alt="Vispiv Icon"
+            class="vispiv-icon"
+          />
+        </a>
+        
+        <span id="pandaHelpText" onclick="toggleNavbar()"
+          >Vispiv Help Tools</span
+        >
+      </div>
+      <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+    </div>
+
+    <div class="header">
+      <p class="title">Vispiv Calendar</p>
+    </div>
+
+    <div class="container">
+      <div id="clock"></div>
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="calendar-navigation" onclick="prevMonth()">
+            Previous
+          </button>
+          <h3
+            id="monthYear"
+            onclick="selectMonthYear()"
+            style="cursor: pointer"
+          ></h3>
+          <button class="calendar-navigation" onclick="nextMonth()">
+            Next
+          </button>
+        </div>
+        <div class="calendar" id="calendar"></div>
+        <br />
+        <div class="button-display">
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="default-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Default</span>
+          </span>
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="select-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Selected</span>
+          </span>
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="today-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Today</span>
+          </span>
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="custom-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Holiday</span>
+          </span>
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="plan-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Planned Day</span>
+          </span>
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="birthday-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Birthday</span>
+          </span>
+          <span style="display: flex; align-items: center; margin-right: 15px">
+            <button
+              class="company-holiday-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Company Holiday</span>
+          </span>
+          <span style="display: flex; align-items: center">
+            <button
+              class="blackday-highlight disabled-button"
+              style="
+                padding: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+                border: 1px solid grey;
+              "
+            ></button>
+            <span>Black Day</span>
+          </span>
+        </div>
+
+        <div style="margin-top: 10px; text-align: center">
+          <p id="countdown"></p>
+        </div>
+        <div style="margin-top: 20px">
+          <footer style="text-align: center">
+            <span>Copyright © 2024 Vispiv Collectives</span>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalBackdrop" style="display: none"></div>
+    <div id="monthYearModal" style="display: none">
+      <h3>Select Month and Year</h3>
+      <div>
+        <button id="prevYearBtn">&lt;&lt; Prev Year</button>
+        <span id="modalYear" contenteditable="true"></span>
+        <button id="nextYearBtn">Next Year &gt;&gt;</button>
+      </div>
+      <div id="monthButtons"></div>
+    </div>
+
+    <div id="datePopup" class="popup" style="display: none">
+      <div class="popup-content">
+        <span class="close-popup" onclick="closePopup()">&times;</span>
+        <p id="popupDateInfo"></p>
+      </div>
+    </div>
+
+    <button
+      onclick="scrollToTop()"
+      id="scrollToTopBtn"
+      title="Go to top"
+    ></button>
+
+    <script>
+      function toggleMenu() {
+        const navbar = document.querySelector(".navbar");
+        navbar.classList.toggle("active");
+      }
+
+      const calendarElement = document.getElementById("calendar");
+      const selectedDateElement = document.getElementById("selectedDate");
+      const monthYearElement = document.getElementById("monthYear");
+
+      let currentDate = new Date();
+      let currentYear = currentDate.getFullYear();
+      let currentMonth = currentDate.getMonth();
+
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const meetDates = [
+        {
+          year: 2024,
+          month: 9,
+          day: 11,
+          message: "RIMS Meeting (11:30 am - 12:30 pm)",
+        },
+        {
+          year: 2024,
+          month: 9,
+          day: 24,
+          message: "Health Screening Test (10.30 - 11.00)",
+        },
+        { year: 2024, month: 10, day: 1, message: "RIMS Due Date" },
+        {
+          year: 2025,
+          month: 3,
+          day: 8,
+          message: "RIMS EDC Meeting|https://meet.google.com/fvd-dkgq-frc",
+        },
+        {
+          year: 2025,
+          month: 4,
+          day: 13,
+          message: "Sublet Sri Ternak Feedback|https://meet.google.com/wda-zrcq-sce",
+        },
+        {
+          year: 2025,
+          month: 4,
+          day: 19,
+          message: "RIMS Meeting|https://meet.google.com/jfs-kncc-jhv",
+        },
+      ];
+
+      const customDates = [
+        { year: 2024, month: 9, day: 31, message: "Deepavali" },
+        { month: 11, day: 24, message: "Christmas Eve" },
+        { month: 11, day: 25, message: "Christmas" },
+        { month: 11, day: 31, message: "New Year Eve" },
+        { month: 0, day: 1, message: "New Year" },
+        { month: 4, day: 1, message: "Labour Day" },
+        { month: 5, day: 2, message: "Agong's Birthday" },
+        { month: 7, day: 31, message: "Merdeka Day" },
+        { month: 8, day: 16, message: "Malaysia Day" },
+        { year: 2025, month: 0, day: 28, message: "Chinese New Year Eve" },
+        { year: 2025, month: 0, day: 29, message: "Chinese New Year" },
+        { year: 2025, month: 0, day: 30, message: "Chinese New Year" },
+        { year: 2025, month: 0, day: 31, message: "Chinese New Year Holiday" },
+        {
+          year: 2025,
+          month: 1,
+          day: 20,
+          message: "Independence Declaration Day",
+        },
+        { year: 2025, month: 1, day: 28, message: "Ramadan First Day" },
+        { year: 2025, month: 2, day: 30, message: "Ramadan End Day" },
+        { year: 2025, month: 2, day: 31, message: "Hari Raya Aidilfitri" },
+        { year: 2025, month: 3, day: 1, message: "Hari Raya Aidilfitri" },
+        { year: 2025, month: 3, day: 2, message: "Hari Raya Aidilfitri" },
+        { year: 2025, month: 5, day: 7, message: "Hari Raya Haji" },
+        { year: 2025, month: 5, day: 27, message: "Awal Muharram" },
+        {
+          year: 2025,
+          month: 7,
+          day: 24,
+          message: "Melaka Governor's Birthday",
+        },
+        {
+          year: 2025,
+          month: 7,
+          day: 25,
+          message: "Melaka Governor's Birthday Holiday",
+        },
+        { year: 2025, month: 8, day: 1, message: "Merdeka Day Holiday" },
+        {
+          year: 2025,
+          month: 8,
+          day: 5,
+          message: "Prophet Muhammad's Birthday",
+        },
+        { year: 2025, month: 9, day: 20, message: "Deepavali" },
+      ];
+
+      const planDates = [
+        { year: 2024, month: 8, day: 28, message: "KL Trip (Bukit Bintang)" },
+        { year: 2024, month: 10, day: 2, message: "Gunung Jerai Trip" },
+        { year: 2024, month: 10, day: 3, message: "Gunung Jerai Trip" },
+        { year: 2024, month: 10, day: 23, message: "KL Trip (Cheras)" },
+        { year: 2025, month: 0, day: 4, message: "NU Sentral + Midvalley" },
+        {
+          year: 2025,
+          month: 2,
+          day: 30,
+          message: "Lalaport + Suria KLCC + TRX",
+        },
+        {
+          year: 2025,
+          month: 4,
+          day: 1,
+          message: "KL Trip (Bukit Bintang) + Sunway Velocity",
+        },
+        { year: 2025, month: 3, day: 24, message: "Team Dinner" },
+      ];
+
+      const birthdayDates = [
+        { month: 2, day: 2, message: "My Birthday" },
+        { month: 2, day: 17, message: "Arden's Birthday" },
+        { month: 2, day: 13, message: "Daddy's Birthday" },
+        { month: 9, day: 14, message: "Mommy's Birthday" },
+      ];
+
+      const companyholidayDates = [
+        { year: 2024, month: 11, day: 25, message: "Christmas" },
+        { year: 2025, month: 0, day: 1, message: "New Year" },
+        { year: 2025, month: 0, day: 29, message: "Chinese New Year" },
+        { year: 2025, month: 0, day: 30, message: "Chinese New Year" },
+        { year: 2025, month: 2, day: 31, message: "Hari Raya Aidifitri" },
+        { year: 2025, month: 3, day: 1, message: "Hari Raya Aidifitri" },
+        { year: 2025, month: 4, day: 1, message: "Labour Day" },
+        { year: 2025, month: 4, day: 2, message: "Annual Leave" },
+        { year: 2025, month: 4, day: 12, message: "Annual Leave" },
+        { year: 2025, month: 5, day: 30, message: "Annual Leave" },
+        { year: 2025, month: 7, day: 18, message: "Annual Leave" },
+        {
+          year: 2025,
+          month: 5,
+          day: 2,
+          message: "Yang Di-Pertuan Agong's Birthday",
+        },
+        
+        {
+          year: 2025,
+          month: 7,
+          day: 24,
+          message: "TYT Melaka Governor's Birthday",
+        },
+        {
+          year: 2025,
+          month: 7,
+          day: 25,
+          message: "TYT Melaka Governor's Birthday Replacement",
+        },
+        { year: 2025, month: 7, day: 31, message: "National Day" },
+        { year: 2025, month: 8, day: 1, message: "National Day Replacement" },
+        { year: 2025, month: 8, day: 15, message: "Malaysia Day Replacement" },
+        { year: 2025, month: 8, day: 16, message: "Malaysia Day" },
+        { year: 2025, month: 9, day: 20, message: "Hari Deepavali" },
+        { year: 2025, month: 11, day: 25, message: "Christmas Day" },
+      ];
+
+      const blackdayDates = [
+        { year: 2024, month: 9, day: 2, message: "Black Day" },
+        { year: 2024, month: 10, day: 5, message: "Black Day" },
+        { year: 2024, month: 11, day: 26, message: "Black Day" },
+        { year: 2025, month: 0, day: 29, message: "Black Day" },
+        { year: 2025, month: 1, day: 15, message: "Black Day" },
+        { year: 2025, month: 3, day: 8, message: "Black Day" },
+        { year: 2025, month: 5, day: 3, message: "Black Day" },
+        { year: 2025, month: 6, day: 29, message: "Black Day" },
+        { year: 2025, month: 8, day: 3, message: "Black Day"},
+        { year: 2025, month: 9, day: 12, message: "Black Day"}
+      ];
+
+      function openPopup(dateInfo) {
+        const popup = document.getElementById("datePopup");
+        const popupDateInfo = document.getElementById("popupDateInfo");
+
+        popupDateInfo.innerHTML = dateInfo;
+        popup.style.display = "block";
+      }
+
+      function closePopup() {
+        const popup = document.getElementById("datePopup");
+        popup.style.display = "none";
+
+        if (lastSelectedButton) {
+          lastSelectedButton.classList.remove("select-highlight");
+          lastSelectedButton = null;
+        }
+      }
+
+      function generateCalendar(year, month) {
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const startDay = new Date(year, month, 1).getDay();
+        calendarElement.innerHTML = "";
+        monthYearElement.textContent = `${monthNames[month]} ${year}`;
+
+        const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        for (let label of dayLabels) {
+          const labelDiv = document.createElement("div");
+          labelDiv.textContent = label;
+          labelDiv.classList.add("day-label");
+          calendarElement.appendChild(labelDiv);
+        }
+
+        const adjustedStartDay = startDay === 0 ? 0 : startDay;
+
+        for (let i = 0; i < adjustedStartDay; i++) {
+          const emptyDiv = document.createElement("div");
+          calendarElement.appendChild(emptyDiv);
+        }
+
+        const today = new Date();
+        const isCurrentMonth =
+          year === today.getFullYear() && month === today.getMonth();
+
+        function addHighlight(datesArray, highlightClass, dayDiv, day) {
+          datesArray.forEach(
+            ({ year: customYear, month: customMonth, day: customDay }) => {
+              if (
+                (customYear ? customYear === year : true) &&
+                customMonth === month &&
+                customDay === day
+              ) {
+                dayDiv.classList.add(highlightClass);
+              }
+            }
+          );
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayDiv = document.createElement("div");
+          dayDiv.textContent = day;
+          dayDiv.setAttribute("data-day", day);
+
+          addHighlight(customDates, "custom-highlight", dayDiv, day);
+          addHighlight(planDates, "plan-highlight", dayDiv, day);
+          addHighlight(birthdayDates, "birthday-highlight", dayDiv, day);
+          addHighlight(
+            companyholidayDates,
+            "company-holiday-highlight",
+            dayDiv,
+            day
+          );
+          addHighlight(blackdayDates, "blackday-highlight", dayDiv, day);
+
+          if (isCurrentMonth && day === today.getDate()) {
+            dayDiv.classList.add("today");
+          }
+
+          dayDiv.addEventListener("click", () => selectDate(year, month, day));
+          calendarElement.appendChild(dayDiv);
+        }
+      }
+
+      function selectMonthYear() {
+        document.getElementById("modalBackdrop").style.display = "block";
+        document.getElementById("monthYearModal").style.display = "block";
+        updateMonthButtons();
+        document.getElementById("modalYear").textContent = currentYear;
+      }
+
+      function updateMonthButtons() {
+        const monthButtons = document.getElementById("monthButtons");
+        monthButtons.innerHTML = "";
+
+        for (let month = 0; month < 12; month++) {
+          const button = document.createElement("button");
+          button.textContent = monthNames[month];
+          button.onclick = () => selectMonth(month);
+          monthButtons.appendChild(button);
+        }
+      }
+
+      function selectMonth(month) {
+        currentMonth = month;
+        closeModal();
+        generateCalendar(currentYear, currentMonth);
+      }
+
+      document.getElementById("modalYear").textContent = currentYear;
+
+      document.getElementById("prevYearBtn").onclick = () => {
+        currentYear--;
+        updateYearDisplay();
+      };
+
+      document.getElementById("nextYearBtn").onclick = () => {
+        currentYear++;
+        updateYearDisplay();
+      };
+
+      document
+        .getElementById("modalYear")
+        .addEventListener("input", (event) => {
+          const inputText = event.target.textContent;
+          const inputYear = parseInt(inputText, 10);
+
+          if (
+            inputText.length > 4 ||
+            (inputText.length > 0 && isNaN(inputYear))
+          ) {
+            event.target.textContent = currentYear;
+          } else if (
+            !isNaN(inputYear) &&
+            inputYear >= 1000 &&
+            inputYear <= 2100
+          ) {
+            currentYear = inputYear;
+          } else if (inputText.length === 0) {
+            event.target.textContent = "";
+          }
+        });
+
+      function updateYearDisplay() {
+        document.getElementById("modalYear").textContent = currentYear;
+      }
+
+      function openModal() {
+        document.getElementById("modalBackdrop").style.display = "block";
+        document.getElementById("monthYearModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("monthYearModal").style.display = "none";
+        document.getElementById("modalBackdrop").style.display = "none";
+      }
+
+      document
+        .getElementById("modalBackdrop")
+        .addEventListener("click", closeModal);
+
+      let lastSelectedButton = null;
+
+      function selectDate(year, month, day) {
+        const selectedDateObj = new Date(year, month, day);
+        const options = { weekday: "long" };
+        const selected_weekday = selectedDateObj.toLocaleDateString(
+          "en-US",
+          options
+        );
+        const selected_day = String(selectedDateObj.getDate()).padStart(2, "0");
+        const selected_month = String(selectedDateObj.getMonth() + 1).padStart(
+          2,
+          "0"
+        );
+        const selected_year = selectedDateObj.getFullYear();
+
+        let dateInfo = `${selected_weekday} <br> ${selected_day}/${selected_month}/${selected_year}`;
+
+        let eventFound = false;
+
+        function convertMessageToLink(message) {
+          const urlRegex = /(https?:\/\/[^\s]+)/g;
+          return message.replace(urlRegex, function (url) {
+            return `<a href="${url}" target="_blank">${url}</a>`;
+          });
+        }
+
+        function handleMeetDates(selectedDateObj) {
+          meetDates.forEach(
+            ({ year: meetYear, month: meetMonth, day: meetDay, message }) => {
+              if (
+                (meetYear
+                  ? selectedDateObj.getFullYear() === meetYear
+                  : true) &&
+                selectedDateObj.getMonth() === meetMonth &&
+                selectedDateObj.getDate() === meetDay
+              ) {
+                let displayText = message;
+                let url = null;
+
+                // Check for '|' separator to extract link
+                if (message.includes("|")) {
+                  [displayText, url] = message.split("|");
+                }
+
+                if (url) {
+                  dateInfo += `<br><a href="${url}" target="_blank" style="text-decoration: none; font-weight: 600; color: darkblue;">${displayText}</a>`;
+                } else {
+                  dateInfo += `<br>${displayText}`;
+                }
+
+                eventFound = true;
+              }
+            }
+          );
+        }
+
+        function handleDateHighlight(datesArray) {
+          datesArray.forEach(
+            ({
+              year: customYear,
+              month: customMonth,
+              day: customDay,
+              message,
+            }) => {
+              if (
+                (customYear
+                  ? selectedDateObj.getFullYear() === customYear
+                  : true) &&
+                selectedDateObj.getMonth() === customMonth &&
+                selectedDateObj.getDate() === customDay
+              ) {
+                dateInfo += `<br> ${message}`;
+                eventFound = true;
+              }
+            }
+          );
+        }
+
+        handleDateHighlight(customDates);
+        handleDateHighlight(planDates);
+        handleDateHighlight(birthdayDates);
+        handleDateHighlight(blackdayDates);
+        handleMeetDates(selectedDateObj);
+
+        if (!eventFound) {
+          dateInfo;
+        }
+
+        const dayElements = document.querySelectorAll(".calendar div");
+
+        let currentButton = null;
+        dayElements.forEach((button) => {
+          if (button.textContent.trim() === day.toString()) {
+            currentButton = button;
+          }
+        });
+
+        if (lastSelectedButton) {
+          lastSelectedButton.classList.remove("select-highlight");
+        }
+
+        if (currentButton) {
+          currentButton.classList.add("select-highlight");
+          lastSelectedButton = currentButton;
+        }
+
+        openPopup(dateInfo);
+      }
+
+      function prevMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        generateCalendar(currentYear, currentMonth);
+      }
+
+      function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        generateCalendar(currentYear, currentMonth);
+      }
+
+      generateCalendar(currentYear, currentMonth);
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto",
+        });
+      }
+
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+          document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+      }
+
+      const disabledButtons = document.querySelectorAll(".disabled-button");
+
+      disabledButtons.forEach((button) => {
+        button.disabled = true;
+        button.classList.add("disabled");
+      });
+
+      function toggleNavbar() {
+        var navbar = document.querySelector(".navbar");
+        navbar.classList.toggle("hidden");
+      }
+
+      function update() {
+        const now = new Date();
+        const clockDiv = document.getElementById("clock");
+
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        const ampm = hours >= 12 ? "PM" : "AM";
+
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+        clockDiv.textContent = timeString;
+
+        const countdownDiv = document.getElementById("countdown");
+        const currentDay = now.getDay();
+
+        const startWorkTime = new Date(now);
+        startWorkTime.setHours(9, 0, 0, 0);
+
+        const endWorkTime = new Date(now);
+        endWorkTime.setHours(18, 0, 0, 0);
+
+        let countdownText;
+
+        if (currentDay === 0 || currentDay === 6) {
+          countdownText = "It's the weekend!";
+        } else if (now < startWorkTime) {
+          const timeUntilStart = startWorkTime - now;
+          const hours = Math.floor(timeUntilStart / (1000 * 60 * 60));
+          const minutes = Math.floor(
+            (timeUntilStart % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((timeUntilStart % (1000 * 60)) / 1000);
+          countdownText = `Starts in ${hours
+            .toString()
+            .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")}`;
+        } else if (hours === 1 && ampm === "PM") {
+          countdownText = "Lunch Time 🍱";
+        } else if (now >= startWorkTime && now <= endWorkTime) {
+          const timeUntilEnd = endWorkTime - now;
+          const hours = Math.floor(timeUntilEnd / (1000 * 60 * 60));
+          const minutes = Math.floor(
+            (timeUntilEnd % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((timeUntilEnd % (1000 * 60)) / 1000);
+          countdownText = `${hours.toString().padStart(2, "0")}:${minutes
+            .toString()
+            .padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")} before 6pm`;
+        } else {
+          countdownText = "Work ended for today!";
+        }
+
+        countdownDiv.textContent = countdownText;
+        requestAnimationFrame(update);
+      }
+
+      update();
+    </script>
+  </body>
+</html>

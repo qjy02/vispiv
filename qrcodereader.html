@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <title>QR Code Scanner</title>
+    <style>
+      body {
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        margin: 0;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        vertical-align: center;
+        background-color: #34495e;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+      }
+      .navbar a:hover {
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+      .navbar .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .navbar-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .header h3 {
+        flex-grow: 1;
+        text-align: center;
+        margin: 0;
+        line-height: 50px;
+      }
+      .header img {
+        margin-top: 5px;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .box {
+        background-color: #34495e;
+        border-radius: 10px;
+        padding: 20px;
+        color: #fff;
+      }
+      .box h4 {
+        margin-bottom: 10px;
+      }
+      .qr-reader {
+        text-align: center;
+      }
+      #decoded-result {
+        background-color: #e0f7fa;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        word-wrap: break-word;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Space between buttons */
+      }
+      button {
+        margin-top: 10px;
+        padding: 10px;
+        width: 70%;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        font-family: "Quicksand", Verdana, sans-serif;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #go-btn,
+      #copy-btn {
+        margin-top: 10px;
+        padding: 10px;
+        width: 45%;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      .vispiv-container {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #fff;
+        margin-left: 5px;
+      }
+      .vispiv-container a:hover {
+        background: none;
+        border-radius: 0;
+      }
+      .vispiv-icon {
+        margin-right: 10px;
+        width: 60px;
+        height: auto;
+      }
+      #notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: none;
+        transition: opacity 0.5s ease;
+      }
+      .success {
+        background-color: #28a745;
+      }
+      .error {
+        background-color: #dc3545;
+      }
+      .fade-out {
+        opacity: 0;
+      }
+      .navbar a.active {
+        background-color: #04366d;
+        border-radius: 5px;
+      }
+
+      @media (max-width: 1000px) {
+        .header {
+          flex-direction: column;
+          align-items: center;
+        }
+        .header img {
+          margin-top: 10px;
+        }
+        button {
+          width: 100%;
+        }
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .navbar.active .navbar-links {
+          display: grid;
+        }
+
+        .navbar .menu-icon {
+          display: block;
+        }
+
+        .navbar.active .vispiv-container {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-links">
+        <a href="jsonformatter.html">Json Formatter</a>
+        <a href="jsongrid.html">Json2Grid</a>
+        <a href="datafixer.html">Data Fixer</a>
+        <a href="text_viewer_pdf.html">Text File Viewer</a>
+        <a href="qrcodereader.html" class="active">QR Code Reader</a>
+        <a href="calendar_view.html">Vispiv Calendar</a>
+        <a href="diffchecker.html">Diff Checker</a>
+        <a href="wish_checkout.html">Wishlist and Checkout List</a>
+      </div>
+
+      <div>
+        <div class="vispiv-container">
+          <a href="list.html" style="text-decoration: none">
+            <img
+              src="Vispiv.png"
+              alt="Vispiv Icon"
+              class="vispiv-icon"
+            />
+          </a>
+          <span>Vispiv Help Tools</span>
+        </div>
+      </div>
+      <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+    </div>
+
+    <div class="header">
+      <h3>QR Code Scanner</h3>
+    </div>
+
+    <div class="container">
+      <div class="box qr-reader">
+        <div id="my-qr-reader"></div>
+      </div>
+      <div class="box">
+        <h3>Decoded QR Code</h3>
+        <div id="decoded-result">No QR code scanned yet.</div>
+        <div class="button-container">
+          <button
+            id="copy-btn"
+            onclick="copyToClipboard()"
+            style="display: none"
+          >
+            Copy to Clipboard [Shift]
+          </button>
+          <button id="go-btn" onclick="goToLink()" style="display: none">
+            Go to Link [F1]
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <footer style="text-align: center; color: white">
+        <span>Copyright © 2024 Vispiv Collectives</span>
+      </footer>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+      function domReady(fn) {
+        if (
+          document.readyState === "complete" ||
+          document.readyState === "interactive"
+        ) {
+          setTimeout(fn, 1000);
+        } else {
+          document.addEventListener("DOMContentLoaded", fn);
+        }
+      }
+
+      domReady(function () {
+        function onScanSuccess(decodeText) {
+          const resultContainer = document.getElementById("decoded-result");
+          resultContainer.textContent = decodeText;
+
+          const copyButton = document.getElementById("copy-btn");
+          const goButton = document.getElementById("go-btn");
+
+          copyButton.style.display = "block";
+          goButton.style.display = "block";
+        }
+
+        // Create the QR code scanner with the required configuration
+        let htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
+          fps: 10,
+          qrbox: { width: 250, height: 250 }, // Define the size of the QR code scanning box
+          facingMode: { exact: "environment" }, // Use the rear camera
+        });
+
+        // Render the scanner and handle errors if any
+        try {
+          htmlscanner.render(onScanSuccess);
+        } catch (error) {
+          console.error("Error starting the QR code scanner: ", error);
+          showNotification(
+            "Failed to access camera! Please check your permissions.",
+            "error"
+          );
+        }
+      });
+
+      function copyToClipboard() {
+        const resultContainer = document.getElementById("decoded-result");
+        const textToCopy = resultContainer.textContent;
+
+        if (textToCopy.trim() === "No QR code scanned yet.") {
+          showNotification("No QR code to copy!", "error");
+          return;
+        }
+
+        const tempTextarea = document.createElement("textarea");
+        tempTextarea.value = textToCopy;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+
+        showNotification("Copied to clipboard!", "success");
+      }
+
+      function showNotification(message, type = "success") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = "block";
+
+        setTimeout(() => {
+          notification.classList.add("fade-out");
+        }, 1000);
+
+        notification.addEventListener(
+          "transitionend",
+          () => {
+            notification.style.display = "none";
+            notification.classList.remove("fade-out");
+          },
+          { once: true }
+        );
+      }
+
+      function goToLink() {
+        const resultContainer = document.getElementById("decoded-result");
+        const url = resultContainer.textContent;
+
+        if (url.trim() === "No QR code scanned yet.") {
+          showNotification("No QR code to open!", "error");
+          return;
+        }
+
+        window.open(url, "_blank");
+      }
+
+      function showNotification(message, type = "success") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = "block";
+
+        setTimeout(() => {
+          notification.classList.add("fade-out");
+        }, 1000);
+
+        notification.addEventListener(
+          "transitionend",
+          () => {
+            notification.style.display = "none";
+            notification.classList.remove("fade-out");
+          },
+          { once: true }
+        );
+      }
+
+      function toggleMenu() {
+        const navbar = document.querySelector(".navbar");
+        navbar.classList.toggle("active");
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (
+          event.shiftKey &&
+          !event.ctrlKey &&
+          !event.altKey &&
+          !event.metaKey
+        ) {
+          copyToClipboard();
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.code === "F1") {
+          event.preventDefault();
+          goToLink();
+        }
+      });
+    </script>
+  </body>
+</html>
