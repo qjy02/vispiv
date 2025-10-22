@@ -20,7 +20,6 @@ A playful collection of small web tools and features — all built with pure HTM
 ---
 
 ## 📖 Download this example novel to read using novel reader
-Clone this repository to your local machine:
 👉 [**LingJi**](https://github.com/qjy02/vispiv/blob/main/lingji.zip)
 
 ---
