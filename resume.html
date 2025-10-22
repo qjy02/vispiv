@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="icon"
+      href="Vispiv.png"
+      type="image/png"
+    />
+    <title>Vivian Quek Jia Yi - Resume</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #ffffff;
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .title:hover {
+            color: var(--primary);
+        }
+
+        .nav-link-custom {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .nav-link-custom:hover {
+            color: var(--primary);
+        }
+
+        .nav-link-custom.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-link-custom.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        /* PDF Display Section */
+        .pdf-display {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #cfe8ff 0%, #e3f2fd 100%);
+            background-image: url("https://www.transparenttextures.com/patterns/white-wall.png");
+            background-repeat: repeat;
+            background-size: auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        .pdf-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .pdf-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdf-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-pdf {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-pdf:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-pdf:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .page-info {
+            font-weight: 600;
+            color: var(--secondary);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .zoom-level {
+            font-weight: 600;
+            color: var(--secondary);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .vispiv-icon {
+            margin-right: 10px;
+            width: 50px;
+            height: auto;
+        }
+
+        .justify-text {
+            text-align: justify;
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .copyright strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .motto {
+            font-style: italic;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .motto:hover {
+            color: #00bcd4;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .pdf-display {
+                padding: 3rem 0;
+            }
+            
+            .pdf-title {
+                font-size: 1.7rem;
+            }
+            
+            .pdf-viewer {
+                height: 500px;
+            }
+            
+            .pdf-controls {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .nav-link-custom.active::after {
+                left: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .pdf-viewer {
+                height: 400px;
+            }
+            
+            .pdf-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                
+                <div class="d-flex align-items-center">
+                    <a href="list.html" style="text-decoration: none;">
+                        <img
+                            src="Vispiv.png"
+                            alt="Vispiv Icon"
+                            class="vispiv-icon"
+                            style="width: 50px; height: 50px; margin-right: 10px;"
+                        />
+                    </a>
+                    <a href="index.html" class="title" style="text-decoration: none; font-weight: bold; color: black;">
+                        Vivian Quek Jia Yi
+                    </a>
+                </div>
+
+                <div class="d-flex">
+                    <a class="nav-link-custom me-3" href="resume.html">Resume</a>
+                    <a class="nav-link-custom active" href="projects.html">Projects</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- PDF Display Section -->
+    <section class="pdf-display">
+        <div class="container">
+            <div class="pdf-container" data-aos="fade-up">
+                <h1 class="pdf-title">My Resume</h1>
+                
+                <!-- PDF Viewer -->
+                <div class="pdf-viewer">
+                    <iframe 
+                        id="pdfFrame"
+                        src="https://drive.google.com/file/d/1XVfHduXkapECXGug_EiLh69XEcD73Da5/preview" 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0"
+                        title="PDF Viewer"
+                        allow="autoplay"
+                    >
+                    </iframe>
+                </div>
+                
+                <!-- PDF Controls -->
+                <div class="pdf-controls">
+                    <a href="https://drive.google.com/uc?export=download&id=1XVfHduXkapECXGug_EiLh69XEcD73Da5" 
+                       class="btn-pdf" 
+                       id="downloadPdf"
+                       target="_blank">
+                        <i class="fas fa-download"></i> Download PDF
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Alternative PDF Display for Mobile -->
+            <div class="pdf-container d-none" id="mobilePdfContainer" data-aos="fade-up">
+                <h2 class="pdf-title">Mobile PDF View</h2>
+                <div class="alert alert-info">
+                    <p>For the best experience on mobile devices, we recommend viewing the PDF directly in Google Drive or downloading it.</p>
+                </div>
+                <div class="text-center">
+                    <a href="https://drive.google.com/file/d/1XVfHduXkapECXGug_EiLh69XEcD73Da5/view?usp=sharing" 
+                       class="btn-pdf me-3" 
+                       target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Open in Drive
+                    </a>
+                    <a href="https://drive.google.com/uc?export=download&id=1XVfHduXkapECXGug_EiLh69XEcD73Da5" 
+                       class="btn-pdf" 
+                       target="_blank" 
+                       download>
+                        <i class="fas fa-download"></i> Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="mb-3 justify-text">Vivian Quek Jia Yi</h4>
+                    <p>An individual passionate about creating innovative solutions with maintainable code and intuitive user experiences.</p>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h4 class="mb-3">Contact Info</h4>
+                    <p class="mb-2"><i class="fas fa-phone me-2"></i> (+60) 11-10967982</p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> jyquek32@gmail.com</p>
+                    <div class="social-links mt-3">
+                        <a href="https://www.linkedin.com/in/vivian-quek-jia-yi-5645b0185/" target="_blank" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://qjy02.github.io/vispiv/index.html" target="_blank" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share/1Bb2K88nB9/" target="_blank" title="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h4 class="mb-3">Quick Links</h4>
+                    <div class="d-flex flex-column">
+                        <a href="index.html" class="mb-2">Home</a>
+                        <a href="resume.html" class="mb-2">Resume</a>
+                        <a href="projects.html" class="mb-2">Projects</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                <p>Copyright © 2025 Vispiv Collectives</p>
+                <p class="motto">Visual. Inspire. Pivot.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Sticky header effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.05)';
+            }
+        });
+
+        // PDF Viewer Controls
+        document.addEventListener('DOMContentLoaded', function() {
+            const pdfFrame = document.getElementById('pdfFrame');
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+            const currentPageSpan = document.getElementById('currentPage');
+            const totalPagesSpan = document.getElementById('totalPages');
+            const zoomInBtn = document.getElementById('zoomIn');
+            const zoomOutBtn = document.getElementById('zoomOut');
+            const zoomLevelSpan = document.getElementById('zoomLevel');
+            const downloadBtn = document.getElementById('downloadPdf');
+            const mobilePdfContainer = document.getElementById('mobilePdfContainer');
+            const desktopPdfContainer = document.querySelector('.pdf-container:not(#mobilePdfContainer)');
+            
+            // Check if mobile device
+            function isMobileDevice() {
+                return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+            }
+            
+            // Show mobile version if needed
+            if (isMobileDevice()) {
+                desktopPdfContainer.classList.add('d-none');
+                mobilePdfContainer.classList.remove('d-none');
+            }
+            
+            // PDF control variables
+            let currentPage = 1;
+            let totalPages = 1; // This would normally be determined from the PDF
+            let zoomLevel = 100;
+            
+            // Initialize display
+            currentPageSpan.textContent = currentPage;
+            totalPagesSpan.textContent = totalPages;
+            zoomLevelSpan.textContent = `${zoomLevel}%`;
+            
+            // Navigation functions
+            function goToPrevPage() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePageDisplay();
+                    updateNavigationButtons();
+                }
+            }
+            
+            function goToNextPage() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePageDisplay();
+                    updateNavigationButtons();
+                }
+            }
+            
+            function updatePageDisplay() {
+                currentPageSpan.textContent = currentPage;
+                // Note: With Google Drive preview, we can't control pages programmatically
+                // This is just for UI consistency
+            }
+            
+            function updateNavigationButtons() {
+                prevPageBtn.disabled = currentPage <= 1;
+                nextPageBtn.disabled = currentPage >= totalPages;
+            }
+            
+            // Zoom functions
+            function zoomIn() {
+                if (zoomLevel < 200) {
+                    zoomLevel += 10;
+                    updateZoomDisplay();
+                }
+            }
+            
+            function zoomOut() {
+                if (zoomLevel > 50) {
+                    zoomLevel -= 10;
+                    updateZoomDisplay();
+                }
+            }
+            
+            function updateZoomDisplay() {
+                zoomLevelSpan.textContent = `${zoomLevel}%`;
+                // Note: With Google Drive preview, we can't control zoom programmatically
+                // This is just for UI consistency
+            }
+            
+            // Event listeners
+            prevPageBtn.addEventListener('click', goToPrevPage);
+            nextPageBtn.addEventListener('click', goToNextPage);
+            zoomInBtn.addEventListener('click', zoomIn);
+            zoomOutBtn.addEventListener('click', zoomOut);
+            
+            // Initialize button states
+            updateNavigationButtons();
+        });
+    </script>
+</body>
+
+</html>
