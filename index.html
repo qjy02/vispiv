@@ -50,6 +50,21 @@
             transition: var(--transition);
         }
 
+        .interactive-link {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-link:hover {
+            color: #fff;
+            background-color: #007bff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
         .title {
             font-weight: 700;
             font-size: 1.5rem;
@@ -503,12 +518,7 @@
                 <div class="col-lg-8 hero-text" data-aos="fade-left">
                     <h1 class="big">Hello, I'm <span class="highlight">Vivian Quek Jia Yi</span><span>😊</span></h1>
                     <p class="intro-text">
-                        I am a passionate software engineer with almost 2 years of experience specializing in 
-                        full-stack development. I've worked on diverse projects including 
-                        <span style="font-weight: 500;">E-Invoicing Portal</span>, 
-                        <span style="font-weight: 500;">Sublet Rental Management System</span>, 
-                        <span style="font-weight: 500;">Rebate Income Management System</span>, and various 
-                        <span style="font-weight: 500;">mini projects</span>.
+                        I am a software developer with approximately two years of expertise in full-stack development, where I’ve worked on various projects from simple web pages to a complete retail system. I'm passionate about software development, data science, and artificial intelligence, and I enjoy turning ideas into practical, meaningful solutions.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
                         <a href="resume.html" class="btn btn-custom">View My Resume</a>
@@ -546,8 +556,8 @@
                         <div class="skill-icon">
                             <i class="fas fa-tools"></i>
                         </div>
-                        <h3 class="skill-title">Tools & Technologies</h3>
-                        <p>Git, Ngrok, WinSCP, Putty, RealVNC Viewer, Postman</p>
+                        <h3 class="skill-title">Machine Learning</h3>
+                        <p><a href="machinelearning.html" target="_blank" class="interactive-link">Click here to understand more!</a></p>
                     </div>
                 </div>
             </div>
@@ -696,7 +706,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h4 class="mb-3 justify-text">Vivian Quek Jia Yi</h4>
-                    <p>An individual passionate about creating innovative solutions with maintainable code and intuitive user experiences.</p>
+                    <p class="justify-text">An individual passionate about creating innovative solutions with maintainable code and intuitive user experiences.</p>
                 </div>
                 <div class="col-lg-4 mb-4">
                     <h4 class="mb-3">Contact Info</h4>
