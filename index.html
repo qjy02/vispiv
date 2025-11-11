@@ -1,767 +1,1219 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-      rel="icon"
-      href="Vispiv.png"
-      type="image/png"
-    />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="Vispiv.png" type="image/png" />
     <title>Vivian Quek Jia Yi - Home</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
 
     <style>
-        :root {
-            --primary: #3498db;
-            --secondary: #2c3e50;
-            --accent: #e74c3c;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --gray: #6c757d;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-            --publication-bg: #ffffff;
-            --publication-card-bg: #ffffff;
-        }
+      :root {
+        --primary: #3498db;
+        --secondary: #2c3e50;
+        --accent: #e74c3c;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --publication-bg: #ffffff;
+        --publication-card-bg: #ffffff;
+      }
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: #ffffff;
-            color: var(--dark);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
+      /* Base mobile-first improvements */
+      * {
+        box-sizing: border-box;
+      }
 
-        /* Header & Navigation */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: var(--transition);
-        }
+      html {
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+      }
 
-        .interactive-link {
-            text-decoration: none;
-            color: #007bff;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
+      body {
+        font-family: "Montserrat", sans-serif;
+        background: #ffffff;
+        color: var(--dark);
+        line-height: 1.7;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
 
-        .interactive-link:hover {
-            color: #fff;
-            background-color: #007bff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+      /* Improved touch targets for mobile */
+      button,
+      .btn-custom,
+      .nav-link-custom,
+      .interactive-link {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .title {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--secondary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
+      /* Header & Navigation - Mobile First */
+      header {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: var(--transition);
+        padding: 0.5rem 0;
+      }
 
-        .title:hover {
-            color: var(--primary);
-        }
+      .navbar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
 
-        .nav-link-custom {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: var(--transition);
-            border-radius: 4px;
-            position: relative;
-        }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0;
+      }
 
-        .nav-link-custom:hover {
-            color: var(--primary);
-        }
+      .title {
+        font-weight: 700;
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+        color: var(--secondary);
+        text-decoration: none;
+        transition: var(--transition);
+        text-align: center;
+      }
 
-        .nav-link-custom.active {
-            color: var(--primary);
-            font-weight: 600;
-        }
+      .title:hover {
+        color: var(--primary);
+      }
 
-        .nav-link-custom.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 1rem;
-            right: 1rem;
-            height: 2px;
-            background: var(--primary);
-        }
+      .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        width: 100%;
+      }
 
-        /* Hero Section */
-        .hero {
-            padding: 6rem 0 4rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            position: relative;
-            overflow: hidden;
-        }
+      .nav-link-custom {
+        text-decoration: none;
+        color: var(--dark);
+        font-weight: 500;
+        padding: 0.5rem 0.8rem;
+        transition: var(--transition);
+        border-radius: 6px;
+        position: relative;
+        font-size: 0.9rem;
+        text-align: center;
+        flex: 1;
+        min-width: fit-content;
+      }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
-            z-index: 0;
-        }
+      .nav-link-custom:hover {
+        color: var(--primary);
+        background: rgba(52, 152, 219, 0.1);
+      }
 
-        .profile-img {
-            width: 220px;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: var(--shadow);
-            margin-bottom: 1.5rem;
-            border: 5px solid white;
-            position: relative;
-            z-index: 1;
-            transition: var(--transition);
-        }
+      .nav-link-custom.active {
+        color: var(--primary);
+        font-weight: 600;
+        background: rgba(52, 152, 219, 0.1);
+      }
 
-        .profile-img:hover {
-            transform: scale(1.03);
-        }
+      .nav-link-custom.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0.8rem;
+        right: 0.8rem;
+        height: 2px;
+        background: var(--primary);
+      }
 
-        .hero-text {
-            position: relative;
-            z-index: 1;
-        }
+      .interactive-link {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+      }
 
-        .big {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
+      .interactive-link:hover {
+        color: #fff;
+        background-color: #007bff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
 
-        .highlight {
-            color: var(--primary);
-            position: relative;
-            display: inline-block;
-        }
+      /* Hero Section - Mobile Optimized */
+      .hero {
+        padding: clamp(4rem, 10vw, 6rem) 0 clamp(3rem, 8vw, 4rem);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        position: relative;
+        overflow: hidden;
+      }
 
-        .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: rgba(52, 152, 219, 0.2);
-            z-index: -1;
-        }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.2) 0%,
+          rgba(255, 255, 255, 0) 70%
+        );
+        z-index: 0;
+      }
 
-        .intro-text {
-            font-size: 1.1rem;
-            text-align: justify;
-            margin-bottom: 1.5rem;
-        }
+      .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+      }
 
-        .btn-custom {
-            background: var(--primary);
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: var(--transition);
-            border: none;
-            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-        }
+      .profile-img-container {
+        position: relative;
+        z-index: 1;
+      }
 
-        .btn-custom:hover {
-            background: #2980b9;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
-        }
+      .profile-img {
+        width: clamp(150px, 40vw, 220px);
+        height: clamp(150px, 40vw, 220px);
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: var(--shadow);
+        border: 5px solid white;
+        transition: var(--transition);
+      }
 
-        /* Skills Section */
-        .skills {
-            padding: 5rem 0;
-            background: var(--light);
-        }
+      .profile-img:hover {
+        transform: scale(1.03);
+      }
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 3rem;
-            text-align: center;
-            position: relative;
-        }
+      .hero-text {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+      }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--primary);
-        }
+      .big {
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
 
-        .skill-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            height: 100%;
-            text-align: center;
-        }
+      .highlight {
+        color: var(--primary);
+        position: relative;
+        display: inline-block;
+      }
 
-        .skill-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
+      .highlight::after {
+        content: "";
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: rgba(52, 152, 219, 0.2);
+        z-index: -1;
+      }
 
-        .skill-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
+      .intro-text {
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        text-align: justify;
+        margin-bottom: 1.5rem;
+        padding: 0 1rem;
+      }
 
-        .skill-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
+      .btn-custom {
+        background: var(--primary);
+        color: white;
+        padding: 0.8rem 1.8rem;
+        border-radius: 30px;
+        font-weight: 500;
+        transition: var(--transition);
+        border: none;
+        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        font-size: 1rem;
+        cursor: pointer;
+      }
 
-        /* Publications Section */
-        .publications {
-            padding: 5rem 0;
-            background: var(--publication-bg);
-        }
+      .btn-custom:hover {
+        background: #2980b9;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+      }
 
-        .publication-card {
-            background: var(--publication-card-bg);
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
+      /* Skills Section */
+      .skills {
+        padding: clamp(3rem, 8vw, 5rem) 0;
+        background: var(--light);
+      }
 
-        .publication-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
+      .section-title {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: clamp(2rem, 6vw, 3rem);
+        text-align: center;
+        position: relative;
+        padding: 0 1rem;
+      }
 
-        .publication-title-container {
-            min-height: 120px;
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--primary);
+      }
 
-        .publication-title {
-            margin: 0;
-            font-weight: 600;
-            color: var(--secondary);
-        }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
 
-        .publication-desc-container {
-            min-height: 100px;
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
+      .skill-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-        .publication-desc {
-            margin: 0;
-            text-align: justify;
-        }
+      .skill-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
 
-        .publication-tags {
-            margin-bottom: 1.5rem;
-        }
+      .skill-icon {
+        font-size: clamp(2rem, 6vw, 2.5rem);
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
 
-        .publication-btn-container {
-            margin-top: auto;
-        }
+      .skill-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--secondary);
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
+      }
 
-        /* Projects Preview */
-        .projects-preview {
-            padding: 5rem 0;
-            background: var(--light);
+      /* Publications Section */
+      .publications {
+        padding: clamp(3rem, 8vw, 5rem) 0;
+        background: var(--publication-bg);
+      }
+
+      .publications-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
+
+      .publication-card {
+        background: var(--publication-card-bg);
+        border-radius: 10px;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .publication-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .publication-title-container {
+        min-height: auto;
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+      }
+
+      .publication-title {
+        margin: 0;
+        font-weight: 600;
+        color: var(--secondary);
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
+        line-height: 1.3;
+      }
+
+      .publication-desc-container {
+        min-height: auto;
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+      }
+
+      .publication-desc {
+        margin: 0;
+        text-align: left;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .publication-tags {
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .publication-btn-container {
+        margin-top: auto;
+      }
+
+      /* Projects Preview */
+      .projects-preview {
+        padding: clamp(3rem, 8vw, 5rem) 0;
+        background: var(--light);
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
+
+      .project-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        background: white;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+      }
+
+      .project-img {
+        height: clamp(150px, 30vw, 200px);
+        background: linear-gradient(45deg, #3498db, #2c3e50);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 600;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .project-content {
+        padding: clamp(1rem, 3vw, 1.5rem);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      .project-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--secondary);
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
+        line-height: 1.3;
+      }
+
+      .project-description {
+        margin-bottom: 1rem;
+        flex-grow: 1;
+        font-size: 0.95rem;
+      }
+
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .tag {
+        display: inline-block;
+        background: rgba(52, 152, 219, 0.1);
+        color: var(--primary);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin: 0;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--secondary);
+        color: white;
+        padding: clamp(2rem, 6vw, 3rem) 0 clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .footer-content {
+        padding: 0 1rem;
+        text-align: center;
+      }
+
+      footer a {
+        color: rgba(255, 255, 255, 0.8);
+        transition: var(--transition);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        color: white;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+      }
+
+      .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      .vispiv-icon {
+        margin-right: 10px;
+        width: clamp(40px, 8vw, 50px);
+        height: auto;
+      }
+
+      .justify-text {
+        text-align: center;
+      }
+
+      .copyright {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1.5rem;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+      }
+
+      .copyright strong {
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .motto {
+        font-style: italic;
+        letter-spacing: 1.5px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 0.3rem;
+        transition: color 0.3s ease;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+
+      .motto:hover {
+        color: #00bcd4;
+      }
+
+      /* Projects Preview - Improved Mobile Responsiveness */
+      .projects-preview {
+        padding: clamp(3rem, 8vw, 5rem) 0;
+        background: var(--light);
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
+
+      .project-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        background: white;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .project-img {
+        height: clamp(150px, 30vw, 200px);
+        background: linear-gradient(45deg, #3498db, #2c3e50);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 600;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .project-content {
+        padding: clamp(1rem, 3vw, 1.5rem);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      .project-title {
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        color: var(--secondary);
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
+        line-height: 1.3;
+        min-height: auto;
+      }
+
+      .project-description {
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        text-align: left;
+      }
+
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: auto;
+      }
+
+      .tag {
+        display: inline-block;
+        background: rgba(52, 152, 219, 0.1);
+        color: var(--primary);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin: 0;
+      }
+
+      /* Mobile-specific improvements */
+      @media (max-width: 480px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          padding: 0 0.5rem;
         }
 
         .project-card {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            margin-bottom: 2rem;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-        }
-
-        .projects-preview .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .projects-preview .col-lg-4,
-        .projects-preview .col-md-6 {
-            display: flex;
+          margin-bottom: 0;
         }
 
         .project-img {
-            height: 200px;
-            background: linear-gradient(45deg, #3498db, #2c3e50);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 600;
+          height: 140px;
+          font-size: 1.3rem;
         }
 
         .project-content {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
+          padding: 1.2rem;
+        }
+      }
+
+      @media (min-width: 481px) and (max-width: 768px) {
+        .projects-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.2rem;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .projects-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.5rem;
+        }
+      }
+
+      /* Enhanced Media Queries */
+      @media (max-width: 480px) {
+        .hero-content {
+          gap: 1.5rem;
         }
 
-        .project-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
+        .profile-img {
+          width: 140px;
+          height: 140px;
+          border-width: 4px;
         }
 
-        .project-tags {
-            margin-top: auto;
+        .big {
+          font-size: 1.6rem;
         }
 
-        .tag {
-            display: inline-block;
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--primary);
-            padding: 0.2rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
+        .intro-text {
+          padding: 0 0.5rem;
         }
 
-        /* Footer */
+        .btn-custom {
+          padding: 0.7rem 1.5rem;
+          font-size: 0.95rem;
+        }
+
+        .skills-grid,
+        .publications-grid,
+        .projects-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          padding: 0 0.5rem;
+        }
+
+        .nav-menu {
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+        }
+
+        .nav-link-custom {
+          width: 100%;
+          max-width: 200px;
+        }
+      }
+
+      @media (min-width: 481px) and (max-width: 768px) {
+        .skills-grid,
+        .publications-grid,
+        .projects-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .navbar-container {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        .nav-menu {
+          margin-top: 0;
+          width: auto;
+        }
+
+        .hero-content {
+          flex-direction: row;
+          text-align: left;
+          gap: 2.5rem;
+        }
+
+        .intro-text {
+          text-align: left;
+          padding: 0;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .navbar-container {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        .nav-menu {
+          margin-top: 0;
+          width: auto;
+        }
+
+        .hero-content {
+          flex-direction: row;
+          text-align: left;
+          gap: 3rem;
+        }
+
+        .intro-text {
+          text-align: left;
+          padding: 0;
+        }
+
+        .skills-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      /* Safe area insets for modern mobile devices */
+      @supports (padding: max(0px)) {
+        .hero,
+        .skills,
+        .publications,
+        .projects-preview,
         footer {
-            background: var(--secondary);
-            color: white;
-            padding: 3rem 0 2rem;
+          padding-left: max(1rem, env(safe-area-inset-left));
+          padding-right: max(1rem, env(safe-area-inset-right));
         }
+      }
 
-        footer a {
-            color: rgba(255, 255, 255, 0.8);
-            transition: var(--transition);
+      /* Reduced motion for accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
-
-        footer a:hover {
-            color: white;
-        }
-
-        .social-links a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            margin-right: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .vispiv-icon {
-            margin-right: 10px;
-            width: 50px;
-            height: auto;
-        }
-
-        .justify-text {
-            text-align: justify;
-        }
-
-        .copyright {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1.5rem;
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .copyright strong {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .motto {
-            font-style: italic;
-            letter-spacing: 1.5px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 0.3rem;
-            transition: color 0.3s ease;
-        }
-
-        .motto:hover {
-            color: #00bcd4;
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                padding: 4rem 0 2rem;
-            }
-            
-            .big {
-                font-size: 2rem;
-            }
-            
-            .profile-img {
-                width: 180px;
-                height: 180px;
-            }
-            
-            .section-title {
-                font-size: 1.7rem;
-            }
-            
-            .nav-link-custom.active::after {
-                left: 0.5rem;
-                right: 0.5rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero {
-                text-align: center;
-            }
-            
-            .intro-text {
-                text-align: center;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Header -->
     <header class="py-3">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <a href="list.html" style="text-decoration: none">
+              <img
+                src="Vispiv.png"
+                alt="Vispiv Icon"
+                class="vispiv-icon"
+                style="width: 50px; height: 50px; margin-right: 10px"
+              />
+            </a>
+            <a
+              href="index.html"
+              class="title"
+              style="text-decoration: none; font-weight: bold; color: black"
+            >
+              Vivian Quek Jia Yi
+            </a>
+          </div>
 
-                <div class="d-flex align-items-center">
-                    <a href="list.html" style="text-decoration: none;">
-                        <img
-                            src="Vispiv.png"
-                            alt="Vispiv Icon"
-                            class="vispiv-icon"
-                            style="width: 50px; height: 50px; margin-right: 10px;"
-                        />
-                    </a>
-                    <a href="index.html" class="title" style="text-decoration: none; font-weight: bold; color: black;">
-                        Vivian Quek Jia Yi
-                    </a>
-                </div>
-
-                <div class="d-flex">
-                    <a class="nav-link-custom me-3" href="resume.html">Resume</a>
-                    <a class="nav-link-custom me-3" href="projects.html">Projects</a>
-                </div>
-            </div>
+          <div class="d-flex">
+            <a class="nav-link-custom me-3" href="resume.html">Resume</a>
+            <a class="nav-link-custom me-3" href="projects.html">Projects</a>
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-4 text-center mb-4 mb-lg-0" data-aos="fade-right">
-                    <img src="project-images/aboutme.jpg" class="profile-img" alt="Vivian Quek">
-                </div>
-                <div class="col-lg-8 hero-text" data-aos="fade-left">
-                    <h1 class="big">Hello, I'm <span class="highlight">Vivian Quek Jia Yi</span><span>😊</span></h1>
-                    <p class="intro-text">
-                        I am a software developer with approximately two years of expertise in full-stack development, where I’ve worked on various projects from simple web pages to a complete retail system. I'm passionate about software development, data science, and artificial intelligence, and I enjoy turning ideas into practical, meaningful solutions.
-                    </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="resume.html" class="btn btn-custom">View My Resume</a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-4 text-center mb-4 mb-lg-0" data-aos="fade-right">
+            <img
+              src="project-images/aboutme.jpg"
+              class="profile-img"
+              alt="Vivian Quek"
+            />
+          </div>
+          <div class="col-lg-8 hero-text" data-aos="fade-left">
+            <h1 class="big">
+              Hello, I'm <span class="highlight">Vivian Quek Jia Yi</span
+              ><span>😊</span>
+            </h1>
+            <p class="intro-text">
+              I am a software developer with approximately two years of
+              expertise in full-stack development, where I’ve worked on various
+              projects from simple web pages to a complete retail system. I'm
+              passionate about software development, data science, and
+              artificial intelligence, and I enjoy turning ideas into practical,
+              meaningful solutions.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              <a href="resume.html" class="btn btn-custom">View My Resume</a>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Skills Section -->
     <section class="skills">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">My Skills</h2>
-            <div class="row g-4">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="skill-card">
-                        <div class="skill-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h3 class="skill-title">Frontend Development</h3>
-                        <p>HTML, CSS, JavaScript, Vue.JS, UI/UX Design, Bootstrap, Responsive Design</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="skill-card">
-                        <div class="skill-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <h3 class="skill-title">Backend Development</h3>
-                        <p>Django Framework, Python, FastAPI, MySQL, Microsoft SQL</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="skill-card">
-                        <div class="skill-icon">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <h3 class="skill-title">Machine Learning</h3>
-                        <p>Semi-supervised Learning, Neural Networks, Natural Language Processing</p>
-                        <!--<p><a href="machinelearning.html" target="_blank" class="interactive-link">Click here to understand more!</a></p>-->
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">My Skills</h2>
+        <div class="row g-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="skill-card">
+              <div class="skill-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <h3 class="skill-title">Frontend Development</h3>
+              <p>
+                HTML, CSS, JavaScript, Vue.JS, UI/UX Design, Bootstrap,
+                Responsive Design
+              </p>
             </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="skill-card">
+              <div class="skill-icon">
+                <i class="fas fa-server"></i>
+              </div>
+              <h3 class="skill-title">Backend Development</h3>
+              <p>Django Framework, Python, FastAPI, MySQL, Microsoft SQL</p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="skill-card">
+              <div class="skill-icon">
+                <i class="fas fa-tools"></i>
+              </div>
+              <h3 class="skill-title">Machine Learning</h3>
+              <p>
+                Semi-supervised Learning, Neural Networks, Natural Language
+                Processing
+              </p>
+              <!--<p><a href="machinelearning.html" target="_blank" class="interactive-link">Click here to understand more!</a></p>-->
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Publications Section -->
-    <section class="publications" style="padding: 5rem 0;">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Publications</h2>
-            <div class="row">
-                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="publication-card" style="background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;">
-                        <div style="min-height: 120px; display: flex; align-items: flex-start;">
-                            <h3 class="skill-title" style="margin-bottom: 1rem;">Predicting churn with filter-based techniques and deep learning</h3>
-                        </div>
-                        <div style="min-height: 100px; display: flex; align-items: flex-start; margin-bottom: 1.5rem; flex-grow: 1;">
-                            <p class="justify-text" style="margin: 0;">
-                                A customer churn prediction model integrating attribute selection analysis with deep learning to improve prediction performance while reducing feature dimensions in the telecommunications industry.
-                            </p>
-                        </div>
-                        <div class="publication-tags" style="margin-bottom: 1.5rem;">
-                            <span class="tag">Artificial neural network</span>
-                            <span class="tag">Attribute selection analysis</span>
-                            <span class="tag">Churn prediction</span>
-                            <span class="tag">Deep learning</span>
-                            <span class="tag">Filter methods</span>
-                        </div>
-                        <div style="margin-top: auto;">
-                            <a href="https://ijece.iaescore.com/index.php/IJECE/article/view/33625" target="_blank" class="btn btn-custom" style="background: var(--primary); color: white; padding: 0.5rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: none;">
-                                View Publication
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="publication-card" style="background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;">
-                        <div style="min-height: 120px; display: flex; align-items: flex-start;">
-                            <h3 class="skill-title" style="margin-bottom: 1rem;">Customer Churn Prediction through Attribute Selection Analysis and Support Vector Machine</h3>
-                        </div>
-                        <div style="min-height: 100px; display: flex; align-items: flex-start; margin-bottom: 1.5rem; flex-grow: 1;">
-                            <p class="justify-text" style="margin: 0;">
-                                A churn prediction model using attribute selection analysis and Support Vector Machine that achieves better performance with reduced feature dimensions compared to full feature set utilization.
-                            </p>
-                        </div>
-                        <div class="publication-tags" style="margin-bottom: 1.5rem;">
-                            <span class="tag">Churn Prediction</span>
-                            <span class="tag">Attribute Selection</span>
-                            <span class="tag">Machine Learning</span>
-                            <span class="tag">Filter Methods</span>
-                            <span class="tag">Support Vector Machine</span>
-                        </div>
-                        <div style="margin-top: auto;">
-                            <a href="https://jtde.telsoc.org/index.php/jtde/article/view/777" target="_blank" class="btn btn-custom" style="background: var(--primary); color: white; padding: 0.5rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: none;">
-                                View Publication
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <section class="publications" style="padding: 5rem 0">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Publications</h2>
+        <div class="row">
+          <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="publication-card"
+              style="
+                background: white;
+                border-radius: 10px;
+                padding: 2rem;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <div
+                style="
+                  min-height: 120px;
+                  display: flex;
+                  align-items: flex-start;
+                "
+              >
+                <h3 class="skill-title" style="margin-bottom: 1rem">
+                  Predicting churn with filter-based techniques and deep
+                  learning
+                </h3>
+              </div>
+              <div
+                style="
+                  min-height: 100px;
+                  display: flex;
+                  align-items: flex-start;
+                  margin-bottom: 1.5rem;
+                  flex-grow: 1;
+                "
+              >
+                <p class="justify-text" style="margin: 0">
+                  A customer churn prediction model integrating attribute
+                  selection analysis with deep learning to improve prediction
+                  performance while reducing feature dimensions in the
+                  telecommunications industry.
+                </p>
+              </div>
+              <div class="publication-tags" style="margin-bottom: 1.5rem">
+                <span class="tag">Artificial neural network</span>
+                <span class="tag">Attribute selection analysis</span>
+                <span class="tag">Churn prediction</span>
+                <span class="tag">Deep learning</span>
+                <span class="tag">Filter methods</span>
+              </div>
+              <div style="margin-top: auto">
+                <a
+                  href="https://ijece.iaescore.com/index.php/IJECE/article/view/33625"
+                  target="_blank"
+                  class="btn btn-custom"
+                  style="
+                    background: var(--primary);
+                    color: white;
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 30px;
+                    text-decoration: none;
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                    border: none;
+                  "
+                >
+                  View Publication
+                </a>
+              </div>
             </div>
+          </div>
+          <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div
+              class="publication-card"
+              style="
+                background: white;
+                border-radius: 10px;
+                padding: 2rem;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <div
+                style="
+                  min-height: 120px;
+                  display: flex;
+                  align-items: flex-start;
+                "
+              >
+                <h3 class="skill-title" style="margin-bottom: 1rem">
+                  Customer Churn Prediction through Attribute Selection Analysis
+                  and Support Vector Machine
+                </h3>
+              </div>
+              <div
+                style="
+                  min-height: 100px;
+                  display: flex;
+                  align-items: flex-start;
+                  margin-bottom: 1.5rem;
+                  flex-grow: 1;
+                "
+              >
+                <p class="justify-text" style="margin: 0">
+                  A churn prediction model using attribute selection analysis
+                  and Support Vector Machine that achieves better performance
+                  with reduced feature dimensions compared to full feature set
+                  utilization.
+                </p>
+              </div>
+              <div class="publication-tags" style="margin-bottom: 1.5rem">
+                <span class="tag">Churn Prediction</span>
+                <span class="tag">Attribute Selection</span>
+                <span class="tag">Machine Learning</span>
+                <span class="tag">Filter Methods</span>
+                <span class="tag">Support Vector Machine</span>
+              </div>
+              <div style="margin-top: auto">
+                <a
+                  href="https://jtde.telsoc.org/index.php/jtde/article/view/777"
+                  target="_blank"
+                  class="btn btn-custom"
+                  style="
+                    background: var(--primary);
+                    color: white;
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 30px;
+                    text-decoration: none;
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                    border: none;
+                  "
+                >
+                  View Publication
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Projects Preview -->
     <section class="projects-preview">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Past Involved Projects</h2>
-            <div class="row">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="project-card" style="display: flex; flex-direction: column; height: 100%;">
-                        <div class="project-img">
-                            E-Invoicing
-                        </div>
-                        <div class="project-content" style="display: flex; flex-direction: column; flex-grow: 1;">
-                            <div style="min-height: 80px; display: flex; align-items: flex-start; margin-bottom: 1rem;">
-                                <h3 class="project-title" style="margin: 0;">E-Invoicing Portal</h3>
-                            </div>
-                            <div style="min-height: 120px; display: flex; align-items: flex-start; margin-bottom: 1.5rem; flex-grow: 1;">
-                                <p class="justify-text" style="margin: 0;">
-                                    A portal that manages the submission of e-invoices. It handles the entire submission process to the IRBM MyInvois API, streamlining interactions and ensuring compliance with regulatory requirements.
-                                </p>
-                            </div>
-                            <div class="project-tags" style="margin-top: auto;">
-                                <span class="tag">Django</span>
-                                <span class="tag">Django HTML</span>
-                                <span class="tag">MySQL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="project-card" style="display: flex; flex-direction: column; height: 100%;">
-                        <div class="project-img">
-                            Rebate Management
-                        </div>
-                        <div class="project-content" style="display: flex; flex-direction: column; flex-grow: 1;">
-                            <div style="min-height: 80px; display: flex; align-items: flex-start; margin-bottom: 1rem;">
-                                <h3 class="project-title" style="margin: 0;">Rebate Income Management System</h3>
-                            </div>
-                            <div style="min-height: 120px; display: flex; align-items: flex-start; margin-bottom: 1.5rem; flex-grow: 1;">
-                                <p class="justify-text" style="margin: 0;">
-                                    A system designed to automate rebate calculations using transactional data from external sources, and to manage trading term agreements, event and promotion claims, accruals, and reversals.
-                                </p>
-                            </div>
-                            <div class="project-tags" style="margin-top: auto;">
-                                <span class="tag">Django</span>
-                                <span class="tag">Django HTML</span>
-                                <span class="tag">MySQL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="project-card" style="display: flex; flex-direction: column; height: 100%;">
-                        <div class="project-img">
-                            Rental Management
-                        </div>
-                        <div class="project-content" style="display: flex; flex-direction: column; flex-grow: 1;">
-                            <div style="min-height: 80px; display: flex; align-items: flex-start; margin-bottom: 1rem;">
-                                <h3 class="project-title" style="margin: 0;">Sublet Rental Management System</h3>
-                            </div>
-                            <div style="min-height: 120px; display: flex; align-items: flex-start; margin-bottom: 1.5rem; flex-grow: 1;">
-                                <p class="justify-text" style="margin: 0;">
-                                    A system designed to manage tenant agreements, track sublet units, and automate monthly billing for rent, charges and utilities.
-                                </p>
-                            </div>
-                            <div class="project-tags" style="margin-top: auto;">
-                                <span class="tag">Django</span>
-                                <span class="tag">FastAPI</span>
-                                <span class="tag">MySQL</span>
-                                <span class="tag">MicrosoftSQL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Past Involved Projects</h2>
+
+        <!-- Replace the Bootstrap row with CSS Grid -->
+        <div class="projects-grid">
+          <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="project-img">E-Invoicing</div>
+            <div class="project-content">
+              <h3 class="project-title">E-Invoicing Portal</h3>
+              <p class="project-description">
+                A portal that manages the submission of e-invoices. It handles
+                the entire submission process to the IRBM MyInvois API,
+                streamlining interactions and ensuring compliance with
+                regulatory requirements.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Django</span>
+                <span class="tag">Django HTML</span>
+                <span class="tag">MySQL</span>
+              </div>
             </div>
-            <div class="text-center mt-4" data-aos="fade-up">
-                <a href="projects.html" class="btn btn-custom">View Sample Projects</a>
+          </div>
+
+          <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="project-img">Rebate Management</div>
+            <div class="project-content">
+              <h3 class="project-title">Rebate Income Management System</h3>
+              <p class="project-description">
+                A system designed to automate rebate calculations using
+                transactional data from external sources, and to manage trading
+                term agreements, event and promotion claims, accruals, and
+                reversals.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Django</span>
+                <span class="tag">Django HTML</span>
+                <span class="tag">MySQL</span>
+              </div>
             </div>
+          </div>
+
+          <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="project-img">Rental Management</div>
+            <div class="project-content">
+              <h3 class="project-title">Sublet Rental Management System</h3>
+              <p class="project-description">
+                A system designed to manage tenant agreements, track sublet
+                units, and automate monthly billing for rent, charges and
+                utilities.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Django</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">MySQL</span>
+                <span class="tag">MicrosoftSQL</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="text-center mt-4" data-aos="fade-up">
+          <a href="projects.html" class="btn btn-custom"
+            >View Sample Projects</a
+          >
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h4 class="mb-3 justify-text">Vivian Quek Jia Yi</h4>
-                    <p class="justify-text">An individual passionate about creating innovative solutions with maintainable code and intuitive user experiences.</p>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <h4 class="mb-3">Contact Info</h4>
-                    <p class="mb-2"><i class="fas fa-phone me-2"></i> (+60) 11-10967982</p>
-                    <p class="mb-2"><i class="fas fa-envelope me-2"></i> jyquek32@gmail.com</p>
-                    <div class="social-links mt-3">
-                        <a href="https://www.linkedin.com/in/vivian-quek-jia-yi-5645b0185/" target="_blank" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="index.html" target="_blank" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://www.facebook.com/share/1Bb2K88nB9/" target="_blank" title="Facebook">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <h4 class="mb-3">Quick Links</h4>
-                    <div class="d-flex flex-column">
-                        <a href="index.html" class="mb-2">Home</a>
-                        <a href="resume.html" class="mb-2">Resume</a>
-                        <a href="projects.html" class="mb-2">Projects</a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3 justify-text">Vivian Quek Jia Yi</h4>
+            <p class="justify-text">
+              An individual passionate about creating innovative solutions with
+              maintainable code and intuitive user experiences.
+            </p>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">Contact Info</h4>
+            <p class="mb-2">
+              <i class="fas fa-phone me-2"></i> (+60) 11-10967982
+            </p>
+            <p class="mb-2">
+              <i class="fas fa-envelope me-2"></i> jyquek32@gmail.com
+            </p>
+            <div class="social-links mt-3">
+              <a
+                href="https://www.linkedin.com/in/vivian-quek-jia-yi-5645b0185/"
+                target="_blank"
+                title="LinkedIn"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="index.html" target="_blank" title="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://www.facebook.com/share/1Bb2K88nB9/"
+                target="_blank"
+                title="Facebook"
+              >
+                <i class="fab fa-facebook"></i>
+              </a>
             </div>
-            <div class="copyright text-center">
-                <p>Copyright © 2025 Vispiv Collectives | Made with assistance from DeepSeek AI 🐳</p>
-                <p class="motto">Visual. Inspire. Pivot.</p>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">Quick Links</h4>
+            <div class="d-flex flex-column">
+              <a href="index.html" class="mb-2">Home</a>
+              <a href="resume.html" class="mb-2">Resume</a>
+              <a href="projects.html" class="mb-2">Projects</a>
             </div>
+          </div>
         </div>
+        <div class="copyright text-center">
+          <p>
+            Copyright © 2025 Vispiv Collectives | Made with assistance from
+            DeepSeek AI 🐳
+          </p>
+          <p class="motto">Visual. Inspire. Pivot.</p>
+        </div>
+      </div>
     </footer>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Initialize AOS (Animate On Scroll)
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
+      // Initialize AOS (Animate On Scroll)
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+      });
 
-        // Sticky header effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.05)';
-            }
-        });
+      // Sticky header effect
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 50) {
+          header.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.1)";
+        } else {
+          header.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.05)";
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>
