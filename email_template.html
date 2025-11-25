@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Vispiv.png" type="image/png" />
+    <title>Email Template Prototype</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --scrollbar: #5b7b90;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --link: #2a8bd4;
+            --link-hover: #1e6fa8;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #ffffff;
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .title:hover {
+            color: var(--primary);
+        }
+
+        .nav-link-custom {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .nav-link-custom:hover {
+            color: var(--primary);
+        }
+
+        .nav-link-custom.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-link-custom.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            z-index: 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        /* Email Customizer Styles */
+        .email-input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .email-input-group .form-control {
+            flex: 1;
+        }
+
+        .remove-email {
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .email-customizer {
+            padding: 3rem 0;
+            background: #ffffff;
+        }
+
+        .customizer-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            background: white;
+            height: 100%;
+        }
+
+        .customizer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .card-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .card-body::-webkit-scrollbar-track {
+            background: #e3f2fd;
+            border-radius: 4px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb {
+            background: var(----scrollbar);
+            border-radius: 4px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .drag-drop-area {
+            background: #f8f9fa;
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            max-height: 120px;
+        }
+
+        .drag-drop-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .drag-items {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 0.25rem;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        .drag-items::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .drag-items::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .drag-items::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .drag-items::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .drag-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            cursor: grab;
+            transition: var(--transition);
+            font-size: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .drag-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .editor-container {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .editor-toolbar {
+            background: #f5f5f5;
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .format-btn {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.4rem 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .format-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .editor-content {
+            min-height: 200px;
+            max-height: 400px;
+            padding: 1rem;
+            background: white;
+            outline: none;
+            overflow-y: auto;
+        }
+
+        .btn-custom {
+            background: var(--primary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-custom:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .preview-container {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            background: white;
+            min-height: 500px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .email-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .email-subject {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--secondary);
+        }
+
+        .email-meta {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .email-body {
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .motto {
+            font-style: italic;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .motto:hover {
+            color: #00bcd4;
+        }
+
+        .email-detail-info {
+            text-decoration: underline;
+            font-style: italic;
+            font-weight: none;
+        }
+
+        .is-valid {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+        }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 0 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .nav-link-custom.active::after {
+                left: 0.5rem;
+                right: 0.5rem;
+            }
+            
+            .email-customizer {
+                padding: 2rem 0;
+            }
+            
+            .preview-container {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                text-align: center;
+            }
+            
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .drag-items {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="list.html" style="text-decoration: none">
+                        <img
+                            src="Vispiv.png"
+                            alt="Vispiv Icon"
+                            class="vispiv-icon"
+                            style="width: 50px; height: 50px; margin-right: 10px"
+                        />
+                    </a>
+                    <a href="index.html" class="title" style="text-decoration: none;">
+                        Email Template Prototype
+                    </a>
+                </div>
+
+                <div class="d-flex">
+                    <a class="nav-link-custom active" href="projects.html">Projects</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="section-title" data-aos="fade-up">Information</h1>
+            <p class="mb-0" data-aos="fade-up" data-aos-delay="200">
+                Create and preview your email templates with ease.
+            </p>
+            <p class="mb-0" data-aos="fade-up" data-aos-delay="200">
+                1. Set Email Message Content
+            </p>
+            <p class="mb-0" data-aos="fade-up" data-aos-delay="200">
+                2. Drag and drop placeholders for dynamic content
+            </p>
+            <p class="mb-0" data-aos="fade-up" data-aos-delay="200">
+                3. Set Default Subject, To, CC, BCC
+            </p>
+            <p class="mb-0" data-aos="fade-up" data-aos-delay="200">
+                4. Store the Email Template in ml_email_template (storing header, subject, type, etc.) and ml_email_template_child (storing default CC, BCC, etc.)
+            </p>
+        </div>
+    </section>
+
+    <!-- Email Customizer Section -->
+    <section class="email-customizer">
+        <div class="container">
+            <div class="row">
+                <!-- Left Section - Customization -->
+                <div class="col-lg-6 mb-4" data-aos="fade-right">
+                    <div class="customizer-card">
+                        <div class="card-header">
+                            Email Configuration
+                        </div>
+                        <div class="card-body">
+                            <div class="drag-drop-area">
+                                <div class="drag-drop-title">Drag and drop placeholders into your email</div>
+                                <div class="drag-items">
+                                    <div class="drag-item" draggable="true" data-value="{company_name}">Company Name</div>
+                                    <div class="drag-item" draggable="true" data-value="{company_address}">Company Address</div>
+                                    <div class="drag-item" draggable="true" data-value="{company_telephone}">Company Telephone</div>
+                                    <div class="drag-item" draggable="true" data-value="{company_email}">Company Email</div>
+                                    <div class="drag-item" draggable="true" data-value="{customer_name}">Customer Name</div>
+                                    <div class="drag-item" draggable="true" data-value="{refno}">Invoice Refno</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" id="subject" class="form-control" placeholder="Enter email subject" value="Refno {refno} - E-Invoice Successfully Validated">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Message Content</label>
+                                <div class="editor-container">
+                                    <div class="editor-toolbar">
+                                        <button type="button" class="format-btn" data-command="bold" title="Bold"><i class="fas fa-bold"></i></button>
+                                        <button type="button" class="format-btn" data-command="italic" title="Italic"><i class="fas fa-italic"></i></button>
+                                        <button type="button" class="format-btn" data-command="underline" title="Underline"><i class="fas fa-underline"></i></button>
+                                        <button type="button" class="format-btn" data-command="insertUnorderedList" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+                                        <button type="button" class="format-btn" data-command="insertOrderedList" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+                                    </div>
+                                    <div class="editor-content" id="editor" style="text-align: justify;" contenteditable="true">
+                                        <p>Dear <span>{customer_name}</span>,</p>
+                                        <p>Please be informed that your E-Invoice has been successfully validated.</p>
+                                        <p>The validated E-Invoice is attached for your usage.</p>
+                                        <br />
+                                        <p>Thank you.</p>
+                                        <br />
+                                        <p>Best regards,<br><span>{company_name}</span></p>
+                                        <br />
+                                    <p style="font-style: italic;">Please do not reply to this email. For any further inquiries, please contact your supplier or email to <span class='email-detail-info'>{company_email}</span>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">To (Recipients)</label>
+                                <div id="receivers-container">
+                                    <div class="email-input-group mb-2">
+                                        <input type="email" class="form-control receiver-input" placeholder="Enter recipient email" value="test@example.com">
+                                        <button type="button" class="btn btn-danger btn-sm remove-email ms-2" style="display: none;">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm mt-1" id="add-receiver">
+                                    <i class="fas fa-plus"></i> Add Another Recipient
+                                </button>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">CC</label>
+                                <div id="cc-container">
+                                    <div class="email-input-group mb-2">
+                                        <input type="email" class="form-control cc-input" placeholder="Enter CC email" value="nevaeh@example.com">
+                                        <button type="button" class="btn btn-danger btn-sm remove-email ms-2" style="display: none;">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm mt-1" id="add-cc">
+                                    <i class="fas fa-plus"></i> Add Another CC
+                                </button>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">BCC</label>
+                                <div id="bcc-container">
+                                    <div class="email-input-group mb-2">
+                                        <input type="email" class="form-control bcc-input" placeholder="Enter BCC email" value="jurin@example.com">
+                                        <button type="button" class="btn btn-danger btn-sm remove-email ms-2" style="display: none;">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm mt-1" id="add-bcc">
+                                    <i class="fas fa-plus"></i> Add Another BCC
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" id="date" class="form-control">
+                            </div>
+                            
+                            <button class="btn-custom" id="saveBtn">
+                                <i class="fas fa-save"></i> Save Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Section - Preview -->
+                <div class="col-lg-6 mb-4" data-aos="fade-left">
+                    <div class="customizer-card">
+                        <div class="card-header">
+                            Email Preview
+                        </div>
+                        <div class="card-body">
+                            <div class="preview-container" id="preview">
+                                <div class="email-header">
+                                    <div class="email-subject" id="preview-subject">Refno TGMSUBINV25110005 - E-Invoice Successfully Validated</div>
+                                    <div class="email-meta">
+                                        <div><strong>To:</strong> <span id="preview-to">test@example.com</span></div>
+                                        <div><strong>Date:</strong> <span id="preview-date"></span></div>
+                                        <div id="preview-cc" style="display: none;"><strong>CC:</strong> <span></span></div>
+                                        <div id="preview-bcc" style="display: none;"><strong>BCC:</strong> <span></span></div>
+                                    </div>
+                                </div>
+                                <div class="email-body" id="preview-body">
+                                    <p>Dear <span>{customer_name}</span>,</p>
+                                    <p>Please be informed that your E-Invoice has been successfully validated.</p>
+                                    <p>The validated E-Invoice is attached for your usage.</p>
+                                    <br />
+                                    <p>Thank you.</p>
+                                    <br />
+                                    <p>Best regards,<br><strong>TF VALUE-MART SDN BHD</strong></p>
+                                    <br />
+                                    <p style="font-style: italic;">Please do not reply to this email. For any further inquiries, please contact your supplier or email to <span class='email-detail-info'>einvoice@tfvaluemart.com.my</span>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <!--<div class="row">
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3 justify-text">Vivian Quek Jia Yi</h4>
+            <p class="justify-text">
+              An individual passionate about creating innovative solutions with
+              maintainable code and intuitive user experiences.
+            </p>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">Contact Info</h4>
+            <p class="mb-2">
+              <i class="fas fa-phone me-2"></i> (+60) 11-10967982
+            </p>
+            <p class="mb-2">
+              <i class="fas fa-envelope me-2"></i> jyquek32@gmail.com
+            </p>
+            <div class="social-links mt-3">
+              <a
+                href="https://www.linkedin.com/in/vivian-quek-jia-yi-5645b0185/"
+                target="_blank"
+                title="LinkedIn"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="index.html" target="_blank" title="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://www.facebook.com/share/1Bb2K88nB9/"
+                target="_blank"
+                title="Facebook"
+              >
+                <i class="fab fa-facebook"></i>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h4 class="mb-3">Quick Links</h4>
+            <div class="d-flex flex-column">
+              <a href="index.html" class="mb-2">Home</a>
+              <a href="resume.html" class="mb-2">Resume</a>
+              <a href="projects.html" class="mb-2">Projects</a>
+            </div>
+          </div>
+        </div>-->
+        <div class="copyright text-center">
+          <p>
+            Copyright © 2025 Vispiv Collectives | Made with assistance from
+            DeepSeek AI 🐳
+          </p>
+          <p class="motto">Visual. Inspire. Pivot.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Sticky header effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.05)';
+            }
+        });
+
+        // Company information defaults
+        const companyInfo = {
+            company_name: "TF VALUE-MART SDN BHD",
+            company_address: "Unit No. 4.7, Level 4, West Lobby Menara Sunway Annexe, Jalan Lagoon Timur, Bandar Sunway, 46150 Petaling Jaya, Selangor, Malaysia.",
+            company_telephone: "+60356125588",
+            company_email: "einvoice@tfvaluemart.com.my",
+            customer_name: "MK KIDDIE RIDES TRADING",
+            refno: "TGMSUBINV25110005"
+        };
+
+        // Formatting buttons
+        document.querySelectorAll('.format-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const command = this.getAttribute('data-command');
+                document.execCommand(command, false, null);
+                updatePreview();
+            });
+        });
+
+        // Drag and drop functionality
+        document.querySelectorAll('.drag-item').forEach(item => {
+            item.addEventListener('dragstart', function(e) {
+                e.dataTransfer.setData('text/plain', this.getAttribute('data-value'));
+            });
+        });
+
+        const editor = document.getElementById('editor');
+        editor.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        editor.addEventListener('drop', function(e) {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('text/plain');
+            document.execCommand('insertText', false, data);
+            updatePreview();
+        });
+
+        // Drag and drop for subject field
+        const subjectInput = document.getElementById('subject');
+        subjectInput.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        subjectInput.addEventListener('drop', function(e) {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('text/plain');
+            
+            // Get current cursor position
+            const startPos = this.selectionStart;
+            const endPos = this.selectionEnd;
+            const currentValue = this.value;
+            
+            // Insert the placeholder at cursor position
+            this.value = currentValue.substring(0, startPos) + 
+                        data + 
+                        currentValue.substring(endPos);
+            
+            // Update cursor position after insertion
+            this.selectionStart = this.selectionEnd = startPos + data.length;
+            
+            updatePreview();
+        });
+
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Add/Remove email functionality
+        document.getElementById('add-receiver').addEventListener('click', function() {
+            addEmailInput('receivers-container', 'receiver-input');
+        });
+
+        document.getElementById('add-cc').addEventListener('click', function() {
+            addEmailInput('cc-container', 'cc-input');
+        });
+
+        document.getElementById('add-bcc').addEventListener('click', function() {
+            addEmailInput('bcc-container', 'bcc-input');
+        });
+
+        function addEmailInput(containerId, inputClass) {
+            const container = document.getElementById(containerId);
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'email-input-group mb-2';
+            inputGroup.innerHTML = `
+                <input type="email" class="form-control ${inputClass}" placeholder="Enter email address">
+                <button type="button" class="btn btn-danger btn-sm remove-email ms-2">×</button>
+            `;
+            container.appendChild(inputGroup);
+            
+            // Show remove buttons on all inputs in this container
+            container.querySelectorAll('.remove-email').forEach(btn => {
+                btn.style.display = 'block';
+            });
+            
+            const newInput = inputGroup.querySelector('input');
+            
+            // Add event listener to new input with validation
+            newInput.addEventListener('input', function() {
+                validateEmailInput(this);
+                updatePreview();
+            });
+            
+            // Add event listener to remove button
+            inputGroup.querySelector('.remove-email').addEventListener('click', function() {
+                container.removeChild(inputGroup);
+                updatePreview();
+            });
+            
+            // Validate the new input
+            validateEmailInput(newInput);
+        }
+
+        // Email input validation function
+        function validateEmailInput(input) {
+            const value = input.value.trim();
+            
+            if (value === '') {
+                // Reset validation for empty fields
+                input.classList.remove('is-invalid', 'is-valid');
+            } else if (!isValidEmail(value)) {
+                // Invalid email
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            } else {
+                // Valid email
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            }
+        }
+
+        // Add remove functionality to initial inputs
+        document.querySelectorAll('.remove-email').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const container = this.closest('.email-input-group').parentElement;
+                const inputGroups = container.querySelectorAll('.email-input-group');
+                if (inputGroups.length > 1) {
+                    container.removeChild(this.closest('.email-input-group'));
+                    updatePreview();
+                }
+            });
+        });
+
+        // Update preview when inputs change
+        document.getElementById('subject').addEventListener('input', updatePreview);
+        document.getElementById('date').addEventListener('input', updatePreview);
+        editor.addEventListener('input', updatePreview);
+
+        // Add event listeners for existing email inputs with validation
+        document.querySelectorAll('.receiver-input, .cc-input, .bcc-input').forEach(input => {
+            input.addEventListener('input', function() {
+                validateEmailInput(this);
+                updatePreview();
+            });
+            // Validate initial values
+            validateEmailInput(input);
+        });
+
+        // Save button with email validation check
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const allEmailInputs = document.querySelectorAll('.receiver-input, .cc-input, .bcc-input');
+            const invalidEmails = Array.from(allEmailInputs).filter(input => {
+                const value = input.value.trim();
+                return value !== '' && !isValidEmail(value);
+            });
+
+            if (invalidEmails.length > 0) {
+                alert('Please fix invalid email addresses before saving.');
+                // Focus on first invalid email
+                invalidEmails[0].focus();
+            } else {
+                alert('Template saved successfully!');
+            }
+        });
+
+        // Initial preview update
+        updatePreview();
+
+        // Function to update the preview
+        function updatePreview() {
+            // Update subject - replace placeholders with actual values
+            let subjectText = document.getElementById('subject').value || '(No subject)';
+            for (const [key, value] of Object.entries(companyInfo)) {
+                const regex = new RegExp(`{${key}}`, 'g');
+                subjectText = subjectText.replace(regex, value);
+            }
+            document.getElementById('preview-subject').textContent = subjectText;
+            
+            // Update recipients - get all email inputs
+            function getEmailsFromInputs(selector) {
+                const inputs = document.querySelectorAll(selector);
+                const emails = Array.from(inputs)
+                    .map(input => input.value.trim())
+                    .filter(email => email !== '');
+                return emails.join(', ');
+            }
+
+            // Update recipients
+            const receiversEmails = getEmailsFromInputs('.receiver-input');
+            document.getElementById('preview-to').textContent = receiversEmails || '(No recipients)';
+
+            // Update CC
+            const ccEmails = getEmailsFromInputs('.cc-input');
+            if (ccEmails) {
+                document.getElementById('preview-cc').style.display = 'block';
+                document.querySelector('#preview-cc span').textContent = ccEmails;
+            } else {
+                document.getElementById('preview-cc').style.display = 'none';
+            }
+
+            // Update BCC
+            const bccEmails = getEmailsFromInputs('.bcc-input');
+            if (bccEmails) {
+                document.getElementById('preview-bcc').style.display = 'block';
+                document.querySelector('#preview-bcc span').textContent = bccEmails;
+            } else {
+                document.getElementById('preview-bcc').style.display = 'none';
+            }
+            
+            // Update date
+            const dateInput = document.getElementById('date').value;
+            const previewDate = document.getElementById('preview-date');
+
+            if (dateInput) {
+                const date = new Date(dateInput);
+                previewDate.textContent = date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            } else {
+                // Set current date if none selected
+                const today = new Date();
+                previewDate.textContent = today.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            
+            // Update email body
+            let emailBody = editor.innerHTML;
+            
+            // Replace placeholders with actual values
+            for (const [key, value] of Object.entries(companyInfo)) {
+                const regex = new RegExp(`{${key}}`, 'g');
+                emailBody = emailBody.replace(regex, `<strong>${value}</strong>`);
+            }
+            
+            document.getElementById('preview-body').innerHTML = emailBody;
+        }
+    </script>
+</body>
+</html>
