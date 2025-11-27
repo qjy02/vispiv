@@ -36,6 +36,7 @@
         --transition: all 0.3s ease;
         --publication-bg: #ffffff;
         --publication-card-bg: #ffffff;
+        --collaboration-bg: #ffffff;
       }
 
       * {
@@ -266,11 +267,40 @@
         background: var(--primary);
       }
 
+      /* Skills Grid Improvements */
       .skills-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1.5rem;
         padding: 0 1rem;
+        align-items: stretch;
+      }
+
+      /* Tablet-specific grid layout */
+      @media (min-width: 768px) and (max-width: 1024px) {
+        .skills-grid {
+          grid-template-columns: repeat(2, 1fr);
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+
+      /* Desktop layout */
+      @media (min-width: 1025px) {
+        .skills-grid {
+          grid-template-columns: repeat(3, 1fr);
+          max-width: 1000px;
+          margin: 0 auto;
+        }
+      }
+
+      /* Mobile layout */
+      @media (max-width: 767px) {
+        .skills-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          padding: 0 0.5rem;
+        }
       }
 
       .skill-card {
@@ -279,10 +309,15 @@
         padding: 1.5rem;
         box-shadow: var(--shadow);
         transition: var(--transition);
-        text-align: center;
+        height: 100%;
         display: flex;
         flex-direction: column;
+        text-align: center;
         align-items: center;
+      }
+
+      .skill-card p {
+        flex-grow: 1;
       }
 
       .skill-card:hover {
@@ -614,6 +649,114 @@
         border-radius: 20px;
         font-size: 0.8rem;
         margin: 0;
+      }
+
+      /* Collaboration Section */
+      .collaboration {
+        padding: clamp(3rem, 8vw, 5rem) 0;
+        background: var(--collaboration-bg);
+      }
+
+      .logo-carousel {
+        position: relative;
+        overflow: hidden;
+        padding: 2rem 0;
+      }
+
+      .logo-track {
+        display: flex;
+        animation: slide 30s linear infinite;
+        gap: 3rem;
+      }
+
+      .logo-item {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem 2.5rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        min-height: 100px;
+        min-width: 180px;
+        width: 180px;
+        height: 100px;
+      }
+
+      .logo-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .logo-item img {
+        max-width: 140px;
+        max-height: 70px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        /* Remove grayscale and opacity for original colors */
+        filter: none;
+        opacity: 1;
+        transition: var(--transition);
+      }
+
+      .logo-item:hover img {
+        transform: scale(1.05);
+      }
+
+      @keyframes slide {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-100% - 3rem));
+        }
+      }
+
+      /* Pause animation on hover */
+      .logo-carousel:hover .logo-track {
+        animation-play-state: paused;
+      }
+
+      /* Mobile responsiveness for collaboration section */
+      @media (max-width: 768px) {
+        .logo-track {
+          gap: 1.5rem;
+          animation: slide 20s linear infinite;
+        }
+        
+        .logo-item {
+          padding: 1rem 1.5rem;
+          min-height: 80px;
+          min-width: 140px;
+          width: 140px;
+          height: 80px;
+        }
+        
+        .logo-item img {
+          max-width: 110px;
+          max-height: 55px;
+        }
+        
+        @keyframes slide {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-100% - 1.5rem));
+          }
+        }
+      }
+
+      .side-note {
+        font-size: 0.9rem;
+        color: var(--gray);
+        font-style: italic;
+        text-align: justify;
+        margin-top: 2rem;
+        padding: 0 1rem;
       }
 
       /* Mobile-specific improvements */
@@ -1094,6 +1237,54 @@
             >View Sample Projects</a
           >
         </div>
+      </div>
+    </section>
+
+    <!-- Collaboration Section -->
+    <section class="collaboration">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Companies / Brands I've Worked With</h2>
+        
+        <div class="logo-carousel">
+          <div class="logo-track">
+            <div class="logo-item" data-aos="fade-left">
+              <img src="https://i0.wp.com/www.giant.com.my/wp-content/uploads/2021/03/Giant_Malaysia.png?fit=380%2C240&ssl=1" alt="Giant" loading="lazy">
+            </div>
+            <div class="logo-item" data-aos="fade-left" data-aos-delay="100">
+              <img src="https://www.tfvaluemart.com.my/wp-content/uploads/2020/11/logo.svg" alt="TF Value Mart" loading="lazy">
+            </div>
+            <div class="logo-item" data-aos="fade-left" data-aos-delay="200">
+              <img src="https://www.sriternak.com/wp-content/uploads/2023/07/logo-sri-ternak-03.svg" alt="Sri Ternak Group" loading="lazy">
+            </div>
+            <div class="logo-item" data-aos="fade-left" data-aos-delay="300">
+              <img src="https://everrise.com.my/wp-content/uploads/2022/06/logo.png" alt="Everrise" loading="lazy">
+            </div>
+            <div class="logo-item" data-aos="fade-left" data-aos-delay="400">
+              <img src="https://curtin.edu.my/wp-content/themes/mimas/dist/images/cm-logo.png" alt="Curtin University" loading="lazy">
+            </div>
+            
+            <!-- Duplicate for seamless loop -->
+            <div class="logo-item">
+              <img src="https://i0.wp.com/www.giant.com.my/wp-content/uploads/2021/03/Giant_Malaysia.png?fit=380%2C240&ssl=1" alt="Giant" loading="lazy">
+            </div>
+            <div class="logo-item">
+              <img src="https://www.tfvaluemart.com.my/wp-content/uploads/2020/11/logo.svg" alt="TF Value Mart" loading="lazy">
+            </div>
+            <div class="logo-item">
+              <img src="https://www.sriternak.com/wp-content/uploads/2023/07/logo-sri-ternak-03.svg" alt="Sri Ternak Group" loading="lazy">
+            </div>
+            <div class="logo-item">
+              <img src="https://everrise.com.my/wp-content/uploads/2022/06/logo.png" alt="Everrise" loading="lazy">
+            </div>
+            <div class="logo-item">
+              <img src="https://curtin.edu.my/wp-content/themes/mimas/dist/images/cm-logo.png" alt="Curtin University" loading="lazy">
+            </div>
+          </div>
+        </div>
+        
+        <p class="side-note" data-aos="fade-up">
+          * Please note that due to confidentiality agreements and the proprietary nature of these projects, specific implementation details cannot be disclosed.
+        </p>
       </div>
     </section>
 
