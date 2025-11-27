@@ -656,19 +656,16 @@
         padding: clamp(3rem, 8vw, 5rem) 0;
         background: var(--collaboration-bg);
       }
-
       .logo-carousel {
         position: relative;
         overflow: hidden;
         padding: 2rem 0;
       }
-
       .logo-track {
         display: flex;
         animation: slide 30s linear infinite;
         gap: 3rem;
       }
-
       .logo-item {
         flex: 0 0 auto;
         display: flex;
@@ -684,49 +681,39 @@
         width: 180px;
         height: 100px;
       }
-
       .logo-item:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
       }
-
       .logo-item img {
         max-width: 140px;
         max-height: 70px;
         width: auto;
         height: auto;
         object-fit: contain;
-        /* Remove grayscale and opacity for original colors */
         filter: none;
         opacity: 1;
         transition: var(--transition);
       }
-
       .logo-item:hover img {
         transform: scale(1.05);
       }
-
       @keyframes slide {
         0% {
           transform: translateX(0);
         }
         100% {
-          transform: translateX(calc(-100% - 3rem));
+          transform: translateX(-50%);
         }
       }
-
-      /* Pause animation on hover */
       .logo-carousel:hover .logo-track {
         animation-play-state: paused;
       }
-
-      /* Mobile responsiveness for collaboration section */
       @media (max-width: 768px) {
         .logo-track {
           gap: 1.5rem;
           animation: slide 20s linear infinite;
         }
-        
         .logo-item {
           padding: 1rem 1.5rem;
           min-height: 80px;
@@ -734,22 +721,15 @@
           width: 140px;
           height: 80px;
         }
-        
         .logo-item img {
           max-width: 110px;
           max-height: 55px;
         }
-        
         @keyframes slide {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(calc(-100% - 1.5rem));
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
       }
-
       .side-note {
         font-size: 0.9rem;
         color: var(--gray);
@@ -1244,7 +1224,6 @@
     <section class="collaboration">
       <div class="container">
         <h2 class="section-title" data-aos="fade-up">Companies / Brands I've Worked With</h2>
-        
         <div class="logo-carousel">
           <div class="logo-track">
             <div class="logo-item" data-aos="fade-left">
@@ -1262,26 +1241,8 @@
             <div class="logo-item" data-aos="fade-left" data-aos-delay="400">
               <img src="https://curtin.edu.my/wp-content/themes/mimas/dist/images/cm-logo.png" alt="Curtin University" loading="lazy">
             </div>
-            
-            <!-- Duplicate for seamless loop -->
-            <div class="logo-item">
-              <img src="https://i0.wp.com/www.giant.com.my/wp-content/uploads/2021/03/Giant_Malaysia.png?fit=380%2C240&ssl=1" alt="Giant" loading="lazy">
-            </div>
-            <div class="logo-item">
-              <img src="https://www.tfvaluemart.com.my/wp-content/uploads/2020/11/logo.svg" alt="TF Value Mart" loading="lazy">
-            </div>
-            <div class="logo-item">
-              <img src="https://www.sriternak.com/wp-content/uploads/2023/07/logo-sri-ternak-03.svg" alt="Sri Ternak Group" loading="lazy">
-            </div>
-            <div class="logo-item">
-              <img src="https://everriseshop.panda-eco.com/everrise/branch_image/logo.png" alt="Everrise" loading="lazy">
-            </div>
-            <div class="logo-item">
-              <img src="https://curtin.edu.my/wp-content/themes/mimas/dist/images/cm-logo.png" alt="Curtin University" loading="lazy">
-            </div>
           </div>
         </div>
-        
         <p class="side-note" data-aos="fade-up">
           * Please note that due to confidentiality agreements and the proprietary nature of these projects, specific implementation details cannot be disclosed.
         </p>
@@ -1366,6 +1327,17 @@
           header.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.05)";
         }
       });
+
+      const track = document.querySelector('.logo-track');
+      const containerWidth = track.parentElement.offsetWidth;
+      let totalWidth = track.scrollWidth;
+      while (totalWidth < containerWidth * 2) {
+        Array.from(track.children).forEach(child => {
+          const clone = child.cloneNode(true);
+          track.appendChild(clone);
+        });
+        totalWidth = track.scrollWidth;
+      }
     </script>
   </body>
 </html>
