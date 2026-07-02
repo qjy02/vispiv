@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -1272,44 +1273,48 @@
         const currentDay = now.getDay();
 
         const startWorkTime = new Date(now);
-        startWorkTime.setHours(9, 0, 0, 0);
+        startWorkTime.setHours(8, 0, 0, 0);
 
         const endWorkTime = new Date(now);
-        endWorkTime.setHours(18, 0, 0, 0);
+        endWorkTime.setHours(17, 25, 0, 0);
 
         let countdownText;
 
-        if (currentDay === 0 || currentDay === 6) {
-          countdownText = "It's the weekend!";
-        } else if (now < startWorkTime) {
-          const timeUntilStart = startWorkTime - now;
-          const hours = Math.floor(timeUntilStart / (1000 * 60 * 60));
-          const minutes = Math.floor(
-            (timeUntilStart % (1000 * 60 * 60)) / (1000 * 60)
-          );
-          const seconds = Math.floor((timeUntilStart % (1000 * 60)) / 1000);
-          countdownText = `Starts in ${hours
-            .toString()
-            .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
-            .toString()
-            .padStart(2, "0")}`;
-        } else if (hours === 1 && ampm === "PM") {
-          countdownText = "Lunch Time 🍱";
-        } else if (now >= startWorkTime && now <= endWorkTime) {
-          const timeUntilEnd = endWorkTime - now;
-          const hours = Math.floor(timeUntilEnd / (1000 * 60 * 60));
-          const minutes = Math.floor(
-            (timeUntilEnd % (1000 * 60 * 60)) / (1000 * 60)
-          );
-          const seconds = Math.floor((timeUntilEnd % (1000 * 60)) / 1000);
-          countdownText = `${hours.toString().padStart(2, "0")}:${minutes
-            .toString()
-            .padStart(2, "0")}:${seconds
-            .toString()
-            .padStart(2, "0")} before 6pm`;
-        } else {
-          countdownText = "Work ended for today!";
-        }
+       if (currentDay === 0 || currentDay === 6) {
+        countdownText = "It's the weekend! 🎉";
+      } else if (now < startWorkTime) {
+        const timeUntilStart = startWorkTime - now;
+        const hours = Math.floor(timeUntilStart / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (timeUntilStart % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeUntilStart % (1000 * 60)) / 1000);
+        countdownText = `Work starts in ${hours
+          .toString()
+          .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+      } else if (now >= lunchStart && now <= lunchEnd) {
+        // Check if it's lunch time (1:00 PM - 2:00 PM)
+        const timeUntilLunchEnd = lunchEnd - now;
+        const minutes = Math.floor(timeUntilLunchEnd / (1000 * 60));
+        const seconds = Math.floor((timeUntilLunchEnd % (1000 * 60)) / 1000);
+        countdownText = `Lunch Time 🍱 (${minutes}m ${seconds}s remaining)`;
+      } else if (now >= startWorkTime && now <= endWorkTime) {
+        const timeUntilEnd = endWorkTime - now;
+        const hours = Math.floor(timeUntilEnd / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (timeUntilEnd % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeUntilEnd % (1000 * 60)) / 1000);
+        countdownText = `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")} before 5:25pm`;
+      } else {
+        countdownText = "Work ended for today! 🏠";
+      }
 
         countdownDiv.textContent = countdownText;
         requestAnimationFrame(update);
