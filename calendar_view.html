@@ -1273,10 +1273,16 @@
         const currentDay = now.getDay();
 
         const startWorkTime = new Date(now);
-        startWorkTime.setHours(8, 0, 0, 0);
+        startWorkTime.setHours(8, 0, 0, 0); // 8:00 AM
 
         const endWorkTime = new Date(now);
-        endWorkTime.setHours(17, 25, 0, 0);
+        endWorkTime.setHours(17, 25, 0, 0); // 5:25 PM
+
+        const lunchStart = new Date(now);
+        lunchStart.setHours(13, 0, 0, 0); // 1:00 PM
+
+        const lunchEnd = new Date(now);
+        lunchEnd.setHours(14, 0, 0, 0); // 2:00 PM
 
         let countdownText;
 
