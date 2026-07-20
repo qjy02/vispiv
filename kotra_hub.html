@@ -307,8 +307,9 @@
         .page {
             display: none;
             animation: fadeSlideIn 0.35s ease forwards;
+            height: 100%;
         }
-        .page.active-page { display: block; }
+        .page.active-page { display: flex; flex-direction: column; }
 
         @keyframes fadeSlideIn {
             from { opacity: 0; transform: translateY(12px); }
@@ -705,9 +706,119 @@
             transform: translateY(-1px);
         }
 
+        /* ===== IFRAME PAGE - HR PORTAL ===== */
+        .iframe-wrapper {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            flex: 1;
+            min-height: 300px;
+        }
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Iframe Loading State */
+        .iframe-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--bg-card);
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+        .iframe-loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .iframe-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .iframe-loading p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Iframe Fallback (shown when CORS blocks the iframe) */
+        .iframe-fallback {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+        }
+        .iframe-fallback.visible {
+            display: flex;
+        }
+        .iframe-fallback i {
+            font-size: 48px;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+        }
+        .iframe-fallback h3 {
+            color: var(--text-primary);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .iframe-fallback p {
+            color: var(--text-secondary);
+            max-width: 400px;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .iframe-fallback .note {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .iframe-fallback .btn-open {
+            padding: 10px 28px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .iframe-fallback .btn-open:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+        }
+
         /* ===== DASHBOARD STYLES ===== */
         .page-header {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            flex-shrink: 0;
         }
         .page-header h2 {
             font-size: 20px;
@@ -718,6 +829,12 @@
             color: var(--text-secondary);
             font-size: 14px;
             margin-top: 2px;
+        }
+
+        /* Pages that aren't iframe-based (dashboard, mini pages) */
+        .page:not(.iframe-page) .page-content {
+            flex: 1;
+            overflow-y: auto;
         }
 
         .stats-grid {
@@ -943,22 +1060,6 @@
             margin-top: -2px;
         }
 
-        .iframe-wrapper {
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            height: calc(100vh - 280px);
-            min-height: 250px;
-            box-shadow: var(--shadow-sm);
-        }
-        .iframe-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
         /* ===== RESPONSIVE: DESKTOP ===== */
         @media (min-width: 768px) {
             .top-header { padding: 0 32px; height: 68px; }
@@ -975,7 +1076,7 @@
             .chart-card { padding: 20px 24px; }
             .chart-bars { height: 100px; }
             .chart-bars .bar { max-width: 36px; }
-            .iframe-wrapper { height: calc(100vh - 220px); min-height: 400px; }
+            .iframe-wrapper { min-height: 500px; }
             .bottom-nav-item { padding: 6px 20px; max-width: 100px; }
             .bottom-nav-item i { font-size: 22px; }
             .bottom-nav-item span { font-size: 10px; }
@@ -990,6 +1091,19 @@
             .stats-grid { grid-template-columns: repeat(4, 1fr); }
             .mini-grid { grid-template-columns: repeat(2, 1fr); }
             .bottom-nav-item { padding: 6px 32px; max-width: 120px; }
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 767px) {
+            .iframe-wrapper {
+                min-height: 300px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+            .iframe-fallback i { font-size: 36px; }
+            .iframe-fallback h3 { font-size: 16px; }
+            .iframe-fallback p { font-size: 13px; }
         }
 
         /* ===== SETTINGS - MOBILE TABS ===== */
@@ -1117,7 +1231,7 @@
             <main class="content-area" id="contentArea">
 
                 <!-- Dashboard -->
-                <div id="page-dashboard" class="page active-page">
+                <div id="page-dashboard" class="page">
                     <div class="page-header">
                         <h2>Good morning, KP 👋</h2>
                         <p>Your unified overview across all Kotra platforms.</p>
@@ -1182,31 +1296,42 @@
                     </div>
                 </div>
 
-                <!-- HR Portal -->
-                <div id="page-hr" class="page">
+                <!-- HR Portal - with full-screen iframe -->
+                <div id="page-hr" class="page iframe-page">
                     <div class="page-header">
                         <h2><i class="fas fa-user-tie" style="color:var(--accent-blue);margin-right:10px;"></i>HR Portal</h2>
-                        <p>Workforce management &amp; employee records.</p>
+                        <p>Employee Self-Service (ESSNet) · Workforce management</p>
                     </div>
-                    <div class="mini-grid">
-                        <div class="mini-card">
-                            <div class="card-header"><h5>👤 Team Overview</h5><span class="tag info">Active</span></div>
-                            <div class="employee-avatars">
-                                <div class="emp-avatar"><div class="circle" style="background:#2563eb;">ST</div><span class="name">Sarah</span><span class="status-dot" style="background:#16a34a;"></span></div>
-                                <div class="emp-avatar"><div class="circle" style="background:#ea580c;">JM</div><span class="name">James</span><span class="status-dot" style="background:#16a34a;"></span></div>
-                                <div class="emp-avatar"><div class="circle" style="background:#16a34a;">AL</div><span class="name">Amy</span><span class="status-dot" style="background:#f59e0b;"></span></div>
-                                <div class="emp-avatar"><div class="circle" style="background:#dc2626;">RK</div><span class="name">Raj</span><span class="status-dot" style="background:#ef4444;"></span></div>
-                                <div class="emp-avatar"><div class="circle" style="background:#8b5cf6;">LN</div><span class="name">Lisa</span><span class="status-dot" style="background:#16a34a;"></span></div>
-                            </div>
-                            <div style="margin-top:12px;font-size:11px;color:var(--text-muted);"><i class="fas fa-circle" style="color:#16a34a;font-size:7px;"></i> Online · <i class="fas fa-circle" style="color:#f59e0b;font-size:7px;margin-left:6px;"></i> Away · <i class="fas fa-circle" style="color:#ef4444;font-size:7px;margin-left:6px;"></i> Busy</div>
+                    <div class="iframe-wrapper" id="hrIframeWrapper">
+                        <!-- Loading State -->
+                        <div class="iframe-loading" id="iframeLoading">
+                            <div class="spinner"></div>
+                            <p>Loading HR Portal...</p>
                         </div>
-                        <div class="mini-card">
-                            <div class="card-header"><h5>📋 Leave Summary</h5><span class="tag warning">Pending</span></div>
-                            <div class="mini-list">
-                                <div class="list-item"><span>Annual Leave</span><span><strong>12</strong> days</span></div>
-                                <div class="list-item"><span>Medical Leave</span><span><strong>8</strong> days</span></div>
-                                <div class="list-item"><span>Pending Requests</span><span><span class="status-badge pending">5</span></span></div>
-                            </div>
+
+                        <!-- The Actual Iframe -->
+                        <iframe 
+                            id="hrIframe"
+                            src="https://ehr.kotrapharma.com/hrmsnet/"
+                            title="HR Portal - ESSNet"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            onload="handleIframeLoad()"
+                            onerror="handleIframeError()">
+                        </iframe>
+
+                        <!-- Fallback (shown when iframe is blocked) -->
+                        <div class="iframe-fallback" id="iframeFallback">
+                            <i class="fas fa-lock"></i>
+                            <h3>Secure Integration Required</h3>
+                            <p>To protect your data, the HR portal cannot be embedded directly.</p>
+                            <p class="note">This is a standard security measure for enterprise systems.</p>
+                            <button class="btn-open" onclick="window.open('https://ehr.kotrapharma.com/hrmsnet/', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> Open HR Portal in New Tab
+                            </button>
+                            <p style="margin-top:16px; font-size:12px; color:var(--text-muted);">
+                                <i class="fas fa-info-circle"></i> In production, a reverse proxy will enable seamless integration.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -1292,7 +1417,7 @@
                 </div>
 
                 <!-- Morning Call -->
-                <div id="page-morningcall" class="page">
+                <div id="page-morningcall" class="page iframe-page">
                     <div class="page-header">
                         <h2><i class="fab fa-youtube" style="color:#FF0000;margin-right:10px;"></i>Morning Call</h2>
                         <p>Daily briefing &amp; updates.</p>
@@ -1631,14 +1756,11 @@
         }
 
         function switchSettingsSection(sectionId, element) {
-            // Update sidebar
             document.querySelectorAll('.settings-sidebar-item').forEach(item => item.classList.remove('active'));
             if (element) element.classList.add('active');
-            // Update content
             document.querySelectorAll('.settings-section').forEach(section => section.classList.remove('active'));
             const target = document.getElementById('settings-' + sectionId);
             if (target) target.classList.add('active');
-            // Sync mobile tabs
             document.querySelectorAll('.settings-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.section === sectionId);
             });
@@ -1646,14 +1768,11 @@
 
         // ===== SETTINGS TAB (Mobile) =====
         function switchSettingsTab(sectionId, element) {
-            // Update tabs
             document.querySelectorAll('.settings-tab').forEach(tab => tab.classList.remove('active'));
             if (element) element.classList.add('active');
-            // Update content
             document.querySelectorAll('.settings-section').forEach(section => section.classList.remove('active'));
             const target = document.getElementById('settings-' + sectionId);
             if (target) target.classList.add('active');
-            // Sync desktop sidebar
             document.querySelectorAll('.settings-sidebar-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.section === sectionId);
             });
@@ -1679,6 +1798,28 @@
                 icon.className = 'fas fa-eye';
             }
         }
+
+        // ===== IFRAME HANDLERS =====
+        let iframeLoaded = false;
+
+        function handleIframeLoad() {
+            iframeLoaded = true;
+            document.getElementById('iframeLoading').classList.add('hidden');
+            document.getElementById('iframeFallback').classList.remove('visible');
+        }
+
+        function handleIframeError() {
+            document.getElementById('iframeLoading').classList.add('hidden');
+            document.getElementById('iframeFallback').classList.add('visible');
+        }
+
+        // Check if iframe loaded successfully after 8 seconds
+        setTimeout(function() {
+            if (!iframeLoaded) {
+                document.getElementById('iframeLoading').classList.add('hidden');
+                document.getElementById('iframeFallback').classList.add('visible');
+            }
+        }, 8000);
 
         // ===== LOGIN =====
         function handleLogin() {
