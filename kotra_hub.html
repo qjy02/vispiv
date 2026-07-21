@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -78,7 +79,10 @@
         #loginScreen {
             width: 100%;
             height: 100vh;
-            background: var(--gradient-main);
+            background-image: url('https://assets.theedgemarkets.com/kotrapharma_www.kotrapharma.com_.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -105,6 +109,7 @@
             text-align: center;
             border: 1px solid var(--border-color);
             transition: background var(--transition), border var(--transition);
+            margin-bottom: 20px;
         }
         .login-box .brand-icon { font-size: 42px; color: var(--accent-blue); margin-bottom: 8px; }
         .login-box h1 { color: var(--text-primary); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
@@ -815,6 +820,248 @@
             box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
         }
 
+        /* ===== AI ASSISTANT - VIPO ===== */
+        .ai-assistant {
+            position: fixed;
+            bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 16px);
+            right: 20px;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+            -webkit-user-select: none;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* When chat is open - slide down and disappear */
+        .ai-assistant.chat-open {
+            transform: translateY(40px) scale(0.6);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .ai-assistant:hover {
+            transform: scale(1.05);
+        }
+
+        .ai-assistant .avatar-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #1a4a7a);
+            padding: 4px;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .ai-assistant .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background: white;
+        }
+
+        .ai-assistant .assistant-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 2px 12px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            white-space: nowrap;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Talking animation (mouth open/close) */
+        .ai-assistant.talking .avatar-wrapper {
+            animation: float 3s ease-in-out infinite, pulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        /* ===== DRAGGABLE CHAT BUBBLE ===== */
+        .ai-chat-bubble {
+            position: fixed;
+            bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 100px);
+            right: 20px;
+            width: 320px;
+            max-width: calc(100vw - 40px);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            z-index: 95;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease forwards;
+            cursor: default;
+        }
+
+        .ai-chat-bubble.dragging {
+            opacity: 0.95;
+            box-shadow: var(--shadow-xl);
+            transition: none;
+            cursor: grabbing;
+        }
+
+        .ai-chat-bubble.open {
+            display: flex;
+        }
+
+        /* Chat header becomes drag handle */
+        .ai-chat-bubble .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-hover);
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .ai-chat-bubble .chat-header:active {
+            cursor: grabbing;
+        }
+
+        .ai-chat-bubble .chat-header .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            pointer-events: none;
+        }
+
+        .ai-chat-bubble .chat-header .chat-title img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+        }
+
+        .ai-chat-bubble .chat-header .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            z-index: 10;
+        }
+
+        .ai-chat-bubble .chat-header .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .ai-chat-bubble .chat-body {
+            padding: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .ai-chat-bubble .chat-body .message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .ai-chat-bubble .chat-body .message .msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #2563eb, #1a4a7a);
+            padding: 2px;
+        }
+
+        .ai-chat-bubble .chat-body .message .msg-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+        }
+
+        .ai-chat-bubble .chat-body .message .msg-text {
+            background: var(--bg-hover);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-secondary);
+            max-width: 80%;
+            line-height: 1.4;
+        }
+
+        .ai-chat-bubble .chat-body .message.user .msg-text {
+            background: var(--accent-blue);
+            color: white;
+            margin-left: auto;
+        }
+
+        .ai-chat-bubble .chat-body .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .ai-chat-bubble .chat-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-chat-bubble .chat-footer input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        .ai-chat-bubble .chat-footer input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .ai-chat-bubble .chat-footer button {
+            padding: 8px 16px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .ai-chat-bubble .chat-footer button:hover {
+            opacity: 0.9;
+        }
+
         /* ===== DASHBOARD STYLES ===== */
         .page-header {
             margin-bottom: 16px;
@@ -1060,7 +1307,7 @@
             margin-top: -2px;
         }
 
-        /* ===== RESPONSIVE: DESKTOP ===== */
+        /* ===== RESPONSIVE ===== */
         @media (min-width: 768px) {
             .top-header { padding: 0 32px; height: 68px; }
             .logo-area { font-size: 22px; }
@@ -1084,6 +1331,7 @@
             .app-drawer-grid .drawer-app i { font-size: 32px; }
             .app-drawer-grid .drawer-app span { font-size: 12px; }
             .settings-sidebar { width: 220px; }
+            .ai-chat-bubble { width: 380px; }
         }
 
         @media (min-width: 1400px) {
@@ -1093,7 +1341,6 @@
             .bottom-nav-item { padding: 6px 32px; max-width: 120px; }
         }
 
-        /* ===== MOBILE ===== */
         @media (max-width: 767px) {
             .iframe-wrapper {
                 min-height: 300px;
@@ -1104,6 +1351,13 @@
             .iframe-fallback i { font-size: 36px; }
             .iframe-fallback h3 { font-size: 16px; }
             .iframe-fallback p { font-size: 13px; }
+            .ai-assistant .avatar-wrapper { width: 52px; height: 52px; }
+            .ai-chat-bubble {
+                right: 10px;
+                bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 80px);
+                width: calc(100vw - 20px);
+                max-width: calc(100vw - 20px);
+            }
         }
 
         /* ===== SETTINGS - MOBILE TABS ===== */
@@ -1176,7 +1430,8 @@
         }
     </style>
 </head>
-<body>
+
+<body class="dark-mode">>
 
     <!-- ===== LOGIN SCREEN ===== -->
     <div id="loginScreen">
@@ -1185,7 +1440,7 @@
                 <img src="https://www.kotrapharma.com/assets/images/main/Kotra-Pharma-logo.png" alt="Kotra Pharma" style="height: 60px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
             </div>
             <h1>Kotra <span>Hub</span></h1>
-            <p class="sub">Unified access · One identity</p>
+            <p class="sub">Unified Digital Ecosystem</p>
             <input type="text" placeholder="Username" value="kp.digital" id="usernameInput">
             <div class="password-wrapper">
                 <input type="password" placeholder="Password" value="kp@123" id="passwordInput">
@@ -1197,6 +1452,13 @@
                 <i class="fas fa-arrow-right-to-bracket" style="margin-right: 10px;"></i> Sign In
             </button>
             <p class="note"><i class="fas fa-shield-halved"></i>Warning: After 3 consecutive failed login attempts, your account will be temporarily locked.</p>
+        </div>
+
+        <!-- ===== BOTTOM FOOTER LINK ===== -->
+        <div style="position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; padding: 0 20px; margin-top: 16px;">
+            <a href="https://www.kotrapharma.com" target="_blank" style="color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.6), 0 0 30px rgba(0,0,0,0.3); transition: all 0.3s ease; display: inline-block; padding: 8px 20px; background: rgba(0,0,0,0.2); border-radius: 30px; backdrop-filter: blur(4px);">
+                www.kotrapharma.com
+            </a>
         </div>
     </div>
 
@@ -1217,7 +1479,7 @@
                     <i class="fas fa-bell"></i>
                     <span class="badge-dot"></span>
                 </button>
-                <div class="user-profile" onclick="alert('Profile & Settings')">
+                <div class="user-profile" onclick="openSettingsToSection('account')">
                     <div class="avatar">KD</div>
                     <div class="user-info">
                         <span class="name">KP Digital</span>
@@ -1298,20 +1560,13 @@
                     </div>
                 </div>
 
-                <!-- HR Portal - with full-screen iframe -->
+                <!-- HR Portal -->
                 <div id="page-hr" class="page iframe-page">
-                    <div class="page-header">
-                        <h2><i class="fas fa-user-tie" style="color:var(--accent-blue);margin-right:10px;"></i>HR Portal</h2>
-                        <p>Employee Self-Service (ESSNet) · Workforce management</p>
-                    </div>
                     <div class="iframe-wrapper" id="hrIframeWrapper">
-                        <!-- Loading State -->
                         <div class="iframe-loading" id="iframeLoading">
                             <div class="spinner"></div>
                             <p>Loading HR Portal...</p>
                         </div>
-
-                        <!-- The Actual Iframe -->
                         <iframe 
                             id="hrIframe"
                             src="https://ehr.kotrapharma.com/hrmsnet/"
@@ -1321,8 +1576,6 @@
                             onload="handleIframeLoad()"
                             onerror="handleIframeError()">
                         </iframe>
-
-                        <!-- Fallback (shown when iframe is blocked) -->
                         <div class="iframe-fallback" id="iframeFallback">
                             <i class="fas fa-lock"></i>
                             <h3>Secure Integration Required</h3>
@@ -1455,7 +1708,7 @@
                 <i class="fas fa-headset"></i>
                 <span>Support</span>
             </button>
-            <button class="bottom-nav-item" onclick="openSettings()">
+            <button class="bottom-nav-item" onclick="openSettingsToSection('general')">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
             </button>
@@ -1643,6 +1896,45 @@
                 </div>
             </div>
         </div>
+
+        <!-- ===== AI ASSISTANT - VIPO ===== -->
+        <div class="ai-assistant" id="aiAssistant" onclick="toggleChat()">
+            <div class="avatar-wrapper">
+                <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Vipo AI Assistant" id="vipoAvatar">
+            </div>
+            <span class="assistant-label">
+                <i class="fas fa-bolt" style="color: var(--accent-blue);"></i> Vipo AI
+            </span>
+        </div>
+
+        <!-- ===== DRAGGABLE AI CHAT BUBBLE ===== -->
+        <div class="ai-chat-bubble" id="aiChatBubble">
+            <div class="chat-header" id="chatHeader">
+                <div class="chat-title">
+                    <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Vipo">
+                    <span>Vipo AI Assistant</span>
+                </div>
+                <button class="close-btn" onclick="event.stopPropagation(); toggleChat()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="message">
+                    <div class="msg-avatar">
+                        <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Vipo">
+                    </div>
+                    <div class="msg-text">
+                        Hi there! 👋 I'm Vipo, your AI assistant. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" placeholder="Ask me anything..." id="chatInput" onkeydown="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- ===== JAVASCRIPT ===== -->
@@ -1657,6 +1949,7 @@
         ];
 
         let pinnedApps = appCatalog.filter(app => app.pinned).map(app => app.id);
+        let currentUsername = '';
 
         // ===== RENDER DRAWER =====
         function renderDrawer() {
@@ -1818,13 +2111,236 @@
             document.getElementById('iframeFallback').classList.add('visible');
         }
 
-        // Check if iframe loaded successfully after 8 seconds
         setTimeout(function() {
             if (!iframeLoaded) {
                 document.getElementById('iframeLoading').classList.add('hidden');
                 document.getElementById('iframeFallback').classList.add('visible');
             }
         }, 8000);
+
+        // ===== DRAGGABLE CHAT BUBBLE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatBubble = document.getElementById('aiChatBubble');
+            const header = document.getElementById('chatHeader');
+            let isDragging = false;
+            let startX, startY, originalX, originalY;
+
+            function getPos() {
+                const rect = chatBubble.getBoundingClientRect();
+                return { x: rect.left, y: rect.top };
+            }
+
+            function onStart(e) {
+                // Only drag if chat is open
+                if (!chatBubble.classList.contains('open')) return;
+                
+                // Ignore if clicking the close button
+                if (e.target.closest('.close-btn')) return;
+                
+                isDragging = true;
+                const pos = getPos();
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                startX = clientX - pos.x;
+                startY = clientY - pos.y;
+                chatBubble.classList.add('dragging');
+                chatBubble.style.transition = 'none';
+                chatBubble.style.cursor = 'grabbing';
+                header.style.cursor = 'grabbing';
+            }
+
+            function onMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                
+                let newX = clientX - startX;
+                let newY = clientY - startY;
+                
+                // Bound to viewport
+                const rect = chatBubble.getBoundingClientRect();
+                const maxX = window.innerWidth - rect.width;
+                const maxY = window.innerHeight - rect.height;
+                newX = Math.max(0, Math.min(newX, maxX));
+                newY = Math.max(0, Math.min(newY, maxY));
+                
+                chatBubble.style.left = newX + 'px';
+                chatBubble.style.top = newY + 'px';
+                chatBubble.style.right = 'auto';
+                chatBubble.style.bottom = 'auto';
+            }
+
+            function onEnd() {
+                if (isDragging) {
+                    isDragging = false;
+                    chatBubble.classList.remove('dragging');
+                    chatBubble.style.transition = 'all 0.3s ease';
+                    chatBubble.style.cursor = 'default';
+                    header.style.cursor = 'grab';
+                }
+            }
+
+            // Mouse events
+            header.addEventListener('mousedown', onStart);
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onEnd);
+
+            // Touch events
+            header.addEventListener('touchstart', onStart, { passive: true });
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onEnd, { passive: true });
+
+            // Prevent dragging from triggering chat toggle
+            let dragOccurred = false;
+            header.addEventListener('mousedown', function() {
+                dragOccurred = false;
+            });
+            header.addEventListener('mousemove', function() {
+                if (isDragging) dragOccurred = true;
+            });
+            header.addEventListener('mouseup', function(e) {
+                if (dragOccurred) {
+                    e.stopPropagation();
+                }
+            });
+        });
+
+        // ===== AI ASSISTANT - VIPO =====
+        let isTalking = false;
+        let talkInterval = null;
+        let isChatOpen = false;
+
+        function toggleChat() {
+            isChatOpen = !isChatOpen;
+            const chatBubble = document.getElementById('aiChatBubble');
+            const assistant = document.getElementById('aiAssistant');
+            
+            chatBubble.classList.toggle('open', isChatOpen);
+            assistant.classList.toggle('chat-open', isChatOpen);
+            
+            if (isChatOpen) {
+                // Reset position if dragged off screen
+                const rect = chatBubble.getBoundingClientRect();
+                if (rect.left < 0 || rect.top < 0 || rect.left > window.innerWidth || rect.top > window.innerHeight) {
+                    chatBubble.style.left = 'auto';
+                    chatBubble.style.right = '20px';
+                    chatBubble.style.bottom = 'auto';
+                    chatBubble.style.top = 'auto';
+                }
+                startTalking();
+            } else {
+                stopTalking();
+            }
+        } 
+                    
+        function startTalking() {
+            if (talkInterval) return;
+            const img = document.getElementById('vipoAvatar');
+            const assistant = document.getElementById('aiAssistant');
+            assistant.classList.add('talking');
+            
+            let isOpen = false;
+            talkInterval = setInterval(() => {
+                isOpen = !isOpen;
+                img.src = isOpen 
+                    ? 'https://qjy02.github.io/react/vipo/vipo_excited.png'
+                    : 'https://qjy02.github.io/react/vipo/vipo.png';
+            }, 300);
+        }
+
+        function stopTalking() {
+            if (talkInterval) {
+                clearInterval(talkInterval);
+                talkInterval = null;
+            }
+            const img = document.getElementById('vipoAvatar');
+            const assistant = document.getElementById('aiAssistant');
+            assistant.classList.remove('talking');
+            img.src = 'https://qjy02.github.io/react/vipo/vipo.png';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const chatBody = document.getElementById('chatBody');
+            
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = `<div class="msg-text">${message}</div>`;
+            chatBody.appendChild(userMsg);
+            input.value = '';
+            
+            // Start talking animation
+            startTalking();
+            
+            // Fetch advice from the Advice Slip API
+            fetch('https://api.adviceslip.com/advice')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract the advice from the response
+                    const advice = data.slip.advice || "Here's a thought: keep going, you're doing great! 💪";
+                    
+                    // Add Vipo's response
+                    const vipoMsg = document.createElement('div');
+                    vipoMsg.className = 'message';
+                    vipoMsg.innerHTML = `
+                        <div class="msg-avatar">
+                            <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Vipo">
+                        </div>
+                        <div class="msg-text">${advice}</div>
+                    `;
+                    chatBody.appendChild(vipoMsg);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                    stopTalking();
+                })
+                .catch(error => {
+                    // Fallback if the API call fails
+                    console.error('Advice API error:', error);
+                    const fallbackMsg = document.createElement('div');
+                    fallbackMsg.className = 'message';
+                    fallbackMsg.innerHTML = `
+                        <div class="msg-avatar">
+                            <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Vipo">
+                        </div>
+                        <div class="msg-text">I'm having trouble finding good advice right now. Try again in a moment! 😅</div>
+                    `;
+                    chatBody.appendChild(fallbackMsg);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                    stopTalking();
+                });
+        }
+
+        // Close chat when clicking outside
+        document.addEventListener('click', function(e) {
+            const chat = document.getElementById('aiChatBubble');
+            const assistant = document.getElementById('aiAssistant');
+            if (isChatOpen && !chat.contains(e.target) && !assistant.contains(e.target)) {
+                toggleChat();
+            }
+        });
+
+        // ===== OPEN SETTINGS AND GO TO SPECIFIC SECTION =====
+        function openSettingsToSection(section) {
+            var targetSection = section || 'general';
+            
+            openSettings();
+            setTimeout(function() {
+                var sidebarItem = document.querySelector('.settings-sidebar-item[data-section="' + targetSection + '"]');
+                if (sidebarItem) {
+                    switchSettingsSection(targetSection, sidebarItem);
+                }
+                
+                var tabItem = document.querySelector('.settings-tab[data-section="' + targetSection + '"]');
+                if (tabItem) {
+                    switchSettingsTab(targetSection, tabItem);
+                }
+            }, 150);
+        }
 
         // ===== LOGIN =====
         function handleLogin() {
@@ -1836,9 +2352,16 @@
             }
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.add('active');
-            document.querySelector('.user-profile .name').textContent = 'KP Digital';
+            
+            const displayName = 'KP Digital';
+            currentUsername = displayName;
+            
+            document.querySelector('.user-profile .name').textContent = displayName;
             document.querySelector('.user-profile .role').textContent = 'Executive · IT';
             document.querySelector('.user-profile .avatar').textContent = 'KD';
+            
+            document.querySelector('#page-dashboard .page-header h2').textContent = `Good morning, ${displayName} 👋`;
+            
             renderDrawer();
             switchPage('page-dashboard', document.querySelector('.bottom-nav-item[data-page="page-dashboard"]'));
         }
