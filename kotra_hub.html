@@ -1645,14 +1645,16 @@
                 </div>
 
                 <!-- Employee Onboarding Portal -->
-                <div id="page-onboarding" class="page iframe-page">
-                    <div class="iframe-wrapper">
-                        <iframe 
-                            id="onboardingIframe"
-                            src="employee_onboarding.html"
-                            title="Employee Onboarding Portal"
-                            allowfullscreen>
-                        </iframe>
+                <div id="page-onboarding" class="page">
+                    <div class="page-header">
+                        <h2><i class="fas fa-user-plus" style="color:var(--accent-blue);margin-right:10px;"></i>Employee Onboarding Portal</h2>
+                        <p>Manage employee records and onboarding status.</p>
+                    </div>
+                    <div id="onboardingContainer" style="flex:1;min-height:500px;background:var(--bg-card);border-radius:var(--radius-sm);border:1px solid var(--border-color);padding:0;overflow:auto;position:relative;">
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;padding:40px;color:var(--text-muted);">
+                            <i class="fas fa-spinner fa-spin" style="font-size:24px;margin-right:12px;"></i>
+                            Loading Onboarding Portal...
+                        </div>
                     </div>
                 </div>
 
@@ -1950,6 +1952,8 @@
     </div>
 
     <!-- ===== JAVASCRIPT ===== -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         // ===== APP CATALOG =====
         const appCatalog = [
@@ -2434,6 +2438,61 @@
                     const contentHeight = iframe.contentWindow.document.body.scrollHeight;
                     iframe.style.height = contentHeight + 'px';
                 } catch(e) {}
+            }
+        });
+
+        // ===== LOAD ONBOARDING PORTAL =====
+        function loadOnboardingPortal() {
+            const container = document.getElementById('onboardingContainer');
+            if (!container) return;
+            
+            // Show loading state
+            container.innerHTML = `
+                <div style="display:flex;align-items:center;justify-content:center;height:100%;padding:40px;color:var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size:24px;margin-right:12px;"></i>
+                    Loading Onboarding Portal...
+                </div>
+            `;
+            
+            fetch('employee_onboarding.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(html => {
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Failed to load onboarding portal:', err);
+                    container.innerHTML = `
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:40px;text-align:center;color:var(--text-secondary);">
+                            <i class="fas fa-exclamation-triangle" style="font-size:48px;color:var(--accent-orange);margin-bottom:16px;"></i>
+                            <h3 style="margin-bottom:8px;color:var(--text-primary);">Unable to load Onboarding Portal</h3>
+                            <p style="margin-bottom:16px;">The employee onboarding page could not be loaded.</p>
+                            <button onclick="loadOnboardingPortal()" style="padding:8px 24px;background:var(--accent-blue);color:white;border:none;border-radius:8px;cursor:pointer;">
+                                <i class="fas fa-redo"></i> Retry
+                            </button>
+                        </div>
+                    `;
+                });
+        }
+
+        // Override switchPage to load onboarding when navigated to
+        const originalSwitchPage = window.switchPage;
+        window.switchPage = function(pageId, element) {
+            // Call the original function
+            if (originalSwitchPage) originalSwitchPage(pageId, element);
+            
+            // If switching to onboarding page, load the content
+            if (pageId === 'page-onboarding') {
+                setTimeout(loadOnboardingPortal, 100);
+            }
+        };
+
+        // Load onboarding if it's the active page on init
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('page-onboarding').classList.contains('active-page')) {
+                loadOnboardingPortal();
             }
         });
     </script>
