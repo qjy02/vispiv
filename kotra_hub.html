@@ -1644,6 +1644,18 @@
                     </div>
                 </div>
 
+                <!-- Employee Onboarding Portal -->
+                <div id="page-onboarding" class="page iframe-page">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            id="onboardingIframe"
+                            src="employee_onboarding.html"
+                            title="Employee Onboarding Portal"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
                 <!-- Employee Portal -->
                 <div id="page-employee" class="page">
                     <div class="page-header">
@@ -1944,6 +1956,7 @@
             { id: 'page-hr', icon: 'fa-user-tie', name: 'HR Portal', category: 'People', tags: ['hr', 'employees', 'leave'], pinned: true },
             { id: 'page-eservices', icon: 'fa-headset', name: 'E-Services', category: 'Operations', tags: ['support', 'tickets', 'service'], pinned: true },
             { id: 'page-ndms', icon: 'fa-flask', name: 'NDMS Portal', category: 'R&D', tags: ['research', 'lab', 'compliance'], pinned: true },
+            { id: 'page-onboarding', icon: 'fa-user-plus', name: 'Employee Onboarding Portal', category: 'People', tags: ['onboarding', 'hr', 'employees', 'new joiners'], pinned: true },
             { id: 'page-employee', icon: 'fa-users', name: 'Employee Portal', category: 'People', tags: ['payslip', 'announcements', 'wellness'], pinned: true },
             { id: 'page-morningcall', icon: 'fab fa-youtube', name: 'Morning Call', category: 'Media', tags: ['video', 'briefing', 'daily'], pinned: false },
         ];
@@ -2397,6 +2410,32 @@
 
         // Uncomment for auto-login during presentation:
         // window.onload = function() { setTimeout(handleLogin, 300); };
+
+        // ===== AUTO-RESIZE IFRAME =====
+        function resizeIframe(iframe) {
+            try {
+                // Wait for content to load
+                setTimeout(function() {
+                    const contentHeight = iframe.contentWindow.document.body.scrollHeight;
+                    iframe.style.height = contentHeight + 'px';
+                    iframe.style.minHeight = '400px';
+                }, 100);
+            } catch(e) {
+                // Cross-origin fallback - use a reasonable default
+                iframe.style.height = '800px';
+            }
+        }
+
+        // Also resize on window resize for responsiveness
+        window.addEventListener('resize', function() {
+            const iframe = document.getElementById('onboardingIframe');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    const contentHeight = iframe.contentWindow.document.body.scrollHeight;
+                    iframe.style.height = contentHeight + 'px';
+                } catch(e) {}
+            }
+        });
     </script>
 </body>
 </html>
