@@ -1,0 +1,1651 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kotra · Employee Onboarding Portal</title>
+        <link rel="icon" href="https://www.kotrapharma.com/assets/images/main/Kotra-Pharma-logo.png" type="image/png" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family:
+                    "Inter",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+            }
+            :root {
+                --bg: #f6f8fa;
+                --surface: #ffffff;
+                --border: #dce1e8;
+                --text: #1a2332;
+                --text-secondary: #475569;
+                --text-muted: #94a3b8;
+                --blue: #2563eb;
+                --blue-light: #eff6ff;
+                --green: #16a34a;
+                --orange: #ea580c;
+                --radius: 10px;
+                --shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            }
+            body.dark-mode {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --border: #30363d;
+                --text: #e6edf3;
+                --text-secondary: #8b949e;
+                --text-muted: #484f58;
+                --blue-light: #1c2333;
+            }
+            body {
+                background: var(--bg);
+                padding: 20px;
+                min-height: 100vh;
+                transition: background 0.2s;
+                color: var(--text);
+            }
+            .container {
+                max-width: 1280px;
+                margin: 0 auto;
+            }
+
+            /* header */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 0 20px;
+                border-bottom: 1px solid var(--border);
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .logo img {
+                height: 32px;
+            }
+            .logo .title {
+                font-weight: 700;
+                font-size: 18px;
+                letter-spacing: -0.3px;
+            }
+            .logo .title span {
+                color: var(--blue);
+            }
+            .badge {
+                font-size: 9px;
+                font-weight: 600;
+                background: var(--blue-light);
+                color: var(--blue);
+                padding: 2px 10px;
+                border-radius: 20px;
+                border: 1px solid var(--border);
+            }
+            .header-actions {
+                display: flex;
+                gap: 8px;
+            }
+            .btn-icon {
+                padding: 6px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                color: var(--text-secondary);
+                cursor: pointer;
+                font-size: 13px;
+                transition: 0.2s;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .btn-icon:hover {
+                border-color: var(--blue);
+                color: var(--blue);
+            }
+
+            /* dashboard */
+            .dash-title {
+                font-size: 24px;
+                font-weight: 700;
+                margin: 28px 0 4px;
+            }
+            .dash-sub {
+                color: var(--text-secondary);
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            /* ===== ENHANCED STATS WITH PROGRESS BARS ===== */
+            .stats-row {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+                margin-bottom: 28px;
+            }
+            .stat-item {
+                background: var(--surface);
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                padding: 18px 20px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            .stat-item:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            }
+            .stat-item .stat-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            .stat-item .stat-label {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--text-secondary);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .stat-item .stat-label i {
+                font-size: 14px;
+            }
+            .stat-item .num {
+                font-size: 30px;
+                font-weight: 700;
+                line-height: 1.2;
+                margin-top: 4px;
+            }
+            .stat-item .num.blue {
+                color: var(--blue);
+            }
+            .stat-item .num.green {
+                color: var(--green);
+            }
+            .stat-item .num.orange {
+                color: var(--orange);
+            }
+            .stat-item .stat-sub {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 2px;
+            }
+            .stat-item .stat-progress {
+                margin-top: 12px;
+                height: 4px;
+                background: var(--border);
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            .stat-item .stat-progress .progress-bar {
+                height: 100%;
+                border-radius: 4px;
+                transition: width 0.8s ease;
+                width: 0%;
+            }
+            .stat-item .stat-progress .progress-bar.blue {
+                background: var(--blue);
+            }
+            .stat-item .stat-progress .progress-bar.green {
+                background: var(--green);
+            }
+            .stat-item .stat-progress .progress-bar.orange {
+                background: var(--orange);
+            }
+            .stat-item .stat-trend {
+                font-size: 12px;
+                margin-top: 8px;
+                font-weight: 500;
+            }
+            .stat-item .stat-trend.up {
+                color: var(--green);
+            }
+            .stat-item .stat-trend.warning {
+                color: var(--orange);
+            }
+            .stat-item .stat-trend.down {
+                color: #dc2626;
+            }
+            .stat-item .stat-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                flex-shrink: 0;
+            }
+            .stat-item .stat-icon.blue-bg {
+                background: var(--blue-light);
+                color: var(--blue);
+            }
+            .stat-item .stat-icon.green-bg {
+                background: #dcfce7;
+                color: var(--green);
+            }
+            .stat-item .stat-icon.orange-bg {
+                background: #fef3c7;
+                color: var(--orange);
+            }
+            .stat-item .stat-icon.purple-bg {
+                background: #ede9fe;
+                color: #7c3aed;
+            }
+
+            /* Responsive stats */
+            @media (max-width: 900px) {
+                .stats-row {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (max-width: 500px) {
+                .stats-row {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* action bar + filter */
+            .action-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 14px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .action-bar h3 {
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .action-bar h3 i {
+                color: var(--blue);
+                margin-right: 8px;
+            }
+            .btn-primary {
+                padding: 8px 20px;
+                background: var(--blue);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 13px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: 0.2s;
+            }
+            .btn-primary:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+            }
+
+            .filter-bar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+                background: var(--surface);
+                padding: 8px 16px;
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                margin-bottom: 20px;
+            }
+            .filter-bar .search-wrap {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex: 1 1 200px;
+                background: var(--bg);
+                padding: 4px 10px;
+                border-radius: 6px;
+                border: 1px solid var(--border);
+            }
+            .filter-bar .search-wrap i {
+                color: var(--text-muted);
+                font-size: 13px;
+            }
+            .filter-bar .search-wrap input {
+                border: none;
+                background: transparent;
+                padding: 6px 0;
+                font-size: 13px;
+                width: 100%;
+                color: var(--text);
+                outline: none;
+            }
+            .filter-bar .filter-group {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .filter-bar select {
+                padding: 6px 12px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                background: var(--bg);
+                color: var(--text);
+                font-size: 13px;
+                outline: none;
+            }
+            .filter-bar select:focus {
+                border-color: var(--blue);
+            }
+            .filter-bar .reset-btn {
+                padding: 6px 12px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                background: transparent;
+                color: var(--text-secondary);
+                cursor: pointer;
+                font-size: 12px;
+                transition: 0.2s;
+            }
+            .filter-bar .reset-btn:hover {
+                background: var(--bg);
+                border-color: var(--blue);
+                color: var(--blue);
+            }
+
+            /* TABLE styles */
+            .table-wrap {
+                background: var(--surface);
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                overflow-x: auto;
+                margin-bottom: 24px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13px;
+                min-width: 700px;
+            }
+            th {
+                text-align: left;
+                padding: 12px 14px;
+                background: var(--bg);
+                color: var(--text-secondary);
+                font-weight: 600;
+                font-size: 12px;
+                border-bottom: 1px solid var(--border);
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+            }
+            td {
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border);
+                vertical-align: middle;
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+            tr:hover td {
+                background: var(--bg);
+                cursor: pointer;
+            }
+            .table-avatar {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .table-avatar .avatar {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: var(--blue-light);
+                color: var(--blue);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            .table-avatar .name {
+                font-weight: 600;
+            }
+            .dept-tag {
+                font-size: 10px;
+                font-weight: 500;
+                color: var(--text-secondary);
+                background: var(--bg);
+                padding: 1px 10px;
+                border-radius: 12px;
+                border: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            .step-dots {
+                display: flex;
+                gap: 4px;
+            }
+            .step-dots .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--border);
+                transition: 0.2s;
+            }
+            .step-dots .dot.done {
+                background: var(--green);
+            }
+            .step-dots .dot.active {
+                background: var(--blue);
+            }
+            .status-tag {
+                font-size: 10px;
+                font-weight: 600;
+                padding: 2px 10px;
+                border-radius: 20px;
+                white-space: nowrap;
+            }
+            .status-tag.pending {
+                background: #fef3c7;
+                color: var(--orange);
+            }
+            .status-tag.progress {
+                background: var(--blue-light);
+                color: var(--blue);
+            }
+            .status-tag.done {
+                background: #dcfce7;
+                color: var(--green);
+            }
+            .status-tag.dark-mode.pending {
+                background: #2d1f0e;
+                color: #f59e0b;
+            }
+            .status-tag.dark-mode.progress {
+                background: #1c2333;
+                color: #5b8ef0;
+            }
+            .status-tag.dark-mode.done {
+                background: #0d2818;
+                color: #2ea043;
+            }
+
+            .empty-state {
+                text-align: center;
+                padding: 32px 20px;
+                color: var(--text-secondary);
+            }
+            .empty-state i {
+                font-size: 28px;
+                color: var(--text-muted);
+                display: block;
+                margin-bottom: 6px;
+            }
+
+            .section-title {
+                font-size: 16px;
+                font-weight: 600;
+                margin: 20px 0 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .section-title i {
+                color: var(--orange);
+            }
+            .section-title .count {
+                font-weight: 400;
+                font-size: 13px;
+                color: var(--text-secondary);
+            }
+
+            /* wizard */
+            .wizard-banner {
+                padding: 28px 24px;
+                background: linear-gradient(135deg, var(--blue), #1a4a7a);
+                border-radius: var(--radius);
+                color: #fff;
+                margin: 20px 0 16px;
+                text-align: center;
+            }
+            .wizard-banner .emoji {
+                font-size: 32px;
+                display: block;
+            }
+            .wizard-banner h2 {
+                font-size: 22px;
+                font-weight: 700;
+                margin: 4px 0 2px;
+            }
+            .wizard-banner p {
+                opacity: 0.85;
+                font-size: 14px;
+            }
+            .step-strip {
+                display: flex;
+                gap: 0;
+                margin-bottom: 20px;
+                background: var(--surface);
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                overflow: hidden;
+            }
+            .step-strip .strip-item {
+                flex: 1;
+                padding: 10px 8px;
+                text-align: center;
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--text-muted);
+                background: var(--surface);
+                border-right: 1px solid var(--border);
+                cursor: pointer;
+                transition: 0.2s;
+            }
+            .step-strip .strip-item:last-child {
+                border-right: none;
+            }
+            .step-strip .strip-item .num {
+                display: block;
+                font-size: 12px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+            .step-strip .strip-item.active {
+                color: var(--blue);
+                background: var(--blue-light);
+            }
+            .step-strip .strip-item.done {
+                color: var(--green);
+            }
+            .step-strip .strip-item.done .num {
+                color: var(--green);
+            }
+            .step-strip .strip-item.active .num {
+                color: var(--blue);
+            }
+            .step-content {
+                background: var(--surface);
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                padding: 24px;
+                min-height: 280px;
+                display: flex;
+                flex-direction: column;
+            }
+            .step-content .step-title {
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+            .step-content .step-title i {
+                color: var(--blue);
+                margin-right: 8px;
+            }
+            .step-content .step-desc {
+                color: var(--text-secondary);
+                font-size: 13px;
+                margin-bottom: 18px;
+            }
+            .form-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin-bottom: 2px;
+            }
+            .form-group {
+                margin-bottom: 12px;
+            }
+            .form-group label {
+                display: block;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                margin-bottom: 3px;
+            }
+            .form-group label .required {
+                color: #dc2626;
+            }
+            .form-group input,
+            .form-group select {
+                width: 100%;
+                padding: 9px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-size: 14px;
+                background: var(--bg);
+                color: var(--text);
+                transition: 0.2s;
+            }
+            .form-group input:focus,
+            .form-group select:focus {
+                border-color: var(--blue);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(43, 107, 240, 0.1);
+            }
+            .step-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: auto;
+                padding-top: 16px;
+                border-top: 1px solid var(--border);
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .btn {
+                padding: 8px 18px;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 13px;
+                cursor: pointer;
+                transition: 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .btn:hover {
+                transform: translateY(-1px);
+            }
+            .btn-primary {
+                background: var(--blue);
+                color: #fff;
+            }
+            .btn-primary:hover {
+                box-shadow: 0 4px 12px rgba(43, 107, 240, 0.3);
+            }
+            .btn-outline {
+                background: transparent;
+                color: var(--text-secondary);
+                border: 1px solid var(--border);
+            }
+            .btn-outline:hover {
+                background: var(--bg);
+            }
+            .btn-success {
+                background: var(--green);
+                color: #fff;
+            }
+            .btn-success:hover {
+                box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+            }
+            .btn-export {
+                background: var(--orange);
+                color: #fff;
+            }
+            .btn-export:hover {
+                box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            }
+            .btn-sm {
+                padding: 5px 14px;
+                font-size: 12px;
+            }
+            .info-box {
+                background: var(--bg);
+                border-radius: 8px;
+                padding: 14px 16px;
+                margin-bottom: 14px;
+                border-left: 3px solid var(--blue);
+            }
+            .info-box .row {
+                display: flex;
+                justify-content: space-between;
+                padding: 4px 0;
+                font-size: 13px;
+            }
+            .info-box .row .lbl {
+                color: var(--text-secondary);
+            }
+            .info-box .row .val {
+                font-weight: 500;
+            }
+            .system-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 14px;
+            }
+            .system-grid label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 12px;
+                background: var(--bg);
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 13px;
+                transition: 0.2s;
+            }
+            .system-grid label:hover {
+                background: var(--blue-light);
+            }
+            .system-grid label input[type="checkbox"] {
+                accent-color: var(--blue);
+                width: 16px;
+                height: 16px;
+            }
+            .export-box {
+                background: var(--bg);
+                border-radius: 8px;
+                padding: 16px;
+                margin: 10px 0 14px;
+                border: 1px dashed var(--border);
+            }
+            .export-box .row {
+                display: flex;
+                justify-content: space-between;
+                padding: 4px 0;
+                font-size: 13px;
+                border-bottom: 1px solid var(--border);
+            }
+            .export-box .row:last-child {
+                border-bottom: none;
+            }
+            .export-box .row .lbl {
+                color: var(--text-secondary);
+            }
+            .export-box .row .val {
+                font-weight: 500;
+            }
+
+            @media (max-width: 700px) {
+                .form-row {
+                    grid-template-columns: 1fr;
+                }
+                .system-grid {
+                    grid-template-columns: 1fr;
+                }
+                .step-strip .strip-item {
+                    font-size: 9px;
+                    padding: 8px 4px;
+                }
+                .step-content {
+                    padding: 16px;
+                }
+                .filter-bar {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .filter-bar .search-wrap {
+                    flex: 1 1 auto;
+                }
+            }
+            @media (max-width: 450px) {
+                .step-strip .strip-item .label-text {
+                    display: none;
+                }
+                .header .logo img {
+                    height: 24px;
+                }
+                .header .logo .title {
+                    font-size: 15px;
+                }
+                table {
+                    font-size: 12px;
+                    min-width: 500px;
+                }
+                th,
+                td {
+                    padding: 8px 10px;
+                }
+            }
+        </style>
+    </head>
+    <body class="dark-mode">
+        <div class="container">
+            <!-- HEADER -->
+            <header class="header">
+                <div class="logo">
+                    <img
+                        src="https://www.kotrapharma.com/assets/images/main/Kotra-Pharma-logo.png"
+                        alt="Kotra Pharma"
+                    />
+                    <span class="title">Kotra <span>Onboarding Portal</span></span>
+                    <span class="badge">v2.0</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" onclick="toggleTheme()"><i class="fas fa-sun" id="themeIcon"></i></button>
+                    <button class="btn-icon" onclick="window.parent?.postMessage?.('close', '*')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- DASHBOARD -->
+            <div id="dashView">
+                <h1 class="dash-title">Employee Directory</h1>
+                <p class="dash-sub">Management of Employee Modules</p>
+
+                <!-- ===== ENHANCED STATS WITH PROGRESS BARS ===== -->
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">
+                                    <i class="fas fa-users" style="color: var(--blue)"></i> Total Employees
+                                </div>
+                                <div class="num blue" id="statTotal">0</div>
+                                <div class="stat-sub">Active employees</div>
+                            </div>
+                            <div class="stat-icon blue-bg">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="progress-bar blue" id="totalProgress" style="width: 100%"></div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> <span id="totalTrend">+0</span> this month
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">
+                                    <i class="fas fa-clock" style="color: var(--orange)"></i> Pending
+                                </div>
+                                <div class="num orange" id="statPending">0</div>
+                                <div class="stat-sub">Awaiting onboarding</div>
+                            </div>
+                            <div class="stat-icon orange-bg">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="progress-bar orange" id="pendingProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="stat-trend warning">
+                            <i class="fas fa-exclamation-circle"></i> <span id="pendingUrgent">0</span> urgent
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">
+                                    <i class="fas fa-spinner" style="color: var(--blue)"></i> In Progress
+                                </div>
+                                <div class="num blue" id="statProgress">0</div>
+                                <div class="stat-sub">Active onboarding</div>
+                            </div>
+                            <div class="stat-icon blue-bg">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="progress-bar blue" id="progressProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-right"></i> <span id="progressThisWeek">0</span> this week
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">
+                                    <i class="fas fa-check-circle" style="color: var(--green)"></i> Onboarded
+                                </div>
+                                <div class="num green" id="statDone">0</div>
+                                <div class="stat-sub">Completed onboarding</div>
+                            </div>
+                            <div class="stat-icon green-bg">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="progress-bar green" id="doneProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> <span id="completionRate">0</span>% complete
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <h3><i class="fas fa-users"></i> Search Employee</h3>
+                    <button class="btn-primary" onclick="startNew()"><i class="fas fa-plus"></i> Add Employee</button>
+                </div>
+
+                <!-- FILTER BAR -->
+                <div class="filter-bar" id="filterBar">
+                    <div class="search-wrap">
+                        <i class="fas fa-search"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search name, email, dept..."
+                            oninput="applyFilters()"
+                        />
+                    </div>
+                    <div class="filter-group">
+                        <select id="filterDept" onchange="applyFilters()">
+                            <option value="">All Depts</option>
+                            <option value="AIT">AIT</option>
+                            <option value="ARPD">ARPD</option>
+                            <option value="FIN">FIN</option>
+                            <option value="HRD">HRD</option>
+                            <option value="OPS">OPS</option>
+                            <option value="SAL">SAL</option>
+                        </select>
+                        <select id="filterStatus" onchange="applyFilters()">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="progress">In Progress</option>
+                            <option value="done">Onboarded</option>
+                        </select>
+                        <button class="reset-btn" onclick="resetFilters()">
+                            <i class="fas fa-undo-alt"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PENDING ONBOARD LIST (TABLE) -->
+                <div class="section-title">
+                    <i class="fas fa-clock"></i> Pending Onboard List
+                    <span class="count" id="pendingCount">(0)</span>
+                </div>
+                <div class="table-wrap" id="pendingTableWrap">
+                    <table id="pendingTable">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Role</th>
+                                <th>Start Date</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- EMPLOYEE LIST (TABLE) -->
+                <div class="section-title">
+                    <i class="fas fa-user-check"></i> Employee List
+                    <span class="count" id="mainCount">(0)</span>
+                </div>
+                <div class="table-wrap" id="mainTableWrap">
+                    <table id="mainTable">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Role</th>
+                                <th>Start Date</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mainBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- WIZARD VIEW -->
+            <div id="wizardView" style="display: none">
+                <div class="wizard-banner">
+                    <span class="emoji">📋</span>
+                    <h2>Employee Onboarding Portal</h2>
+                    <p>Complete all steps</p>
+                </div>
+                <div class="step-strip" id="stepStrip">
+                    <div class="strip-item active" data-step="1" onclick="goStep(1)">
+                        <span class="num">1</span><span class="label-text">Personal</span>
+                    </div>
+                    <div class="strip-item" data-step="2" onclick="goStep(2)">
+                        <span class="num">2</span><span class="label-text">IT Account</span>
+                    </div>
+                    <div class="strip-item" data-step="3" onclick="goStep(3)">
+                        <span class="num">3</span><span class="label-text">Access</span>
+                    </div>
+                    <div class="strip-item" data-step="4" onclick="goStep(4)">
+                        <span class="num">4</span><span class="label-text">Complete</span>
+                    </div>
+                </div>
+                <div class="step-content" id="stepContent"></div>
+            </div>
+        </div>
+
+        <script>
+            // ---- DATA ----
+            const STEPS = [
+                { id: 1, name: "Personal Info", icon: "fa-user" },
+                { id: 2, name: "IT Account", icon: "fa-laptop" },
+                { id: 3, name: "System Access", icon: "fa-key" },
+                { id: 4, name: "Complete", icon: "fa-file-pdf" },
+            ];
+
+            let employees = [
+                {
+                    id: 1,
+                    name: "Ahmad Faiz",
+                    email: "ahmad.faiz@kotra.com",
+                    dept: "AIT",
+                    deptFull: "Information Technology",
+                    role: "IT Executive",
+                    start: "2026-08-01",
+                    step: 2,
+                    status: "progress",
+                    done: [1],
+                    info: {
+                        fullName: "Ahmad Faiz bin Abdullah",
+                        email: "ahmad.faiz@kotra.com",
+                        phone: "+60 12-345 6789",
+                        dept: "AIT",
+                        deptFull: "Information Technology",
+                        role: "IT Executive",
+                        manager: "Mr. Lee Chong Wei",
+                        start: "2026-08-01",
+                    },
+                    it: {
+                        username: "ahmad.faiz",
+                        tempPass: "Kotra@2026",
+                        emailCreated: true,
+                        accountCreated: true,
+                        passwordSet: false,
+                    },
+                    access: { systems: ["ERP", "HRMS", "Email", "ITSM"], granted: false },
+                },
+                {
+                    id: 2,
+                    name: "Nurul Huda",
+                    email: "nurul.huda@kotra.com",
+                    dept: "ARPD",
+                    deptFull: "Admin Research & Product Development",
+                    role: "R&D Executive",
+                    start: "2026-07-15",
+                    step: 4,
+                    status: "done",
+                    done: [1, 2, 3, 4],
+                    info: {
+                        fullName: "Nurul Huda binti Ismail",
+                        email: "nurul.huda@kotra.com",
+                        phone: "+60 12-987 6543",
+                        dept: "ARPD",
+                        deptFull: "Admin Research & Product Development",
+                        role: "R&D Executive",
+                        manager: "Dr. Sarah Tan",
+                        start: "2026-07-15",
+                    },
+                    it: {
+                        username: "nurul.huda",
+                        tempPass: "Kotra@2026",
+                        emailCreated: true,
+                        accountCreated: true,
+                        passwordSet: true,
+                    },
+                    access: { systems: ["ERP", "HRMS", "LIMS", "Doc Management"], granted: true },
+                },
+                {
+                    id: 3,
+                    name: "Raj Kumar",
+                    email: "raj.kumar@kotra.com",
+                    dept: "AIT",
+                    deptFull: "Information Technology",
+                    role: "System Administrator",
+                    start: "2026-08-15",
+                    step: 1,
+                    status: "pending",
+                    done: [],
+                    info: {
+                        fullName: "Raj Kumar a/l Muthu",
+                        email: "raj.kumar@kotra.com",
+                        phone: "+60 16-555 1234",
+                        dept: "AIT",
+                        deptFull: "Information Technology",
+                        role: "System Administrator",
+                        manager: "Mr. Lee Chong Wei",
+                        start: "2026-08-15",
+                    },
+                    it: {
+                        username: "",
+                        tempPass: "Kotra@2026",
+                        emailCreated: false,
+                        accountCreated: false,
+                        passwordSet: false,
+                    },
+                    access: { systems: [], granted: false },
+                },
+                {
+                    id: 4,
+                    name: "Sarah Tan",
+                    email: "sarah.tan@kotra.com",
+                    dept: "ARPD",
+                    deptFull: "Admin Research & Product Development",
+                    role: "Senior Researcher",
+                    start: "2026-06-01",
+                    step: 4,
+                    status: "done",
+                    done: [1, 2, 3, 4],
+                    info: {
+                        fullName: "Dr. Sarah Tan Mei Ling",
+                        email: "sarah.tan@kotra.com",
+                        phone: "+60 12-888 7777",
+                        dept: "ARPD",
+                        deptFull: "Admin Research & Product Development",
+                        role: "Senior Researcher",
+                        manager: "Dr. Ahmad Razak",
+                        start: "2026-06-01",
+                    },
+                    it: {
+                        username: "sarah.tan",
+                        tempPass: "Kotra@2026",
+                        emailCreated: true,
+                        accountCreated: true,
+                        passwordSet: true,
+                    },
+                    access: { systems: ["ERP", "HRMS", "LIMS", "Doc Management", "Research Portal"], granted: true },
+                },
+                {
+                    id: 5,
+                    name: "Wei Chen",
+                    email: "wei.chen@kotra.com",
+                    dept: "FIN",
+                    deptFull: "Finance",
+                    role: "Accountant",
+                    start: "2026-09-01",
+                    step: 1,
+                    status: "pending",
+                    done: [],
+                    info: {
+                        fullName: "Wei Chen",
+                        email: "wei.chen@kotra.com",
+                        phone: "+60 11-222 3333",
+                        dept: "FIN",
+                        deptFull: "Finance",
+                        role: "Accountant",
+                        manager: "Ms. Lim",
+                        start: "2026-09-01",
+                    },
+                    it: {
+                        username: "",
+                        tempPass: "Kotra@2026",
+                        emailCreated: false,
+                        accountCreated: false,
+                        passwordSet: false,
+                    },
+                    access: { systems: [], granted: false },
+                },
+                {
+                    id: 6,
+                    name: "Muhammad Hafiz",
+                    email: "hafiz@kotra.com",
+                    dept: "OPS",
+                    deptFull: "Operations",
+                    role: "Ops Manager",
+                    start: "2026-10-01",
+                    step: 2,
+                    status: "progress",
+                    done: [1],
+                    info: {
+                        fullName: "Muhammad Hafiz",
+                        email: "hafiz@kotra.com",
+                        phone: "+60 12-111 2222",
+                        dept: "OPS",
+                        deptFull: "Operations",
+                        role: "Ops Manager",
+                        manager: "Mr. Khairul",
+                        start: "2026-10-01",
+                    },
+                    it: {
+                        username: "hafiz",
+                        tempPass: "Kotra@2026",
+                        emailCreated: true,
+                        accountCreated: false,
+                        passwordSet: false,
+                    },
+                    access: { systems: ["ERP"], granted: false },
+                },
+            ];
+
+            let currentId = null,
+                isNew = false;
+
+            // ---- TABLE RENDER ----
+            function employeeRow(j) {
+                const initials = j.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("");
+                return `
+      <tr onclick="continueOnboard(${j.id})">
+        <td>
+          <div class="table-avatar">
+            <span class="avatar">${initials}</span>
+            <span class="name">${j.name}</span>
+            <span style="font-size:11px;color:var(--text-secondary);">${j.email}</span>
+          </div>
+        </td>
+        <td>${j.dept} <span class="dept-tag">${j.deptFull}</span></td>
+        <td>${j.role}</td>
+        <td>${j.start}</td>
+        <td>
+          <div class="step-dots">${STEPS.map((s) => `<div class="dot ${j.done.includes(s.id) ? "done" : s.id === j.step ? "active" : ""}"></div>`).join("")}</div>
+        </td>
+        <td><span class="status-tag ${j.status}">${j.status === "done" ? "✅ Onboarded" : j.status === "progress" ? "⏳ In Progress" : "⏰ Pending"}</span></td>
+      </tr>
+    `;
+            }
+
+            function applyFilters() {
+                const search = document.getElementById("searchInput").value.toLowerCase().trim();
+                const dept = document.getElementById("filterDept").value;
+                const status = document.getElementById("filterStatus").value;
+
+                // Pending
+                let pend = employees.filter((e) => e.status === "pending");
+                if (dept) pend = pend.filter((e) => e.dept === dept);
+                if (search)
+                    pend = pend.filter(
+                        (e) =>
+                            e.name.toLowerCase().includes(search) ||
+                            e.email.toLowerCase().includes(search) ||
+                            e.deptFull.toLowerCase().includes(search)
+                    );
+                document.getElementById("pendingCount").textContent = `(${pend.length})`;
+                const pBody = document.getElementById("pendingBody");
+                if (!pend.length) {
+                    pBody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fas fa-check-circle"></i> No pending onboard</td></tr>`;
+                } else {
+                    pBody.innerHTML = pend.map((j) => employeeRow(j)).join("");
+                }
+
+                // Main (exclude pending)
+                let main = employees.filter((e) => e.status !== "pending");
+                if (dept) main = main.filter((e) => e.dept === dept);
+                if (status) main = main.filter((e) => e.status === status);
+                if (search)
+                    main = main.filter(
+                        (e) =>
+                            e.name.toLowerCase().includes(search) ||
+                            e.email.toLowerCase().includes(search) ||
+                            e.deptFull.toLowerCase().includes(search)
+                    );
+                document.getElementById("mainCount").textContent = `(${main.length})`;
+                const mBody = document.getElementById("mainBody");
+                if (!main.length) {
+                    mBody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fas fa-user-slash"></i> No employees match</td></tr>`;
+                } else {
+                    mBody.innerHTML = main.map((j) => employeeRow(j)).join("");
+                }
+
+                // dark mode status tags
+                document.querySelectorAll(".status-tag").forEach((el) => {
+                    if (document.body.classList.contains("dark-mode")) el.classList.add("dark-mode");
+                });
+            }
+
+            function resetFilters() {
+                document.getElementById("searchInput").value = "";
+                document.getElementById("filterDept").value = "";
+                document.getElementById("filterStatus").value = "";
+                applyFilters();
+            }
+
+            // ---- STATS WITH PROGRESS BARS ----
+            function updateStats() {
+                const total = employees.length,
+                    pending = employees.filter((e) => e.status === "pending").length,
+                    progress = employees.filter((e) => e.status === "progress").length,
+                    done = employees.filter((e) => e.status === "done").length;
+
+                // Update numbers
+                document.getElementById("statTotal").textContent = total;
+                document.getElementById("statPending").textContent = pending;
+                document.getElementById("statProgress").textContent = progress;
+                document.getElementById("statDone").textContent = done;
+
+                // Update progress bars
+                if (total > 0) {
+                    document.getElementById("totalProgress").style.width = "100%";
+                    document.getElementById("pendingProgress").style.width = (pending / total) * 100 + "%";
+                    document.getElementById("progressProgress").style.width = (progress / total) * 100 + "%";
+                    document.getElementById("doneProgress").style.width = (done / total) * 100 + "%";
+                    document.getElementById("completionRate").textContent = Math.round((done / total) * 100);
+                } else {
+                    document.getElementById("pendingProgress").style.width = "0%";
+                    document.getElementById("progressProgress").style.width = "0%";
+                    document.getElementById("doneProgress").style.width = "0%";
+                    document.getElementById("completionRate").textContent = "0";
+                }
+
+                // Count urgent pending (employees with step 1)
+                const urgent = employees.filter((e) => e.status === "pending" && e.step === 1).length;
+                document.getElementById("pendingUrgent").textContent = urgent;
+
+                // Show progress count
+                document.getElementById("progressThisWeek").textContent = progress;
+                document.getElementById("totalTrend").textContent = `+${progress}`;
+            }
+
+            function renderDash() {
+                updateStats();
+                applyFilters();
+            }
+
+            // ---- WIZARD FUNCTIONS ----
+            function startNew() {
+                isNew = true;
+                const newEmp = {
+                    id: Date.now(),
+                    name: "New Employee",
+                    email: "new.employee@kotra.com",
+                    dept: "AIT",
+                    deptFull: "Information Technology",
+                    role: "Select Role",
+                    start: new Date().toISOString().split("T")[0],
+                    step: 1,
+                    status: "pending",
+                    done: [],
+                    info: {
+                        fullName: "",
+                        email: "",
+                        phone: "",
+                        dept: "AIT",
+                        deptFull: "Information Technology",
+                        role: "",
+                        manager: "",
+                        start: "",
+                    },
+                    it: {
+                        username: "",
+                        tempPass: "Kotra@2026",
+                        emailCreated: false,
+                        accountCreated: false,
+                        passwordSet: false,
+                    },
+                    access: { systems: [], granted: false },
+                };
+                employees.push(newEmp);
+                currentId = newEmp.id;
+                showWizard();
+            }
+
+            function continueOnboard(id) {
+                isNew = false;
+                currentId = id;
+                showWizard();
+            }
+            function showWizard() {
+                document.getElementById("dashView").style.display = "none";
+                document.getElementById("wizardView").style.display = "block";
+                renderWizard();
+            }
+            function showDash() {
+                document.getElementById("wizardView").style.display = "none";
+                document.getElementById("dashView").style.display = "block";
+                renderDash();
+            }
+
+            function goStep(num) {
+                const j = employees.find((x) => x.id === currentId);
+                if (!j) return;
+                if (num > j.step + 1) {
+                    alert("Please complete previous steps first.");
+                    return;
+                }
+                saveStep(j);
+                j.step = Math.min(Math.max(num, 1), 4);
+                renderWizard();
+            }
+
+            function renderWizard() {
+                const j = employees.find((x) => x.id === currentId);
+                if (!j) return;
+                document.querySelectorAll(".strip-item").forEach((el) => {
+                    const s = parseInt(el.dataset.step);
+                    el.classList.remove("active", "done");
+                    if (j.done.includes(s)) el.classList.add("done");
+                    else if (s === j.step) el.classList.add("active");
+                });
+                renderStep(j);
+            }
+
+            function renderStep(j) {
+                const panel = document.getElementById("stepContent");
+                const step = STEPS.find((s) => s.id === j.step) || STEPS[0];
+                let html = `<div class="step-title"><i class="fas ${step.icon}"></i>${step.name}</div><div class="step-desc">${["Enter employee personal details.", "Create IT account & credentials.", "Select system access.", "Review & export."][j.step - 1]}</div>`;
+                if (j.step === 1) html += step1Form(j);
+                else if (j.step === 2) html += step2Form(j);
+                else if (j.step === 3) html += step3Form(j);
+                else if (j.step === 4) html += step4Form(j);
+                html += stepFooter(j);
+                panel.innerHTML = html;
+            }
+
+            function step1Form(j) {
+                const i = j.info || {};
+                const depts = [
+                    { code: "AIT", name: "Information Technology" },
+                    { code: "ARPD", name: "Admin Research & Product Development" },
+                    { code: "FIN", name: "Finance" },
+                    { code: "HRD", name: "Human Resources" },
+                    { code: "OPS", name: "Operations" },
+                    { code: "SAL", name: "Sales" },
+                ];
+                return `<div class="form-row"><div class="form-group"><label>Full Name <span class="required">*</span></label><input type="text" id="f_name" value="${i.fullName || ""}"></div><div class="form-group"><label>Email <span class="required">*</span></label><input type="email" id="f_email" value="${i.email || ""}"></div></div>
+    <div class="form-row"><div class="form-group"><label>Phone <span class="required">*</span></label><input type="tel" id="f_phone" value="${i.phone || ""}"></div><div class="form-group"><label>Dept <span class="required">*</span></label><select id="f_dept">${depts.map((d) => `<option value="${d.code}" ${i.dept === d.code ? "selected" : ""}>${d.name} (${d.code})</option>`).join("")}</select></div></div>
+    <div class="form-row"><div class="form-group"><label>Role <span class="required">*</span></label><input type="text" id="f_role" value="${i.role || ""}"></div><div class="form-group"><label>Manager <span class="required">*</span></label><input type="text" id="f_manager" value="${i.manager || ""}"></div></div>
+    <div class="form-group"><label>Start Date <span class="required">*</span></label><input type="date" id="f_start" value="${i.start || ""}"></div>`;
+            }
+
+            function step2Form(j) {
+                const it = j.it || {};
+                return `<div class="info-box"><div class="row"><span class="lbl">Username</span><span class="val">${it.username || "—"}</span></div><div class="row"><span class="lbl">Temp Password</span><span class="val">${it.tempPass || "—"}</span></div><div class="row"><span class="lbl">Email Created</span><span class="val" style="color:${it.emailCreated ? "var(--green)" : "var(--orange)"};">${it.emailCreated ? "✅ Yes" : "⏳ Pending"}</span></div><div class="row"><span class="lbl">Account Created</span><span class="val" style="color:${it.accountCreated ? "var(--green)" : "var(--orange)"};">${it.accountCreated ? "✅ Yes" : "⏳ Pending"}</span></div><div class="row"><span class="lbl">Password Set</span><span class="val" style="color:${it.passwordSet ? "var(--green)" : "var(--orange)"};">${it.passwordSet ? "✅ Yes" : "⏳ Pending"}</span></div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary btn-sm" onclick="genAccount(${j.id})"><i class="fas fa-sync-alt"></i> Generate Account</button><button class="btn btn-success btn-sm" onclick="setPassword(${j.id})" ${it.passwordSet ? "disabled" : ""}><i class="fas fa-check"></i> Password Set</button></div>`;
+            }
+
+            function step3Form(j) {
+                const sys = [
+                    "ERP",
+                    "HRMS",
+                    "Email",
+                    "Finance System",
+                    "CRM",
+                    "LIMS",
+                    "Doc Management",
+                    "ITSM",
+                    "Research Portal",
+                ];
+                const selected = j.access?.systems || [];
+                return `<div class="system-grid">${sys.map((s) => `<label><input type="checkbox" value="${s}" ${selected.includes(s) ? "checked" : ""} onchange="toggleSys(${j.id},'${s}',this.checked)"> ${s}</label>`).join("")}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 14px;background:var(--bg);border-radius:8px;"><span style="font-size:13px;"><i class="fas fa-key" style="color:var(--blue);"></i> Access: <strong style="color:${j.access?.granted ? "var(--green)" : "var(--orange)"};">${j.access?.granted ? "✅ Granted" : "⏳ Pending"}</strong></span><button class="btn btn-primary btn-sm" onclick="requestSys(${j.id})"><i class="fas fa-paper-plane"></i> Request Access</button></div>`;
+            }
+
+            function step4Form(j) {
+                const i = j.info || {},
+                    it = j.it || {},
+                    acc = j.access || {};
+                return `<div style="margin-bottom:10px;"><span style="color:var(--green);font-weight:600;"><i class="fas fa-check-circle"></i> Onboarding Complete!</span><p style="font-size:13px;color:var(--text-secondary);">Review before export.</p></div>
+        <div class="export-box"><div class="row"><span class="lbl">Employee</span><span class="val">${i.fullName || "N/A"}</span></div><div class="row"><span class="lbl">Email</span><span class="val">${i.email || "N/A"}</span></div><div class="row"><span class="lbl">Dept</span><span class="val">${i.deptFull || i.dept || "N/A"}</span></div><div class="row"><span class="lbl">Role</span><span class="val">${i.role || "N/A"}</span></div><div class="row"><span class="lbl">Manager</span><span class="val">${i.manager || "N/A"}</span></div><div class="row"><span class="lbl">Start</span><span class="val">${i.start || "N/A"}</span></div><div class="row"><span class="lbl">Username</span><span class="val">${it.username || "N/A"}</span></div><div class="row"><span class="lbl">Systems</span><span class="val">${acc.systems?.length > 0 ? acc.systems.join(", ") : "None"}</span></div><div class="row"><span class="lbl">Status</span><span class="val" style="color:var(--green);">✅ Onboarded</span></div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-export" onclick="exportPDF(${j.id})"><i class="fas fa-file-pdf"></i> Export</button><button class="btn btn-success" onclick="finishOnboard(${j.id})"><i class="fas fa-check"></i> Mark Complete</button></div>`;
+            }
+
+            function stepFooter(j) {
+                const isFirst = j.step === 1,
+                    isLast = j.step === 4;
+                return `<div class="step-footer"><div class="left">${!isFirst ? `<button class="btn btn-outline btn-sm" onclick="goStep(${j.step - 1})"><i class="fas fa-arrow-left"></i> Back</button>` : ""}<button class="btn btn-outline btn-sm" onclick="showDash()"><i class="fas fa-th-large"></i> Dashboard</button></div><div class="right">${!isLast ? `<button class="btn btn-primary btn-sm" onclick="saveAndNext(${j.id})">Continue <i class="fas fa-arrow-right"></i></button>` : ""}</div></div>`;
+            }
+
+            function saveStep(j) {
+                if (j.step === 1) {
+                    const deptMap = {
+                        AIT: "Information Technology",
+                        ARPD: "Admin Research & Product Development",
+                        FIN: "Finance",
+                        HRD: "Human Resources",
+                        OPS: "Operations",
+                        SAL: "Sales",
+                    };
+                    const deptCode = document.getElementById("f_dept")?.value || "";
+                    const fullName = document.getElementById("f_name")?.value || "";
+                    const email = document.getElementById("f_email")?.value || "";
+                    const phone = document.getElementById("f_phone")?.value || "";
+                    const role = document.getElementById("f_role")?.value || "";
+                    const manager = document.getElementById("f_manager")?.value || "";
+                    const start = document.getElementById("f_start")?.value || "";
+
+                    // Validate required fields
+                    if (!fullName.trim()) {
+                        alert("Full Name is required.");
+                        return false;
+                    }
+                    if (!email.trim()) {
+                        alert("Email is required.");
+                        return false;
+                    }
+                    if (!phone.trim()) {
+                        alert("Phone number is required.");
+                        return false;
+                    }
+                    if (!role.trim()) {
+                        alert("Job Role is required.");
+                        return false;
+                    }
+                    if (!manager.trim()) {
+                        alert("Reporting Manager is required.");
+                        return false;
+                    }
+                    if (!start) {
+                        alert("Start Date is required.");
+                        return false;
+                    }
+
+                    j.info.fullName = fullName;
+                    j.info.email = email;
+                    j.info.phone = phone;
+                    j.info.dept = deptCode;
+                    j.info.deptFull = deptMap[deptCode] || deptCode;
+                    j.info.role = role;
+                    j.info.manager = manager;
+                    j.info.start = start;
+                    j.name = fullName || "New Employee";
+                    j.email = email || "new.employee@kotra.com";
+                    j.dept = deptCode || "AIT";
+                    j.deptFull = j.info.deptFull || "Information Technology";
+                    j.role = role || "Select Role";
+                    j.start = start || new Date().toISOString().split("T")[0];
+                    return true;
+                }
+                return true;
+            }
+
+            function saveAndNext(id) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                const isValid = saveStep(j);
+                if (!isValid) return;
+                if (!j.done.includes(j.step)) j.done.push(j.step);
+                if (j.step < 4) {
+                    j.step++;
+                    j.status = "progress";
+                }
+                renderDash();
+                renderWizard();
+                applyFilters();
+            }
+
+            function genAccount(id) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                const uname = j.email
+                    .split("@")[0]
+                    .toLowerCase()
+                    .replace(/[^a-z0-9.]/g, "");
+                const pass = "Kotra@" + Math.floor(1000 + Math.random() * 9000);
+                j.it.username = uname;
+                j.it.tempPass = pass;
+                j.it.emailCreated = true;
+                j.it.accountCreated = true;
+                alert(`✅ Account Created!\nUsername: ${uname}\nPassword: ${pass}`);
+                if (!j.done.includes(2)) j.done.push(2);
+                renderDash();
+                renderWizard();
+                applyFilters();
+            }
+
+            function setPassword(id) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                j.it.passwordSet = true;
+                alert("✅ Password set confirmed.");
+                renderDash();
+                renderWizard();
+                applyFilters();
+            }
+
+            function toggleSys(id, sys, checked) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                if (checked) {
+                    if (!j.access.systems.includes(sys)) j.access.systems.push(sys);
+                } else {
+                    j.access.systems = j.access.systems.filter((s) => s !== sys);
+                }
+            }
+
+            function requestSys(id) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                if (!j.access.systems.length) {
+                    alert("Select at least one system.");
+                    return;
+                }
+                j.access.granted = true;
+                if (!j.done.includes(3)) j.done.push(3);
+                alert(`✅ Access requested for: ${j.access.systems.join(", ")}`);
+                renderDash();
+                renderWizard();
+                applyFilters();
+            }
+
+            function finishOnboard(id) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                [1, 2, 3, 4].forEach((s) => {
+                    if (!j.done.includes(s)) j.done.push(s);
+                });
+                j.step = 4;
+                j.status = "done";
+                alert(`✅ ${j.name} onboarded!`);
+                renderDash();
+                renderWizard();
+                applyFilters();
+            }
+
+            function exportPDF(id) {
+                const j = employees.find((x) => x.id === id);
+                if (!j) return;
+                const i = j.info || {};
+                const content = `============================================================\nKOTRA PHARMA · EMPLOYEE ONBOARDING REPORT\n============================================================\n\nEMPLOYEE\nFull Name  : ${i.fullName || "N/A"}\nEmail      : ${i.email || "N/A"}\nPhone      : ${i.phone || "N/A"}\nDept       : ${i.deptFull || i.dept || "N/A"}\nRole       : ${i.role || "N/A"}\nManager    : ${i.manager || "N/A"}\nStart      : ${i.start || "N/A"}\n\nIT ACCOUNT\nUsername   : ${j.it.username || "N/A"}\nEmail Crtd : ${j.it.emailCreated ? "Yes" : "No"}\nAcc Crtd   : ${j.it.accountCreated ? "Yes" : "No"}\nPass Set   : ${j.it.passwordSet ? "Yes" : "No"}\n\nACCESS\nSystems    : ${j.access.systems?.length > 0 ? j.access.systems.join(", ") : "None"}\nGranted    : ${j.access.granted ? "Yes" : "No"}\n\nSTATUS     : ${j.status.toUpperCase()}\nSteps      : ${j.done.length} / 4\nReport     : ${new Date().toLocaleString()}\n============================================================`;
+                const blob = new Blob([content], { type: "text/plain" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = `Onboarding_${j.name.replace(/\s/g, "_")}_${new Date().toISOString().split("T")[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(a.href);
+                alert("📄 Report exported!");
+            }
+
+            // ---- THEME ----
+            let isDark = true;
+            document.body.classList.add("dark-mode");
+            function toggleTheme() {
+                isDark = !isDark;
+                document.body.classList.toggle("dark-mode", isDark);
+                document.getElementById("themeIcon").className = isDark ? "fas fa-sun" : "fas fa-moon";
+                document.querySelectorAll(".status-tag").forEach((el) => el.classList.toggle("dark-mode", isDark));
+            }
+
+            // ---- INIT ----
+            renderDash();
+        </script>
+    </body>
+</html>
