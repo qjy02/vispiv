@@ -1,0 +1,4209 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>Kotra Hub</title>
+        <link
+            rel="icon"
+            href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jL08GKJy3CTYG0Co9KQLcAmwXkdya7B_KF08rPFvVw&s=10"
+            type="image/png"
+        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <style>
+            /* ===== VARIABLES ===== */
+            :root {
+                --bg-body: #f5f7fa;
+                --bg-topbar: #ffffff;
+                --bg-card: #ffffff;
+                --bg-input: #ffffff;
+                --bg-hover: #f0f4f0;
+                --bg-overlay: rgba(0, 0, 0, 0.4);
+                --bg-drawer: #f8faf8;
+                --bg-sidebar: #ffffff;
+                --text-primary: #1a1a1a;
+                --text-secondary: #4a4a4a;
+                --text-muted: #888888;
+                --border-color: #e8ece8;
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+                --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+                --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.08);
+                --accent: #0d6b2a;
+                --accent-light: #e8f5e9;
+                --accent-hover: #0a5220;
+                --accent-orange: #e67e22;
+                --accent-red: #c0392b;
+                --accent-purple: #7c3aed;
+                --radius-lg: 16px;
+                --radius-sm: 10px;
+                --transition: 0.25s ease;
+                --bottom-nav-height: 60px;
+                --safe-bottom: env(safe-area-inset-bottom, 0px);
+                --header-height: 60px;
+            }
+            body.dark-mode {
+                --bg-body: #0d0d0d;
+                --bg-topbar: #1a1a1a;
+                --bg-card: #1a1a1a;
+                --bg-input: #0d0d0d;
+                --bg-hover: #2a2a2a;
+                --bg-overlay: rgba(0, 0, 0, 0.8);
+                --bg-drawer: #121212;
+                --bg-sidebar: #1a1a1a;
+                --text-primary: #ffffff;
+                --text-secondary: #b0b0b0;
+                --text-muted: #666666;
+                --border-color: #2a2a2a;
+                --accent: #4caf50;
+                --accent-light: #1b3a1b;
+                --accent-hover: #66bb6a;
+            }
+
+            /* ===== RESET ===== */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family:
+                    "Inter",
+                    -apple-system,
+                    sans-serif;
+            }
+            body {
+                background: var(--bg-body);
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background var(--transition);
+                overflow: hidden;
+            }
+
+            ::-webkit-scrollbar {
+                width: 0px;
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: transparent;
+            }
+            * {
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            /* ===== LOGIN ===== */
+            #loginScreen {
+                width: 100%;
+                height: 100vh;
+                background-image: url("https://assets.theedgemarkets.com/kotrapharma_www.kotrapharma.com_.jpg");
+                background-size: cover;
+                background-position: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                transition:
+                    opacity 0.5s ease,
+                    visibility 0.5s ease;
+                padding: 20px;
+            }
+            #loginScreen.hidden {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            .login-box {
+                background: var(--bg-card);
+                padding: 40px 32px;
+                border-radius: var(--radius-lg);
+                width: 100%;
+                max-width: 400px;
+                box-shadow: var(--shadow-lg);
+                text-align: center;
+                border: 1px solid var(--border-color);
+                transition:
+                    background var(--transition),
+                    border var(--transition);
+            }
+            .login-box .brand-icon img {
+                height: 52px;
+                width: auto;
+                object-fit: contain;
+                margin-bottom: 8px;
+            }
+            .login-box h1 {
+                color: var(--text-primary);
+                font-size: 28px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+            }
+            .login-box h1 span {
+                color: var(--accent);
+            }
+            .login-box .sub {
+                color: var(--text-secondary);
+                margin-bottom: 28px;
+                font-size: 14px;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 14px;
+            }
+            .login-box input {
+                width: 100%;
+                padding: 14px 16px;
+                margin-bottom: 14px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-sm);
+                font-size: 15px;
+                background: var(--bg-input);
+                color: var(--text-primary);
+                transition: var(--transition);
+            }
+            .login-box input:focus {
+                border-color: var(--accent);
+                outline: none;
+                box-shadow: 0 0 0 4px rgba(13, 107, 42, 0.15);
+            }
+            .login-btn {
+                width: 100%;
+                padding: 14px;
+                background: var(--accent);
+                color: white;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: var(--transition);
+                margin-top: 8px;
+            }
+            .login-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(13, 107, 42, 0.35);
+            }
+            .login-box .note {
+                margin-top: 18px;
+                font-size: 13px;
+                color: var(--text-muted);
+            }
+            .login-box .note i {
+                color: var(--accent);
+            }
+            .password-wrapper {
+                position: relative;
+                width: 100%;
+                margin-bottom: 14px;
+            }
+            .password-wrapper input {
+                padding-right: 48px;
+                margin-bottom: 0;
+            }
+            .password-toggle {
+                position: absolute;
+                right: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: var(--text-muted);
+                font-size: 18px;
+                background: none;
+                border: none;
+                padding: 4px;
+            }
+            .password-toggle:hover {
+                color: var(--accent);
+            }
+
+            /* ===== DASHBOARD ===== */
+            #dashboard {
+                display: none;
+                width: 100%;
+                height: 100vh;
+                flex-direction: column;
+                background: var(--bg-body);
+                position: relative;
+                overflow: hidden;
+            }
+            #dashboard.active {
+                display: flex;
+            }
+
+            /* ===== HEADER ===== */
+            .top-header {
+                background: var(--bg-topbar);
+                padding: 0 16px;
+                height: var(--header-height);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+                z-index: 10;
+                transition:
+                    background var(--transition),
+                    border var(--transition);
+            }
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .header-left .logo-img {
+                height: 28px;
+                width: auto;
+                object-fit: contain;
+            }
+            .header-left .brand {
+                font-weight: 700;
+                font-size: 17px;
+                color: var(--text-primary);
+                letter-spacing: -0.5px;
+            }
+            .header-left .brand span {
+                color: var(--accent);
+            }
+            .header-left .version {
+                font-size: 8px;
+                background: var(--accent-light);
+                color: var(--accent);
+                padding: 1px 6px;
+                border-radius: 30px;
+                font-weight: 600;
+            }
+
+            .header-btn {
+                width: 34px;
+                height: 34px;
+                border: none;
+                background: transparent;
+                color: var(--text-secondary);
+                font-size: 15px;
+                cursor: pointer;
+                border-radius: 8px;
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .header-btn:hover {
+                background: var(--bg-hover);
+                color: var(--text-primary);
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .header-right .icon-btn {
+                width: 34px;
+                height: 34px;
+                border: none;
+                background: transparent;
+                color: var(--text-secondary);
+                font-size: 15px;
+                cursor: pointer;
+                border-radius: 50%;
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+            .header-right .icon-btn:hover {
+                background: var(--bg-hover);
+                color: var(--text-primary);
+            }
+            .header-right .icon-btn .badge-dot {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                width: 7px;
+                height: 7px;
+                background: var(--accent-red);
+                border-radius: 50%;
+                border: 2px solid var(--bg-topbar);
+            }
+
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+                padding: 3px 8px 3px 3px;
+                border-radius: 40px;
+                transition: var(--transition);
+                border: 1px solid transparent;
+            }
+            .user-profile:hover {
+                background: var(--bg-hover);
+                border-color: var(--border-color);
+            }
+            .user-profile .avatar {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: var(--accent);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                font-size: 11px;
+            }
+            .user-profile .info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                line-height: 1.2;
+            }
+            .user-profile .info .name {
+                font-weight: 600;
+                color: var(--text-primary);
+                font-size: 12px;
+            }
+            .user-profile .info .role {
+                font-size: 9px;
+                color: var(--text-muted);
+            }
+            .user-profile .chevron {
+                font-size: 9px;
+                color: var(--text-muted);
+            }
+
+            .desktop-home {
+                display: none;
+            }
+
+            /* ===== SIDEBAR ===== */
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--bg-overlay);
+                z-index: 200;
+                display: none;
+                animation: fadeIn 0.25s ease;
+            }
+            .sidebar-overlay.open {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -320px;
+                width: 280px;
+                height: 100%;
+                background: var(--bg-sidebar);
+                z-index: 201;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                flex-direction: column;
+                box-shadow: var(--shadow-lg);
+                border-right: 1px solid var(--border-color);
+                overflow: hidden;
+            }
+            .sidebar.open {
+                left: 0;
+            }
+
+            .sidebar-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+            }
+            .sidebar-header .brand {
+                font-weight: 700;
+                font-size: 17px;
+                color: var(--text-primary);
+            }
+            .sidebar-header .brand span {
+                color: var(--accent);
+            }
+            .sidebar-close {
+                width: 32px;
+                height: 32px;
+                border: none;
+                background: var(--bg-hover);
+                color: var(--text-secondary);
+                font-size: 14px;
+                cursor: pointer;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            .sidebar-close:hover {
+                background: var(--border-color);
+            }
+
+            .sidebar-body {
+                flex: 1;
+                overflow-y: auto;
+                padding: 6px 0;
+            }
+            .sidebar-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 16px;
+                color: var(--text-secondary);
+                font-size: 13px;
+                cursor: pointer;
+                transition: var(--transition);
+                border: none;
+                background: transparent;
+                width: 100%;
+                text-align: left;
+            }
+            .sidebar-item:hover {
+                background: var(--bg-hover);
+                color: var(--text-primary);
+            }
+            .sidebar-item i {
+                width: 18px;
+                font-size: 14px;
+                color: var(--accent);
+            }
+            .sidebar-item .badge {
+                margin-left: auto;
+                background: var(--accent-light);
+                color: var(--accent);
+                font-size: 10px;
+                padding: 0 8px;
+                border-radius: 30px;
+                font-weight: 600;
+            }
+            .sidebar-divider {
+                height: 1px;
+                background: var(--border-color);
+                margin: 4px 12px;
+            }
+            .sidebar-section-title {
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--text-muted);
+                padding: 8px 16px 4px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* ===== BODY ===== */
+            .body-layout {
+                display: flex;
+                flex: 1;
+                overflow: hidden;
+                position: relative;
+            }
+            .content-area {
+                flex: 1;
+                padding: 16px;
+                overflow-y: auto;
+                background: var(--bg-body);
+                transition: background var(--transition);
+                height: 100%;
+                padding-bottom: 30px;
+            }
+
+            .page {
+                display: none;
+                animation: fadeSlideIn 0.3s ease forwards;
+                height: 100%;
+            }
+            .page.active-page {
+                display: flex;
+                flex-direction: column;
+            }
+            @keyframes fadeSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(8px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            /* ===== BOTTOM NAV (Mobile Only) ===== */
+            .bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: calc(var(--bottom-nav-height) + var(--safe-bottom));
+                padding-bottom: var(--safe-bottom);
+                background: var(--bg-topbar);
+                border-top: 1px solid var(--border-color);
+                align-items: center;
+                justify-content: space-around;
+                z-index: 100;
+                box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
+                transition:
+                    background var(--transition),
+                    border var(--transition);
+            }
+            .bottom-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                padding: 4px 12px;
+                border: none;
+                background: transparent;
+                color: var(--text-muted);
+                cursor: pointer;
+                transition: var(--transition);
+                font-size: 10px;
+                min-width: 60px;
+                position: relative;
+                border-radius: var(--radius-sm);
+                flex: 1;
+                max-width: 100px;
+            }
+            .bottom-nav-item:hover {
+                color: var(--text-secondary);
+                background: var(--bg-hover);
+            }
+            .bottom-nav-item i {
+                font-size: 20px;
+                transition: var(--transition);
+            }
+            .bottom-nav-item span {
+                font-size: 9px;
+                font-weight: 500;
+            }
+            .bottom-nav-item.active {
+                color: var(--accent);
+            }
+            .bottom-nav-item.active i {
+                transform: scale(1.1);
+            }
+
+            /* ===== APP DRAWER ===== */
+            .app-drawer {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--bg-drawer);
+                z-index: 200;
+                display: none;
+                flex-direction: column;
+                animation: fadeSlideIn 0.25s ease;
+                padding: 16px 20px;
+            }
+            .app-drawer.open {
+                display: flex;
+            }
+
+            .app-drawer-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 12px;
+                flex-shrink: 0;
+            }
+            .app-drawer-header h3 {
+                color: var(--text-primary);
+                font-size: 18px;
+                font-weight: 700;
+            }
+            .app-drawer-header h3 i {
+                color: var(--accent);
+                margin-right: 8px;
+            }
+            .app-drawer-close {
+                width: 36px;
+                height: 36px;
+                border: none;
+                background: var(--bg-hover);
+                color: var(--text-secondary);
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            .app-drawer-close:hover {
+                background: var(--border-color);
+            }
+
+            .app-drawer-search {
+                position: relative;
+                margin-bottom: 12px;
+                flex-shrink: 0;
+            }
+            .app-drawer-search i {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-muted);
+            }
+            .app-drawer-search input {
+                width: 100%;
+                padding: 12px 16px 12px 44px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-sm);
+                background: var(--bg-input);
+                color: var(--text-primary);
+                font-size: 15px;
+                transition: var(--transition);
+            }
+            .app-drawer-search input:focus {
+                border-color: var(--accent);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(13, 107, 42, 0.15);
+            }
+
+            .app-drawer-body {
+                flex: 1;
+                overflow-y: auto;
+                padding-bottom: 20px;
+            }
+
+            .quick-actions-row {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-bottom: 16px;
+            }
+            .quick-action-chip {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: 30px;
+                font-size: 12px;
+                color: var(--text-primary);
+                cursor: pointer;
+                transition: var(--transition);
+            }
+            .quick-action-chip:hover {
+                background: var(--accent-light);
+                border-color: var(--accent);
+            }
+            .quick-action-chip i {
+                color: var(--accent);
+                font-size: 13px;
+            }
+
+            .service-category {
+                margin-bottom: 12px;
+            }
+            .service-category .cat-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 4px;
+                font-weight: 600;
+                font-size: 13px;
+                color: var(--text-primary);
+                border-bottom: 1px solid var(--border-color);
+            }
+            .service-category .cat-header i {
+                color: var(--accent);
+                font-size: 14px;
+            }
+            .service-category .cat-header .count {
+                font-size: 10px;
+                color: var(--text-muted);
+                font-weight: 400;
+                margin-left: auto;
+            }
+
+            .service-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 5px 4px 5px 28px;
+                cursor: pointer;
+                border-radius: 6px;
+                transition: var(--transition);
+            }
+            .service-item:hover {
+                background: var(--bg-hover);
+            }
+            .service-item i {
+                width: 18px;
+                font-size: 13px;
+                color: var(--text-muted);
+            }
+            .service-item .name {
+                font-size: 13px;
+                color: var(--text-secondary);
+                flex: 1;
+            }
+            .service-item .tag {
+                font-size: 8px;
+                background: var(--accent-light);
+                color: var(--accent);
+                padding: 0 6px;
+                border-radius: 30px;
+                font-weight: 500;
+            }
+
+            .no-results {
+                text-align: center;
+                color: var(--text-muted);
+                padding: 40px 0;
+            }
+            .no-results i {
+                font-size: 32px;
+                display: block;
+                margin-bottom: 8px;
+                opacity: 0.5;
+            }
+
+            /* ===== WIDGETS ===== */
+            .page-header {
+                margin-bottom: 16px;
+                flex-shrink: 0;
+            }
+            .page-header h2 {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+            .page-header p {
+                color: var(--text-secondary);
+                font-size: 14px;
+                margin-top: 2px;
+            }
+
+            .widget-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+            .widget-grid .full-width {
+                grid-column: 1 / -1;
+            }
+            .widget-grid .widget {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .widget {
+                background: var(--bg-card);
+                border-radius: var(--radius-sm);
+                border: 1px solid var(--border-color);
+                box-shadow: var(--shadow-sm);
+                transition:
+                    background var(--transition),
+                    border var(--transition);
+            }
+            .widget-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+            }
+            .widget-header .title {
+                font-weight: 600;
+                font-size: 14px;
+                color: var(--text-primary);
+            }
+            .widget-header .title i {
+                color: var(--accent);
+                margin-right: 8px;
+            }
+            .widget-header .count {
+                font-size: 11px;
+                background: var(--accent-light);
+                color: var(--accent);
+                padding: 1px 10px;
+                border-radius: 30px;
+                font-weight: 600;
+            }
+            .widget-body {
+                padding: 12px 16px;
+                overflow-y: auto;
+                flex: 1;
+            }
+            .widget-body .empty {
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 13px;
+                padding: 12px 0;
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+            .stat-card {
+                background: var(--bg-card);
+                border-radius: var(--radius-sm);
+                padding: 12px 16px;
+                border: 1px solid var(--border-color);
+                box-shadow: var(--shadow-sm);
+            }
+            .stat-card .label {
+                font-size: 11px;
+                color: var(--text-muted);
+                font-weight: 500;
+            }
+            .stat-card .value {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin: 2px 0;
+            }
+            .stat-card .trend {
+                font-size: 11px;
+                font-weight: 500;
+            }
+            .stat-card .trend.up {
+                color: var(--accent);
+            }
+            .stat-card .trend.down {
+                color: var(--accent-red);
+            }
+            .stat-card .icon {
+                float: right;
+                width: 30px;
+                height: 30px;
+                background: var(--accent-light);
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--accent);
+                font-size: 13px;
+            }
+
+            /* Task / Action Items */
+            .task-item,
+            .action-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 6px 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .task-item:last-child,
+            .action-item:last-child {
+                border-bottom: none;
+            }
+            .task-item .info,
+            .action-item .info {
+                flex: 1;
+                min-width: 0;
+            }
+            .task-item .info .name {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+            .task-item .info .meta {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+            .priority {
+                font-size: 10px;
+                padding: 1px 8px;
+                border-radius: 30px;
+                font-weight: 600;
+            }
+            .priority-high {
+                background: #fde8e8;
+                color: var(--accent-red);
+            }
+            .priority-medium {
+                background: #fef5e7;
+                color: var(--accent-orange);
+            }
+            .priority-low {
+                background: var(--accent-light);
+                color: var(--accent);
+            }
+            .urgency {
+                font-size: 10px;
+                padding: 1px 8px;
+                border-radius: 30px;
+                font-weight: 600;
+            }
+            .urgency-urgent {
+                background: #fde8e8;
+                color: var(--accent-red);
+            }
+            .urgency-normal {
+                background: var(--accent-light);
+                color: var(--accent);
+            }
+            .urgency-low {
+                background: #f0f0f0;
+                color: var(--text-muted);
+            }
+
+            .widget-footer {
+                padding: 8px 16px;
+                border-top: 1px solid var(--border-color);
+                text-align: center;
+                flex-shrink: 0;
+            }
+            .widget-footer button {
+                border: none;
+                background: transparent;
+                color: var(--accent);
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: var(--transition);
+            }
+            .widget-footer button:hover {
+                color: var(--accent-hover);
+            }
+
+            /* Quick Access */
+            .quick-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .quick-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                padding: 10px 4px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                cursor: pointer;
+                transition: var(--transition);
+            }
+            .quick-item:hover {
+                background: var(--bg-hover);
+                border-color: var(--accent);
+            }
+            .quick-item i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+            .quick-item span {
+                font-size: 10px;
+                color: var(--text-secondary);
+                text-align: center;
+            }
+
+            /* Phone Directory */
+            .contact-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 6px 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .contact-item:last-child {
+                border-bottom: none;
+            }
+            .contact-item .name {
+                font-size: 13px;
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+            .contact-item .ext {
+                font-size: 12px;
+                color: var(--text-secondary);
+            }
+            .contact-item .ext i {
+                color: var(--accent);
+                margin-right: 4px;
+                font-size: 11px;
+            }
+
+            /* Important Notice - List Style */
+            .notice-list-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 4px;
+                border-bottom: 1px solid var(--border-color);
+                cursor: pointer;
+                transition: var(--transition);
+            }
+            .notice-list-item:last-child {
+                border-bottom: none;
+            }
+            .notice-list-item:hover {
+                background: var(--bg-hover);
+            }
+            .notice-list-item .icon {
+                color: var(--accent-orange);
+                font-size: 14px;
+                width: 20px;
+            }
+            .notice-list-item .info {
+                flex: 1;
+            }
+            .notice-list-item .info .title {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+            .notice-list-item .info .date {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+            .notice-list-item .chevron {
+                color: var(--text-muted);
+                font-size: 12px;
+            }
+
+            /* Notice Detail View (expanded) */
+            .notice-detail {
+                display: none;
+                padding: 12px 4px;
+            }
+            .notice-detail.open {
+                display: block;
+            }
+            .notice-detail .back-btn {
+                border: none;
+                background: transparent;
+                color: var(--accent);
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                padding: 4px 0;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .notice-detail .back-btn:hover {
+                color: var(--accent-hover);
+            }
+            .notice-detail .notice-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin-bottom: 8px;
+            }
+            .notice-detail .notice-date {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-bottom: 10px;
+            }
+            .notice-detail .notice-body {
+                font-size: 13px;
+                color: var(--text-secondary);
+                line-height: 1.7;
+            }
+            .notice-detail .notice-body p {
+                margin-bottom: 8px;
+            }
+            .notice-detail .notice-signoff {
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid var(--border-color);
+                font-style: italic;
+                font-size: 13px;
+                color: var(--text-secondary);
+            }
+            .notice-detail .notice-bilingual {
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid var(--border-color);
+            }
+            .notice-detail .notice-bilingual .bm-toggle {
+                cursor: pointer;
+                color: var(--accent);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .notice-detail .notice-bilingual .bm-toggle:hover {
+                text-decoration: underline;
+            }
+            .notice-detail .notice-bilingual .bm-content {
+                display: none;
+                margin-top: 8px;
+                font-size: 12px;
+                color: var(--text-muted);
+                line-height: 1.7;
+            }
+            .notice-detail .notice-bilingual .bm-content.open {
+                display: block;
+            }
+
+            /* Dashboard Footer */
+            .dashboard-footer {
+                margin-top: 24px;
+                padding: 16px 0 8px;
+                border-top: 1px solid var(--border-color);
+                text-align: center;
+                flex-shrink: 0;
+            }
+            .dashboard-footer .footer-link {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 500;
+                transition: var(--transition);
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .dashboard-footer .footer-link:hover {
+                color: var(--accent);
+            }
+            .dashboard-footer .footer-copy {
+                font-size: 11px;
+                color: var(--text-muted);
+                margin-top: 4px;
+            }
+
+            /* ===== CALENDAR ===== */
+            .calendar-grid {
+                background: var(--bg-card);
+                border-radius: var(--radius-sm);
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+            }
+            .calendar-grid .cal-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-color);
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .calendar-grid .cal-header .month-area {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex: 1;
+            }
+            .calendar-grid .cal-header .month {
+                font-weight: 600;
+                font-size: 16px;
+                color: var(--text-primary);
+                min-width: 120px;
+                text-align: center;
+            }
+            .calendar-grid .cal-header .nav-btn {
+                border: none;
+                background: transparent;
+                color: var(--text-secondary);
+                cursor: pointer;
+                font-size: 16px;
+                padding: 4px 10px;
+                border-radius: 6px;
+                transition: var(--transition);
+            }
+            .calendar-grid .cal-header .nav-btn:hover {
+                background: var(--bg-hover);
+            }
+            .calendar-grid .cal-header .year-selector {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .calendar-grid .cal-header .year-selector select {
+                padding: 4px 8px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-sm);
+                font-size: 13px;
+                background: var(--bg-input);
+                color: var(--text-primary);
+                cursor: pointer;
+            }
+            .calendar-grid .cal-header .year-selector select:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+            .calendar-grid .cal-weekdays {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                padding: 8px 12px;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .calendar-grid .cal-weekdays span {
+                text-align: center;
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--text-muted);
+                padding: 4px 0;
+            }
+            .calendar-grid .cal-days {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                padding: 4px 12px 12px;
+                gap: 2px;
+            }
+            .calendar-grid .cal-days .day {
+                text-align: center;
+                padding: 8px 0;
+                border-radius: 8px;
+                font-size: 14px;
+                color: var(--text-secondary);
+                cursor: pointer;
+                transition: var(--transition);
+                position: relative;
+                min-height: 44px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .calendar-grid .cal-days .day:hover {
+                background: var(--bg-hover);
+            }
+            .calendar-grid .cal-days .day.other-month {
+                color: var(--text-muted);
+                opacity: 0.4;
+            }
+            .calendar-grid .cal-days .day.today {
+                background: var(--accent-light);
+                color: var(--accent);
+                font-weight: 700;
+                border: 2px solid var(--accent);
+            }
+            .calendar-grid .cal-days .day.holiday {
+                color: var(--accent-red);
+                font-weight: 600;
+            }
+            .calendar-grid .cal-days .day.holiday::after {
+                content: "🎉";
+                font-size: 8px;
+                position: absolute;
+                bottom: 2px;
+            }
+            .calendar-grid .cal-days .day.has-event::after {
+                content: "";
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: var(--accent);
+                position: absolute;
+                bottom: 4px;
+            }
+            .calendar-grid .cal-days .day.has-event.holiday::after {
+                background: var(--accent-red);
+            }
+            .calendar-grid .cal-days .day.selected {
+                background: var(--accent);
+                color: white;
+            }
+            .calendar-grid .cal-days .day.selected.holiday {
+                background: var(--accent-red);
+                color: white;
+            }
+            .calendar-grid .cal-days .day.selected.has-event::after,
+            .calendar-grid .cal-days .day.selected.holiday::after {
+                background: white;
+            }
+            .calendar-grid .cal-days .day .event-dot {
+                display: flex;
+                gap: 2px;
+                margin-top: 2px;
+            }
+            .calendar-grid .cal-days .day .event-dot span {
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                display: block;
+            }
+            .calendar-grid .cal-days .day .event-dot .dot-holiday {
+                background: var(--accent-red);
+            }
+            .calendar-grid .cal-days .day .event-dot .dot-meeting {
+                background: var(--accent);
+            }
+            .calendar-grid .cal-days .day .event-dot .dot-event {
+                background: #1a56db;
+            }
+
+            .calendar-events-list {
+                padding: 12px 16px;
+                border-top: 1px solid var(--border-color);
+                max-height: 200px;
+                overflow-y: auto;
+            }
+            .calendar-events-list .empty-events {
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 13px;
+                padding: 8px 0;
+            }
+            .calendar-events-list .cal-event-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 6px 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .calendar-events-list .cal-event-item:last-child {
+                border-bottom: none;
+            }
+            .calendar-events-list .cal-event-item .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+            .calendar-events-list .cal-event-item .dot.holiday {
+                background: var(--accent-red);
+            }
+            .calendar-events-list .cal-event-item .dot.meeting {
+                background: var(--accent);
+            }
+            .calendar-events-list .cal-event-item .dot.event {
+                background: #1a56db;
+            }
+            .calendar-events-list .cal-event-item .info {
+                flex: 1;
+            }
+            .calendar-events-list .cal-event-item .info .name {
+                font-size: 13px;
+                color: var(--text-primary);
+            }
+            .calendar-events-list .cal-event-item .info .type {
+                font-size: 10px;
+                color: var(--text-muted);
+            }
+
+            /* Calendar loading state */
+            .calendar-loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 20px;
+                flex-direction: column;
+                gap: 12px;
+                color: var(--text-muted);
+            }
+            .calendar-loading .spinner {
+                width: 32px;
+                height: 32px;
+                border: 3px solid var(--border-color);
+                border-top-color: var(--accent);
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+
+            /* ===== ANNOUNCEMENT ===== */
+            .announcement-banner {
+                background: var(--accent-light);
+                border: 1px solid var(--accent);
+                border-radius: var(--radius-sm);
+                padding: 10px 16px;
+                margin-bottom: 16px;
+                display: none;
+                align-items: center;
+                gap: 12px;
+            }
+            .announcement-banner.show {
+                display: flex;
+            }
+            .announcement-banner .icon {
+                color: var(--accent);
+                font-size: 16px;
+            }
+            .announcement-banner .content {
+                flex: 1;
+            }
+            .announcement-banner .content .title {
+                font-weight: 600;
+                font-size: 13px;
+                color: var(--text-primary);
+            }
+            .announcement-banner .content .desc {
+                font-size: 12px;
+                color: var(--text-secondary);
+            }
+            .announcement-banner .dismiss {
+                border: none;
+                background: transparent;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: 14px;
+                padding: 4px;
+            }
+
+            /* ===== KOTRA AI ===== */
+            .ai-float {
+                position: fixed;
+                bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 12px);
+                right: 16px;
+                z-index: 90;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                user-select: none;
+            }
+            .ai-float:hover {
+                transform: scale(1.05);
+            }
+            .ai-float .avatar {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                background: var(--accent);
+                padding: 3px;
+                box-shadow: 0 4px 20px rgba(13, 107, 42, 0.3);
+                animation: float 3s ease-in-out infinite;
+            }
+            .ai-float .avatar img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                background: white;
+            }
+            .ai-float .label {
+                font-size: 9px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                background: var(--bg-card);
+                padding: 1px 10px;
+                border-radius: 30px;
+                border: 1px solid var(--border-color);
+                white-space: nowrap;
+            }
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-4px);
+                }
+            }
+
+            .ai-panel {
+                position: fixed;
+                bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 76px);
+                right: 16px;
+                width: 360px;
+                max-width: calc(100vw - 32px);
+                background: var(--bg-card);
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-color);
+                box-shadow: var(--shadow-lg);
+                z-index: 95;
+                display: none;
+                flex-direction: column;
+                max-height: 460px;
+                cursor: default;
+            }
+            .ai-panel.open {
+                display: flex;
+            }
+            .ai-panel.dragging {
+                opacity: 0.95;
+                box-shadow: var(--shadow-lg);
+                transition: none;
+                cursor: grabbing;
+            }
+
+            .ai-panel .header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+                cursor: grab;
+                user-select: none;
+            }
+            .ai-panel .header:active {
+                cursor: grabbing;
+            }
+            .ai-panel .header .title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 600;
+                font-size: 14px;
+                color: var(--text-primary);
+                pointer-events: none;
+            }
+            .ai-panel .header .title img {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+            }
+            .ai-panel .header .close-btn {
+                border: none;
+                background: transparent;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: 14px;
+                padding: 4px;
+                z-index: 10;
+            }
+            .ai-panel .header .close-btn:hover {
+                color: var(--text-primary);
+            }
+
+            .ai-panel .tabs {
+                display: flex;
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+                background: var(--bg-hover);
+            }
+            .ai-panel .tabs .tab {
+                flex: 1;
+                padding: 6px;
+                border: none;
+                background: transparent;
+                color: var(--text-muted);
+                font-size: 11px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: var(--transition);
+                border-bottom: 2px solid transparent;
+            }
+            .ai-panel .tabs .tab:hover {
+                color: var(--text-secondary);
+                background: var(--bg-card);
+            }
+            .ai-panel .tabs .tab.active {
+                color: var(--accent);
+                border-bottom-color: var(--accent);
+                background: var(--bg-card);
+            }
+
+            .ai-panel .body {
+                flex: 1;
+                overflow-y: auto;
+                padding: 10px 14px;
+            }
+            .ai-panel .body .tab-content {
+                display: none;
+            }
+            .ai-panel .body .tab-content.active {
+                display: block;
+            }
+
+            .kb-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 6px 0;
+                border-bottom: 1px solid var(--border-color);
+                cursor: pointer;
+                transition: var(--transition);
+            }
+            .kb-item:hover {
+                color: var(--accent);
+            }
+            .kb-item:last-child {
+                border-bottom: none;
+            }
+            .kb-item i {
+                color: var(--accent);
+                font-size: 13px;
+                width: 18px;
+            }
+            .kb-item .name {
+                font-size: 13px;
+                color: var(--text-primary);
+                flex: 1;
+            }
+
+            .ticket-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 6px 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .ticket-item:last-child {
+                border-bottom: none;
+            }
+            .ticket-item .info {
+                flex: 1;
+            }
+            .ticket-item .info .name {
+                font-size: 13px;
+                color: var(--text-primary);
+            }
+            .ticket-item .info .meta {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+            .ticket-status {
+                font-size: 9px;
+                padding: 1px 8px;
+                border-radius: 30px;
+                font-weight: 500;
+            }
+            .ticket-status.open {
+                background: #fef5e7;
+                color: var(--accent-orange);
+            }
+            .ticket-status.closed {
+                background: var(--accent-light);
+                color: var(--accent);
+            }
+            .ticket-status.waiting {
+                background: #f0f0f0;
+                color: var(--text-muted);
+            }
+
+            .report-btn {
+                width: 100%;
+                padding: 8px;
+                background: var(--accent);
+                color: white;
+                border: none;
+                border-radius: var(--radius-sm);
+                cursor: pointer;
+                font-size: 13px;
+                font-weight: 500;
+                transition: var(--transition);
+                margin-top: 8px;
+            }
+            .report-btn:hover {
+                background: var(--accent-hover);
+            }
+
+            .chat-messages {
+                max-height: 180px;
+                overflow-y: auto;
+                margin-bottom: 6px;
+            }
+            .chat-msg {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 6px;
+            }
+            .chat-msg .avatar {
+                width: 26px;
+                height: 26px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                background: var(--accent);
+                padding: 2px;
+            }
+            .chat-msg .avatar img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                background: white;
+            }
+            .chat-msg .bubble {
+                background: var(--bg-hover);
+                padding: 6px 12px;
+                border-radius: var(--radius-sm);
+                font-size: 13px;
+                color: var(--text-secondary);
+                max-width: 80%;
+            }
+            .chat-msg.user {
+                flex-direction: row-reverse;
+            }
+            .chat-msg.user .bubble {
+                background: var(--accent);
+                color: white;
+            }
+            .chat-input-area {
+                display: flex;
+                gap: 6px;
+                border-top: 1px solid var(--border-color);
+                padding-top: 6px;
+            }
+            .chat-input-area input {
+                flex: 1;
+                padding: 6px 10px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-sm);
+                font-size: 13px;
+                background: var(--bg-input);
+                color: var(--text-primary);
+            }
+            .chat-input-area input:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+            .chat-input-area button {
+                padding: 6px 12px;
+                background: var(--accent);
+                color: white;
+                border: none;
+                border-radius: var(--radius-sm);
+                cursor: pointer;
+                transition: var(--transition);
+                font-size: 13px;
+            }
+            .chat-input-area button:hover {
+                background: var(--accent-hover);
+            }
+
+            /* ===== SETTINGS ===== */
+            .settings-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--bg-overlay);
+                z-index: 300;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+            .settings-overlay.open {
+                display: flex;
+            }
+            .settings-dialog {
+                background: var(--bg-card);
+                border-radius: var(--radius-lg);
+                width: 100%;
+                max-width: 720px;
+                max-height: 85vh;
+                display: flex;
+                flex-direction: column;
+                box-shadow: var(--shadow-lg);
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+            }
+            .settings-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 20px;
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+            }
+            .settings-header h2 {
+                font-size: 17px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+            .settings-header h2 i {
+                color: var(--accent);
+                margin-right: 8px;
+            }
+            .settings-close {
+                width: 34px;
+                height: 34px;
+                border: none;
+                background: var(--bg-hover);
+                color: var(--text-secondary);
+                font-size: 15px;
+                cursor: pointer;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .settings-close:hover {
+                background: var(--border-color);
+            }
+
+            .settings-body {
+                display: flex;
+                flex: 1;
+                overflow: hidden;
+            }
+            .settings-sidebar {
+                width: 180px;
+                background: var(--bg-hover);
+                padding: 8px 0;
+                flex-shrink: 0;
+                overflow-y: auto;
+                border-right: 1px solid var(--border-color);
+            }
+            .settings-sidebar-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 16px;
+                color: var(--text-secondary);
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: var(--transition);
+                border: none;
+                background: transparent;
+                width: 100%;
+                text-align: left;
+            }
+            .settings-sidebar-item:hover {
+                background: var(--bg-card);
+                color: var(--text-primary);
+            }
+            .settings-sidebar-item.active {
+                background: var(--bg-card);
+                color: var(--accent);
+                border-right: 3px solid var(--accent);
+            }
+            .settings-sidebar-item i {
+                width: 16px;
+                font-size: 13px;
+            }
+
+            .settings-content {
+                flex: 1;
+                padding: 16px 20px;
+                overflow-y: auto;
+            }
+            .settings-section {
+                display: none;
+            }
+            .settings-section.active {
+                display: block;
+            }
+            .settings-section h3 {
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-bottom: 10px;
+            }
+            .settings-section p {
+                color: var(--text-secondary);
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+            .settings-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .settings-row:last-child {
+                border-bottom: none;
+            }
+            .settings-row .label {
+                display: flex;
+                flex-direction: column;
+            }
+            .settings-row .label .title {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+            .settings-row .label .desc {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+            .toggle-switch {
+                width: 40px;
+                height: 22px;
+                background: var(--border-color);
+                border-radius: 30px;
+                position: relative;
+                cursor: pointer;
+                transition: var(--transition);
+                flex-shrink: 0;
+                border: none;
+            }
+            .toggle-switch .slider {
+                width: 16px;
+                height: 16px;
+                background: white;
+                border-radius: 50%;
+                position: absolute;
+                top: 3px;
+                left: 3px;
+                transition: var(--transition);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            .toggle-switch.active {
+                background: var(--accent);
+            }
+            .toggle-switch.active .slider {
+                left: 21px;
+            }
+
+            .settings-logout-btn {
+                width: 100%;
+                padding: 10px;
+                background: var(--accent-red);
+                color: white;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: var(--transition);
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            .settings-logout-btn:hover {
+                opacity: 0.9;
+            }
+
+            .settings-tabs {
+                display: none;
+                background: var(--bg-hover);
+                border-bottom: 1px solid var(--border-color);
+                flex-shrink: 0;
+                overflow-x: auto;
+            }
+            .settings-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            .settings-tabs .tab {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 12px;
+                border: none;
+                background: transparent;
+                color: var(--text-muted);
+                font-size: 12px;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                border-bottom: 3px solid transparent;
+                flex-shrink: 0;
+                transition: var(--transition);
+            }
+            .settings-tabs .tab:hover {
+                color: var(--text-secondary);
+                background: var(--bg-card);
+            }
+            .settings-tabs .tab.active {
+                color: var(--accent);
+                border-bottom-color: var(--accent);
+                background: var(--bg-card);
+            }
+
+            /* ===== IFRAME ===== */
+            .iframe-wrapper {
+                background: var(--bg-card);
+                border-radius: var(--radius-sm);
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+                flex: 1;
+                min-height: 300px;
+                position: relative;
+            }
+            .iframe-wrapper iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                display: block;
+            }
+            .iframe-loading {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
+                background: var(--bg-card);
+                z-index: 5;
+                transition: opacity 0.5s ease;
+            }
+            .iframe-loading.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .iframe-loading .spinner {
+                width: 28px;
+                height: 28px;
+                border: 3px solid var(--border-color);
+                border-top-color: var(--accent);
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            .iframe-loading p {
+                color: var(--text-muted);
+                font-size: 12px;
+            }
+
+            .iframe-fallback {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                padding: 30px 20px;
+                text-align: center;
+                background: var(--bg-card);
+            }
+            .iframe-fallback.visible {
+                display: flex;
+            }
+            .iframe-fallback i {
+                font-size: 36px;
+                color: var(--accent);
+                margin-bottom: 10px;
+            }
+            .iframe-fallback h3 {
+                color: var(--text-primary);
+                font-size: 16px;
+                margin-bottom: 4px;
+            }
+            .iframe-fallback p {
+                color: var(--text-secondary);
+                font-size: 13px;
+                max-width: 400px;
+            }
+            .iframe-fallback .btn-open {
+                padding: 8px 20px;
+                background: var(--accent);
+                color: white;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: var(--transition);
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .iframe-fallback .btn-open:hover {
+                background: var(--accent-hover);
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (min-width: 768px) {
+                .desktop-home {
+                    display: flex;
+                }
+                .bottom-nav {
+                    display: none !important;
+                }
+                .body-layout {
+                    padding-bottom: 0;
+                }
+                .ai-float {
+                    bottom: 20px;
+                    right: 24px;
+                }
+                .ai-panel {
+                    bottom: 84px;
+                    right: 24px;
+                }
+                .content-area {
+                    padding: 24px 32px 40px;
+                }
+                .top-header {
+                    padding: 0 24px;
+                    height: 64px;
+                }
+                .stats-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+                .settings-tabs {
+                    display: none !important;
+                }
+                .settings-sidebar {
+                    display: block !important;
+                }
+                .sidebar {
+                    width: 300px;
+                    left: -320px;
+                }
+                .dashboard-footer {
+                    margin-top: 32px;
+                    padding: 20px 0 12px;
+                }
+                .calendar-grid .cal-header .month-area {
+                    flex: 1;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .bottom-nav {
+                    display: flex;
+                }
+                .body-layout {
+                    padding-bottom: calc(var(--bottom-nav-height) + var(--safe-bottom));
+                }
+                .ai-float {
+                    bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 12px);
+                    right: 16px;
+                }
+                .ai-panel {
+                    bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 76px);
+                    right: 8px;
+                    width: calc(100vw - 16px);
+                    max-height: 400px;
+                }
+                .settings-overlay {
+                    padding: 0;
+                    align-items: stretch;
+                }
+                .settings-dialog {
+                    max-height: 100vh;
+                    border-radius: 0;
+                    max-width: 100%;
+                    border: none;
+                }
+                .settings-tabs {
+                    display: flex;
+                }
+                .settings-sidebar {
+                    display: none !important;
+                }
+                .settings-content {
+                    padding: 12px 16px;
+                }
+                .widget-grid {
+                    grid-template-columns: 1fr;
+                }
+                .quick-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .app-drawer {
+                    padding: 12px 16px;
+                }
+                .calendar-grid .cal-days .day {
+                    font-size: 13px;
+                    padding: 6px 0;
+                    min-height: 36px;
+                }
+                .content-area {
+                    padding: 12px 12px 30px;
+                }
+                .dashboard-footer {
+                    margin-top: 16px;
+                    padding: 12px 0 8px;
+                }
+                .calendar-grid .cal-header {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .calendar-grid .cal-header .month-area {
+                    justify-content: center;
+                }
+                .calendar-grid .cal-header .year-selector {
+                    justify-content: center;
+                }
+            }
+
+            @media (min-width: 1400px) {
+                .content-area {
+                    padding: 32px 48px 40px;
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    width: 100%;
+                }
+            }
+
+            body.dark-mode .action-item .info .name {
+                color: #ffffff !important;
+            }
+            body.dark-mode .action-item .info .meta {
+                color: #b0b0b0 !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- ===== LOGIN ===== -->
+        <div id="loginScreen">
+            <div class="login-box">
+                <div class="brand-icon">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jL08GKJy3CTYG0Co9KQLcAmwXkdya7B_KF08rPFvVw&s=10"
+                        alt="Kotra"
+                    />
+                </div>
+                <h1>Kotra <span>Hub</span></h1>
+                <p class="sub">Kotra Hub - Unified Digital Ecosystem</p>
+                <input type="text" placeholder="Username" value="kp.digital" id="usernameInput" />
+                <div class="password-wrapper">
+                    <input type="password" placeholder="Password" value="kp@123" id="passwordInput" />
+                    <button class="password-toggle" onclick="togglePassword()" type="button">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+                <button class="login-btn" onclick="handleLogin()">
+                    <i class="fas fa-arrow-right-to-bracket" style="margin-right: 10px"></i> Sign In
+                </button>
+                <p class="note">
+                    <i class="fas fa-shield-halved"></i> After 3 failed attempts, account will be locked.
+                </p>
+            </div>
+            <div style="position: absolute; bottom: 24px; text-align: center; width: 100%">
+                <a
+                    href="https://www.kotrapharma.com"
+                    target="_blank"
+                    style="
+                        color: #ffffff;
+                        text-decoration: none;
+                        font-size: 14px;
+                        font-weight: 500;
+                        padding: 6px 20px;
+                        background: rgba(0, 0, 0, 0.2);
+                        border-radius: 30px;
+                        backdrop-filter: blur(4px);
+                    "
+                    >www.kotrapharma.com</a
+                >
+            </div>
+        </div>
+
+        <!-- ===== DASHBOARD ===== -->
+        <div id="dashboard">
+            <!-- ===== HEADER ===== -->
+            <header class="top-header">
+                <div class="header-left">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jL08GKJy3CTYG0Co9KQLcAmwXkdya7B_KF08rPFvVw&s=10"
+                        alt="Kotra"
+                        class="logo-img"
+                    />
+                    <span class="brand">Kotra <span>Hub</span></span>
+                    <!-- <span class="version">v3.0</span> -->
+                    <button class="header-btn" onclick="toggleSidebar()" title="Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="header-btn desktop-home" onclick="switchPage('page-dashboard')" title="Home">
+                        <i class="fas fa-home"></i>
+                    </button>
+                </div>
+                <div class="header-right">
+                    <button class="icon-btn" onclick="openAppDrawer()" title="Search (Ctrl+K)">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="icon-btn" onclick="alert('Notifications')" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button class="icon-btn" onclick="openSettings('general')" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="user-profile" onclick="openSettings('account')">
+                        <div class="avatar">KD</div>
+                        <div class="info">
+                            <span class="name">KP Digital</span>
+                            <span class="role">Executive · IT</span>
+                        </div>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ===== SIDEBAR ===== -->
+            <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <span class="brand">Kotra <span>Hub</span></span>
+                    <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="sidebar-body">
+                    <button class="sidebar-item" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeLabel">Dark Mode</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-item" onclick="switchPage('page-dashboard')">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-tasks')">
+                        <i class="fas fa-tasks"></i> My Tasks <span class="badge">4</span>
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-pending')">
+                        <i class="fas fa-clock"></i> Pending <span class="badge">3</span>
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-calendar')">
+                        <i class="fas fa-calendar"></i> Calendar
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <div class="sidebar-section-title">🌐 Services</div>
+                    <button class="sidebar-item" onclick="switchPage('page-hr')">
+                        <i class="fas fa-user-tie"></i> HR Portal
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-it')">
+                        <i class="fas fa-laptop"></i> IT Portal
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-eservices')">
+                        <i class="fas fa-headset"></i> E-Services
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-ndms')">
+                        <i class="fas fa-flask"></i> NDMS
+                    </button>
+                    <button class="sidebar-item" onclick="switchPage('page-employee')">
+                        <i class="fas fa-users"></i> Employee
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-item" onclick="openAIPanel()">
+                        <i class="fas fa-question-circle"></i> Help & Support
+                    </button>
+                    <button class="sidebar-item" onclick="handleLogout()" style="color: var(--accent-red)">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </aside>
+
+            <!-- ===== APP DRAWER ===== -->
+            <div class="app-drawer" id="appDrawer">
+                <div class="app-drawer-header">
+                    <h3><i class="fas fa-search"></i> Find Services</h3>
+                    <button class="app-drawer-close" onclick="closeAppDrawer()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="app-drawer-search">
+                    <i class="fas fa-search"></i>
+                    <input
+                        type="text"
+                        id="drawerSearch"
+                        placeholder="Search apps, services, actions..."
+                        oninput="filterDrawer(this.value)"
+                    />
+                </div>
+                <div class="app-drawer-body" id="drawerBody">
+                    <div class="quick-actions-row">
+                        <div class="quick-action-chip" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <i class="fas fa-calendar-plus"></i> Apply Leave
+                        </div>
+                        <div class="quick-action-chip" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <i class="fas fa-clock"></i> Timesheet
+                        </div>
+                        <div class="quick-action-chip" onclick="switchPage('page-it'); closeAppDrawer();">
+                            <i class="fas fa-key"></i> Password Reset
+                        </div>
+                        <div class="quick-action-chip" onclick="switchPage('page-eservices'); closeAppDrawer();">
+                            <i class="fas fa-headset"></i> Support
+                        </div>
+                    </div>
+                    <div id="serviceCategories">
+                        <div class="service-category">
+                            <div class="cat-header">
+                                <i class="fas fa-user-tie"></i> HR Portal <span class="count">6 services</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                                <i class="fas fa-calendar-plus"></i><span class="name">Apply Leave</span
+                                ><span class="tag">Quick</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                                <i class="fas fa-calendar-days"></i><span class="name">Leave Calendar</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                                <i class="fas fa-hospital-user"></i><span class="name">Medical Claim</span
+                                ><span class="tag">Quick</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                                <i class="fas fa-clock"></i><span class="name">Timesheet</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                                <i class="fas fa-wallet"></i><span class="name">Leave Balance</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                                <i class="fas fa-user-edit"></i><span class="name">Employee Profile</span>
+                            </div>
+                        </div>
+                        <div class="service-category">
+                            <div class="cat-header">
+                                <i class="fas fa-laptop"></i> IT Portal <span class="count">4 services</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                                <i class="fas fa-keyboard"></i><span class="name">Hardware Request</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                                <i class="fas fa-key"></i><span class="name">Password Reset</span
+                                ><span class="tag">Quick</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                                <i class="fas fa-envelope"></i><span class="name">Email Setup</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                                <i class="fas fa-shield"></i><span class="name">Access Request</span>
+                            </div>
+                        </div>
+                        <div class="service-category">
+                            <div class="cat-header">
+                                <i class="fas fa-ellipsis-h"></i> Other Services <span class="count">4 services</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-eservices'); closeAppDrawer();">
+                                <i class="fas fa-headset"></i><span class="name">E-Services</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-ndms'); closeAppDrawer();">
+                                <i class="fas fa-flask"></i><span class="name">NDMS Portal</span>
+                            </div>
+                            <div class="service-item" onclick="switchPage('page-employee'); closeAppDrawer();">
+                                <i class="fas fa-users"></i><span class="name">Employee Portal</span>
+                            </div>
+                            <div class="service-item" onclick="openAIPanel(); closeAppDrawer();">
+                                <i class="fas fa-life-ring"></i><span class="name">Help & Support</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-results" id="drawerNoResults" style="display: none">
+                        <i class="fas fa-search-minus"></i> No services found. Try a different search.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== BODY ===== -->
+            <div class="body-layout">
+                <main class="content-area" id="contentArea">
+                    <!-- Announcement -->
+                    <div class="announcement-banner show" id="announcementBanner">
+                        <i class="fas fa-bullhorn icon"></i>
+                        <div class="content">
+                            <div class="title">📢 Replacement Holiday – HQ only</div>
+                            <div class="desc">Company closed on 31 Aug & 1 Sep 2026. Operations resume 2 Sep.</div>
+                        </div>
+                        <button
+                            class="dismiss"
+                            onclick="document.getElementById('announcementBanner').classList.remove('show')"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <!-- ===== PAGE: DASHBOARD ===== -->
+                    <div id="page-dashboard" class="page active-page">
+                        <!-- Row 1: Tasks + Pending -->
+                        <div class="widget-grid">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-tasks"></i> My Tasks</span
+                                    ><span class="count">4</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Complete Q3 Performance Reviews</div>
+                                            <div class="meta">Due Aug 15 · Sarah Chen</div>
+                                        </div>
+                                        <span class="priority priority-high">High</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Update Department Budget</div>
+                                            <div class="meta">Due Aug 10 · Mike Johnson</div>
+                                        </div>
+                                        <span class="priority priority-medium">Medium</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Prepare Town Hall Presentation</div>
+                                            <div class="meta">Due Aug 14 · Lisa Park</div>
+                                        </div>
+                                        <span class="priority priority-high">High</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Review Q4 Project Proposals</div>
+                                            <div class="meta">Due Aug 20 · Tom Wilson</div>
+                                        </div>
+                                        <span class="priority priority-low">Low</span>
+                                    </div>
+                                </div>
+                                <div class="widget-footer">
+                                    <button onclick="switchPage('page-tasks')">View All →</button>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-clock"></i> Pending Actions</span
+                                    ><span class="count">3</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="action-item">
+                                        <div class="info">
+                                            <div class="name">Sarah Tan · Leave Request</div>
+                                            <div class="meta">Today</div>
+                                        </div>
+                                        <span class="urgency urgency-urgent">Urgent</span>
+                                    </div>
+                                    <div class="action-item">
+                                        <div class="info">
+                                            <div class="name">John Lim · PO #4421</div>
+                                            <div class="meta">Yesterday</div>
+                                        </div>
+                                        <span class="urgency urgency-normal">Normal</span>
+                                    </div>
+                                    <div class="action-item">
+                                        <div class="info">
+                                            <div class="name">Ahmad Rizal · Expense Claim</div>
+                                            <div class="meta">2 days ago</div>
+                                        </div>
+                                        <span class="urgency urgency-low">Low</span>
+                                    </div>
+                                </div>
+                                <div class="widget-footer">
+                                    <button onclick="switchPage('page-pending')">View All →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Calendar + Quick Access -->
+                        <div class="widget-grid">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-calendar"></i> Calendar</span
+                                    ><span class="count" id="quickCalendarMonth">Loading...</span>
+                                </div>
+                                <div
+                                    class="widget-body"
+                                    style="max-height: none; padding: 8px 12px"
+                                    id="quickCalendarBody"
+                                >
+                                    <!-- Month Navigation -->
+                                    <div
+                                        style="
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: space-between;
+                                            margin-bottom: 8px;
+                                        "
+                                    >
+                                        <button
+                                            class="nav-btn"
+                                            onclick="changeQuickMonth(-1)"
+                                            style="
+                                                border: none;
+                                                background: transparent;
+                                                color: var(--text-secondary);
+                                                cursor: pointer;
+                                                font-size: 14px;
+                                                padding: 4px 8px;
+                                                border-radius: 6px;
+                                            "
+                                        >
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <span
+                                            style="font-weight: 600; font-size: 14px; color: var(--text-primary)"
+                                            id="quickMonthLabel"
+                                            >Loading...</span
+                                        >
+                                        <button
+                                            class="nav-btn"
+                                            onclick="changeQuickMonth(1)"
+                                            style="
+                                                border: none;
+                                                background: transparent;
+                                                color: var(--text-secondary);
+                                                cursor: pointer;
+                                                font-size: 14px;
+                                                padding: 4px 8px;
+                                                border-radius: 6px;
+                                            "
+                                        >
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <!-- Year Selector -->
+                                    <div style="display: flex; justify-content: center; margin-bottom: 8px">
+                                        <select
+                                            id="quickYearSelect"
+                                            onchange="changeQuickYear(this.value)"
+                                            style="
+                                                padding: 2px 8px;
+                                                border: 1px solid var(--border-color);
+                                                border-radius: var(--radius-sm);
+                                                font-size: 12px;
+                                                background: var(--bg-input);
+                                                color: var(--text-primary);
+                                            "
+                                        ></select>
+                                    </div>
+                                    <!-- Weekdays -->
+                                    <div
+                                        style="
+                                            display: grid;
+                                            grid-template-columns: repeat(7, 1fr);
+                                            gap: 2px;
+                                            font-size: 11px;
+                                            color: var(--text-muted);
+                                            padding: 4px 0;
+                                        "
+                                    >
+                                        <span style="text-align: center">S</span
+                                        ><span style="text-align: center">M</span
+                                        ><span style="text-align: center">T</span
+                                        ><span style="text-align: center">W</span
+                                        ><span style="text-align: center">T</span
+                                        ><span style="text-align: center">F</span
+                                        ><span style="text-align: center">S</span>
+                                    </div>
+                                    <!-- Days -->
+                                    <div
+                                        style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px"
+                                        id="quickCalendarDays"
+                                    >
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                    <!-- Events -->
+                                    <div
+                                        style="
+                                            margin-top: 8px;
+                                            padding-top: 8px;
+                                            border-top: 1px solid var(--border-color);
+                                        "
+                                        id="quickCalendarEvents"
+                                    >
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-rocket"></i> Quick Access</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="quick-grid">
+                                        <div class="quick-item" onclick="switchPage('page-hr')">
+                                            <i class="fas fa-calendar-plus"></i><span>Apply Leave</span>
+                                        </div>
+                                        <div class="quick-item" onclick="switchPage('page-hr')">
+                                            <i class="fas fa-clock"></i><span>Timesheet</span>
+                                        </div>
+                                        <div class="quick-item" onclick="switchPage('page-employee')">
+                                            <i class="fas fa-users"></i><span>Directory</span>
+                                        </div>
+                                        <div class="quick-item" onclick="openAIPanel()">
+                                            <i class="fas fa-life-ring"></i><span>Support</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Phone Directory + Important Notice -->
+                        <div class="widget-grid">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-phone"></i> Phone Directory</span
+                                    ><span class="count">6 contacts</span>
+                                </div>
+                                <div class="widget-body" style="max-height: 220px">
+                                    <div class="contact-item">
+                                        <span class="name">Aiman</span
+                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 5111</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="name">Vivian</span
+                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 6156</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="name">Sarah Tan</span
+                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 5234</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="name">John Lim</span
+                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 4782</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="name">Ahmad Rizal</span
+                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 6123</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="name">Tasha</span
+                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 2222</span>
+                                    </div>
+                                </div>
+                                <div class="widget-footer">
+                                    <button onclick="alert('Opening full directory...')">View All →</button>
+                                </div>
+                            </div>
+
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-bullhorn"></i> Important Notices</span
+                                    ><span class="count">2</span>
+                                </div>
+                                <div class="widget-body" style="max-height: 220px; padding: 8px 12px">
+                                    <!-- Notice List View -->
+                                    <div id="noticeListView">
+                                        <div class="notice-list-item" onclick="openNotice('notice1')">
+                                            <span class="icon"><i class="fas fa-calendar-exclamation"></i></span>
+                                            <div class="info">
+                                                <div class="title">Replacement Holiday – HQ only</div>
+                                                <div class="date">31 Aug &amp; 1 Sep 2026</div>
+                                            </div>
+                                            <span class="chevron"><i class="fas fa-chevron-right"></i></span>
+                                        </div>
+                                        <div class="notice-list-item" onclick="openNotice('notice2')">
+                                            <span class="icon"><i class="fas fa-file-alt"></i></span>
+                                            <div class="info">
+                                                <div class="title">New Annual Leave Policy Update</div>
+                                                <div class="date">Effective 1 Sep 2026</div>
+                                            </div>
+                                            <span class="chevron"><i class="fas fa-chevron-right"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notice Detail View 1 -->
+                                    <div class="notice-detail" id="notice1">
+                                        <button class="back-btn" onclick="closeNotice('notice1')">
+                                            <i class="fas fa-arrow-left"></i> Back to notices
+                                        </button>
+                                        <div class="notice-title">📢 Replacement Holiday – HQ only</div>
+                                        <div class="notice-date">31 August &amp; 1 September 2026</div>
+                                        <div class="notice-body">
+                                            <p>
+                                                Further to memo dated 16 March 2026 regarding the additional public
+                                                holiday in conjunction with Hari Raya Aidilfitri, please be informed
+                                                that the company has designated
+                                                <strong>1 September 2026 (Tuesday)</strong> as the replacement holiday.
+                                            </p>
+                                            <p>
+                                                The company will be closed on
+                                                <strong>31 August 2026 (Monday) &amp; 1 September 2026 (Tuesday)</strong
+                                                >. Operation will resume on
+                                                <strong>2 September 2026 (Wednesday)</strong>.
+                                            </p>
+                                            <p>
+                                                <span style="color: var(--accent-red); font-weight: 600">⚠️</span>
+                                                Employees who take medical leave (MC) immediately before or after this
+                                                replacement holiday may be subject to a
+                                                <strong>six (6) months suspension</strong> of outpatient medical card
+                                                benefits, in accordance with the company's policies.
+                                            </p>
+                                            <p>Should you have any queries, kindly refer to the HR Department.</p>
+                                        </div>
+                                        <div class="notice-signoff">
+                                            <p>
+                                                Best regards,<br /><strong>Tasha</strong><br />Human Resource
+                                                Department<br />Kotra Pharma (M) Sdn. Bhd.<br />Tel: 06-3362222
+                                            </p>
+                                        </div>
+                                        <div class="notice-bilingual">
+                                            <span class="bm-toggle" onclick="toggleBM('bm1')"
+                                                >📖 Baca dalam Bahasa Malaysia</span
+                                            >
+                                            <div class="bm-content" id="bm1">
+                                                <p><strong>Cuti Gantian – HQ sahaja</strong></p>
+                                                <p>
+                                                    Merujuk kepada memo bertarikh 16 Mac 2026 mengenai cuti umum
+                                                    tambahan sempena Hari Raya Aidilfitri, dimaklumkan bahawa syarikat
+                                                    telah menetapkan <strong>1 September 2026 (Selasa)</strong> sebagai
+                                                    cuti gantian.
+                                                </p>
+                                                <p>
+                                                    Syarikat akan ditutup pada
+                                                    <strong>31 Ogos 2026 (Isnin) dan 1 September 2026 (Selasa)</strong>.
+                                                    Operasi akan disambung semula pada
+                                                    <strong>2 September 2026 (Rabu)</strong>.
+                                                </p>
+                                                <p>
+                                                    <span style="color: var(--accent-red); font-weight: 600">⚠️</span>
+                                                    Pekerja yang mengambil cuti sakit (MC) sejurus sebelum atau selepas
+                                                    cuti gantian ini mungkin dikenakan penggantungan kemudahan kad
+                                                    perubatan pesakit luar selama <strong>enam (6) bulan</strong>,
+                                                    selaras dengan polisi syarikat.
+                                                </p>
+                                                <p>
+                                                    Sekiranya anda mempunyai sebarang pertanyaan, sila rujuk kepada
+                                                    Jabatan Sumber Manusia (HR).
+                                                </p>
+                                                <p>Terima kasih.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notice Detail View 2 -->
+                                    <div class="notice-detail" id="notice2">
+                                        <button class="back-btn" onclick="closeNotice('notice2')">
+                                            <i class="fas fa-arrow-left"></i> Back to notices
+                                        </button>
+                                        <div class="notice-title">📋 New Annual Leave Policy Update</div>
+                                        <div class="notice-date">Effective 1 September 2026</div>
+                                        <div class="notice-body">
+                                            <p>
+                                                We are pleased to announce the updated Annual Leave Policy effective
+                                                <strong>1 September 2026</strong>.
+                                            </p>
+                                            <p><strong>Key Changes:</strong></p>
+                                            <p>
+                                                • Annual leave carry-forward limit increased from 10 to
+                                                <strong>15 days</strong>
+                                            </p>
+                                            <p>
+                                                • Leave application must be submitted at least
+                                                <strong>5 working days</strong> in advance
+                                            </p>
+                                            <p>• Emergency leave requests can be submitted via the HR Portal</p>
+                                            <p>
+                                                Please refer to the updated policy document in the Employee Portal for
+                                                full details.
+                                            </p>
+                                        </div>
+                                        <div class="notice-signoff">
+                                            <p>
+                                                Best regards,<br /><strong>Tasha</strong><br />Human Resource
+                                                Department<br />Kotra Pharma (M) Sdn. Bhd.<br />Tel: 06-3362222
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== DASHBOARD FOOTER ===== -->
+                        <div class="dashboard-footer">
+                            <a href="https://www.kotrapharma.com" target="_blank" class="footer-link">
+                                <i class="fas fa-globe"></i> www.kotrapharma.com
+                            </a>
+                            <div class="footer-copy">
+                                © 2026 Kotra Pharma (M) Sdn Bhd (90082-V). All Rights Reserved.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: CALENDAR ===== -->
+                    <div id="page-calendar" class="page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-calendar" style="color: var(--accent); margin-right: 10px"></i>Calendar
+                            </h2>
+                            <p>View and manage your schedule.</p>
+                        </div>
+                        <div class="calendar-grid" id="fullCalendar">
+                            <div class="cal-header">
+                                <div class="month-area">
+                                    <button class="nav-btn" onclick="changeMonth(-1)">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span class="month" id="calMonth">Loading...</span>
+                                    <button class="nav-btn" onclick="changeMonth(1)">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="year-selector">
+                                    <label style="font-size: 12px; color: var(--text-muted); margin-right: 4px"
+                                        >Year:</label
+                                    >
+                                    <select id="calYearSelect" onchange="changeYear(this.value)">
+                                        <!-- Populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="cal-weekdays">
+                                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span
+                                ><span>Fri</span><span>Sat</span>
+                            </div>
+                            <div class="cal-days" id="calDays">
+                                <div class="calendar-loading">
+                                    <div class="spinner"></div>
+                                    <span>Loading holidays...</span>
+                                </div>
+                            </div>
+                            <div class="calendar-events-list" id="calEvents">
+                                <div class="empty-events">Select a date to see events</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: TASKS ===== -->
+                    <div id="page-tasks" class="page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-tasks" style="color: var(--accent); margin-right: 10px"></i>My Tasks
+                            </h2>
+                            <p>Work you need to complete.</p>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-body" style="max-height: none">
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">Complete Q3 Performance Reviews</div>
+                                        <div class="meta">Due Aug 15 · Sarah Chen</div>
+                                    </div>
+                                    <span class="priority priority-high">High</span>
+                                </div>
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">Update Department Budget</div>
+                                        <div class="meta">Due Aug 10 · Mike Johnson</div>
+                                    </div>
+                                    <span class="priority priority-medium">Medium</span>
+                                </div>
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">Prepare Town Hall Presentation</div>
+                                        <div class="meta">Due Aug 14 · Lisa Park</div>
+                                    </div>
+                                    <span class="priority priority-high">High</span>
+                                </div>
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">Review Q4 Project Proposals</div>
+                                        <div class="meta">Due Aug 20 · Tom Wilson</div>
+                                    </div>
+                                    <span class="priority priority-low">Low</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: PENDING ===== -->
+                    <div id="page-pending" class="page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-clock" style="color: var(--accent); margin-right: 10px"></i>Pending
+                                Actions
+                            </h2>
+                            <p>Requests that need your response.</p>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-body" style="max-height: none">
+                                <div class="action-item">
+                                    <div class="info">
+                                        <div class="name">Sarah Tan · Leave Request</div>
+                                        <div class="meta">Today</div>
+                                    </div>
+                                    <span class="urgency urgency-urgent">Urgent</span>
+                                </div>
+                                <div class="action-item">
+                                    <div class="info">
+                                        <div class="name">John Lim · PO #4421</div>
+                                        <div class="meta">Yesterday</div>
+                                    </div>
+                                    <span class="urgency urgency-normal">Normal</span>
+                                </div>
+                                <div class="action-item">
+                                    <div class="info">
+                                        <div class="name">Ahmad Rizal · Expense Claim</div>
+                                        <div class="meta">2 days ago</div>
+                                    </div>
+                                    <span class="urgency urgency-low">Low</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: HR ===== -->
+                    <div id="page-hr" class="page iframe-page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-user-tie" style="color: var(--accent); margin-right: 10px"></i>HR
+                                Portal
+                            </h2>
+                            <p>Employee records, leave, payroll, and more.</p>
+                        </div>
+                        <div class="iframe-wrapper">
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="spinner"></div>
+                                <p>Loading HR Portal...</p>
+                            </div>
+                            <iframe
+                                id="hrIframe"
+                                src="https://ehr.kotrapharma.com/hrmsnet/"
+                                title="HR Portal"
+                                onload="handleIframeLoad()"
+                                onerror="handleIframeError()"
+                            ></iframe>
+                            <div class="iframe-fallback" id="iframeFallback">
+                                <i class="fas fa-lock"></i>
+                                <h3>Secure Integration Required</h3>
+                                <p>HR portal cannot be embedded directly for security.</p>
+                                <button
+                                    class="btn-open"
+                                    onclick="window.open('https://ehr.kotrapharma.com/hrmsnet/','_blank')"
+                                >
+                                    <i class="fas fa-external-link-alt"></i> Open HR Portal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: IT ===== -->
+                    <div id="page-it" class="page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-laptop" style="color: var(--accent); margin-right: 10px"></i>IT Portal
+                            </h2>
+                            <p>Hardware requests, access, and support.</p>
+                        </div>
+                        <div class="widget-grid">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-keyboard"></i> Hardware</span
+                                    ><span class="count">3</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">New Laptop - Alice</div>
+                                            <div class="meta">Aug 8</div>
+                                        </div>
+                                        <span class="priority priority-medium">Processing</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Monitor - Bob</div>
+                                            <div class="meta">Aug 6</div>
+                                        </div>
+                                        <span class="priority priority-low">Ordered</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-key"></i> Access</span
+                                    ><span class="count">2</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">System Access - Carol</div>
+                                            <div class="meta">Aug 9</div>
+                                        </div>
+                                        <span class="priority priority-high">Urgent</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: E-SERVICES ===== -->
+                    <div id="page-eservices" class="page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-headset" style="color: var(--accent); margin-right: 10px"></i
+                                >E-Services
+                            </h2>
+                            <p>Customer support and ticket management.</p>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-header">
+                                <span class="title"><i class="fas fa-ticket"></i> Active Tickets</span
+                                ><span class="count">3</span>
+                            </div>
+                            <div class="widget-body" style="max-height: none">
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">#4421 - Login Issue</div>
+                                        <div class="meta">Aug 8</div>
+                                    </div>
+                                    <span class="priority priority-high">In Progress</span>
+                                </div>
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">#4423 - API Timeout</div>
+                                        <div class="meta">Aug 7</div>
+                                    </div>
+                                    <span class="priority priority-medium">Waiting</span>
+                                </div>
+                                <div class="task-item">
+                                    <div class="info">
+                                        <div class="name">#4425 - Data Sync</div>
+                                        <div class="meta">Aug 6</div>
+                                    </div>
+                                    <span class="priority priority-low">Assigned</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: NDMS ===== -->
+                    <div id="page-ndms" class="page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-flask" style="color: var(--accent); margin-right: 10px"></i>NDMS Portal
+                            </h2>
+                            <p>R&D documentation and compliance.</p>
+                        </div>
+                        <div class="widget-grid">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-file"></i> Documents</span
+                                    ><span class="count">3</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">R&D Report Q2</div>
+                                            <div class="meta">Aug 5</div>
+                                        </div>
+                                        <span class="priority priority-low">Approved</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Clinical Trial A</div>
+                                            <div class="meta">Aug 3</div>
+                                        </div>
+                                        <span class="priority priority-medium">Review</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <span class="title"><i class="fas fa-flask"></i> Inventory</span
+                                    ><span class="count">2</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="task-item">
+                                        <div class="info">
+                                            <div class="name">Reagent X</div>
+                                            <div class="meta">24 units left</div>
+                                        </div>
+                                        <span class="priority priority-high">Low Stock</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PAGE: EMPLOYEE ===== -->
+                    <div id="page-employee" class="page iframe-page">
+                        <div class="page-header">
+                            <h2>
+                                <i class="fas fa-users" style="color: var(--accent); margin-right: 10px"></i>Employee
+                                Portal
+                            </h2>
+                            <p>Employee onboarding, announcements, and self-service.</p>
+                        </div>
+                        <div class="iframe-wrapper">
+                            <div class="iframe-loading" id="employeeIframeLoading">
+                                <div class="spinner"></div>
+                                <p>Loading Employee Portal...</p>
+                            </div>
+                            <iframe
+                                id="employeeIframe"
+                                src="employee_onboarding.html"
+                                title="Employee Portal"
+                                onload="handleEmployeeIframeLoad()"
+                                onerror="handleEmployeeIframeError()"
+                            ></iframe>
+                            <div class="iframe-fallback" id="employeeIframeFallback">
+                                <i class="fas fa-user-plus"></i>
+                                <h3>Employee Portal Unavailable</h3>
+                                <p>Please ensure employee_onboarding.html is accessible.</p>
+                                <button class="btn-open" onclick="window.open('employee_onboarding.html','_blank')">
+                                    <i class="fas fa-external-link-alt"></i> Open Employee Portal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- ===== BOTTOM NAV ===== -->
+            <nav class="bottom-nav">
+                <button class="bottom-nav-item active" onclick="switchPage('page-dashboard')">
+                    <i class="fas fa-home"></i><span>Home</span>
+                </button>
+                <button class="bottom-nav-item" onclick="openAppDrawer()">
+                    <i class="fas fa-th"></i><span>Apps</span>
+                </button>
+            </nav>
+
+            <!-- ===== KOTRA AI ===== -->
+            <div class="ai-float" id="aiFloat" onclick="toggleAIPanel()">
+                <div class="avatar"><img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Kotra AI" /></div>
+                <span class="label"><i class="fas fa-bolt" style="color: var(--accent)"></i> Kotra AI</span>
+            </div>
+
+            <!-- ===== AI PANEL ===== -->
+            <div class="ai-panel" id="aiPanel">
+                <div class="header" id="aiPanelHeader">
+                    <div class="title">
+                        <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Kotra AI" /><span>Kotra AI</span>
+                    </div>
+                    <button class="close-btn" onclick="toggleAIPanel()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="tabs">
+                    <button class="tab active" data-tab="kb" onclick="switchAITab('kb')">
+                        <i class="fas fa-book"></i> Knowledge
+                    </button>
+                    <button class="tab" data-tab="support" onclick="switchAITab('support')">
+                        <i class="fas fa-ticket"></i> Support
+                    </button>
+                    <button class="tab" data-tab="chat" onclick="switchAITab('chat')">
+                        <i class="fas fa-comment"></i> Chat
+                    </button>
+                </div>
+                <div class="body">
+                    <div class="tab-content active" id="tab-kb">
+                        <div class="kb-item" onclick="alert('Opening User Manual...')">
+                            <i class="fas fa-book"></i><span class="name">User Manual v3.2</span
+                            ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
+                        </div>
+                        <div class="kb-item" onclick="alert('Opening FAQ...')">
+                            <i class="fas fa-question-circle"></i><span class="name">Frequently Asked Questions</span
+                            ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
+                        </div>
+                        <div class="kb-item" onclick="alert('Opening How-to Videos...')">
+                            <i class="fas fa-video"></i><span class="name">How-to Videos</span
+                            ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
+                        </div>
+                        <div class="kb-item" onclick="alert('Searching Knowledge Base...')">
+                            <i class="fas fa-search"></i><span class="name">Search Knowledge Base</span
+                            ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-support">
+                        <div class="ticket-item">
+                            <div class="info">
+                                <div class="name">#4421 - Login Issue</div>
+                                <div class="meta">Aug 8 · In Progress</div>
+                            </div>
+                            <span class="ticket-status open">Open</span>
+                        </div>
+                        <div class="ticket-item">
+                            <div class="info">
+                                <div class="name">#4423 - API Timeout</div>
+                                <div class="meta">Aug 7 · Waiting</div>
+                            </div>
+                            <span class="ticket-status waiting">Waiting</span>
+                        </div>
+                        <div class="ticket-item">
+                            <div class="info">
+                                <div class="name">#4425 - Data Sync</div>
+                                <div class="meta">Aug 6 · Closed</div>
+                            </div>
+                            <span class="ticket-status closed">Closed</span>
+                        </div>
+                        <button class="report-btn" onclick="alert('Opening new ticket form...')">
+                            <i class="fas fa-plus"></i> Report Issue
+                        </button>
+                    </div>
+                    <div class="tab-content" id="tab-chat">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-msg">
+                                <div class="avatar">
+                                    <img src="https://qjy02.github.io/react/vipo/vipo.png" alt="AI" />
+                                </div>
+                                <div class="bubble">Hello! I'm Kotra AI. How can I help? 😊</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input
+                                type="text"
+                                id="chatInput"
+                                placeholder="Ask me anything..."
+                                onkeydown="if(event.key==='Enter') sendChat()"
+                            />
+                            <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SETTINGS ===== -->
+            <div class="settings-overlay" id="settingsOverlay" onclick="if(event.target===this) closeSettings()">
+                <div class="settings-dialog">
+                    <div class="settings-header">
+                        <h2><i class="fas fa-cog"></i>Settings</h2>
+                        <button class="settings-close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="settings-tabs" id="settingsTabs">
+                        <button class="tab active" data-section="general" onclick="switchSettings('general',this)">
+                            <i class="fas fa-sliders-h"></i> General
+                        </button>
+                        <button class="tab" data-section="appearance" onclick="switchSettings('appearance',this)">
+                            <i class="fas fa-palette"></i> Appearance
+                        </button>
+                        <button class="tab" data-section="account" onclick="switchSettings('account',this)">
+                            <i class="fas fa-user"></i> Account
+                        </button>
+                    </div>
+                    <div class="settings-body">
+                        <div class="settings-sidebar">
+                            <button
+                                class="settings-sidebar-item active"
+                                data-section="general"
+                                onclick="switchSettings('general',this)"
+                            >
+                                <i class="fas fa-sliders-h"></i> General
+                            </button>
+                            <button
+                                class="settings-sidebar-item"
+                                data-section="appearance"
+                                onclick="switchSettings('appearance',this)"
+                            >
+                                <i class="fas fa-palette"></i> Appearance
+                            </button>
+                            <button
+                                class="settings-sidebar-item"
+                                data-section="account"
+                                onclick="switchSettings('account',this)"
+                            >
+                                <i class="fas fa-user"></i> Account
+                            </button>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-section active" id="settings-general">
+                                <h3>General Settings</h3>
+                                <p>Manage your default preferences.</p>
+                                <div class="settings-row">
+                                    <div class="label">
+                                        <span class="title">Language</span><span class="desc">Preferred language</span>
+                                    </div>
+                                    <select
+                                        style="
+                                            padding: 6px 12px;
+                                            border-radius: var(--radius-sm);
+                                            border: 1px solid var(--border-color);
+                                            background: var(--bg-input);
+                                            color: var(--text-primary);
+                                            font-size: 13px;
+                                        "
+                                    >
+                                        <option>English</option>
+                                        <option>Bahasa Malaysia</option>
+                                        <option>Chinese</option>
+                                    </select>
+                                </div>
+                                <div class="settings-row">
+                                    <div class="label">
+                                        <span class="title">Default Landing Page</span
+                                        ><span class="desc">Page after login</span>
+                                    </div>
+                                    <select
+                                        style="
+                                            padding: 6px 12px;
+                                            border-radius: var(--radius-sm);
+                                            border: 1px solid var(--border-color);
+                                            background: var(--bg-input);
+                                            color: var(--text-primary);
+                                            font-size: 13px;
+                                        "
+                                    >
+                                        <option>Dashboard</option>
+                                        <option>HR Portal</option>
+                                        <option>E-Services</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-section" id="settings-appearance">
+                                <h3>Appearance</h3>
+                                <p>Customize how Kotra Hub looks.</p>
+                                <div class="settings-row">
+                                    <div class="label">
+                                        <span class="title">Dark Mode</span
+                                        ><span class="desc">Switch between light and dark</span>
+                                    </div>
+                                    <button class="toggle-switch" id="themeToggle" onclick="toggleTheme()">
+                                        <span class="slider"></span>
+                                    </button>
+                                </div>
+                                <div class="settings-row">
+                                    <div class="label">
+                                        <span class="title">Compact Mode</span
+                                        ><span class="desc">Reduce spacing for denser layout</span>
+                                    </div>
+                                    <button class="toggle-switch" onclick="this.classList.toggle('active')">
+                                        <span class="slider"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="settings-section" id="settings-account">
+                                <h3>Account</h3>
+                                <p>Manage your account and session.</p>
+                                <div class="settings-row">
+                                    <div class="label">
+                                        <span class="title">Username</span><span class="desc">kp.digital</span>
+                                    </div>
+                                    <button
+                                        style="
+                                            padding: 4px 12px;
+                                            border-radius: var(--radius-sm);
+                                            border: 1px solid var(--border-color);
+                                            background: var(--bg-hover);
+                                            color: var(--text-secondary);
+                                            font-size: 12px;
+                                            cursor: pointer;
+                                        "
+                                    >
+                                        Change
+                                    </button>
+                                </div>
+                                <div class="settings-row">
+                                    <div class="label">
+                                        <span class="title">Email</span
+                                        ><span class="desc">kp.digital@kotrapharma.com</span>
+                                    </div>
+                                    <button
+                                        style="
+                                            padding: 4px 12px;
+                                            border-radius: var(--radius-sm);
+                                            border: 1px solid var(--border-color);
+                                            background: var(--bg-hover);
+                                            color: var(--text-secondary);
+                                            font-size: 12px;
+                                            cursor: pointer;
+                                        "
+                                    >
+                                        Change
+                                    </button>
+                                </div>
+                                <button class="settings-logout-btn" onclick="handleLogout()">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== JAVASCRIPT ===== -->
+        <script>
+            // ===== STATE =====
+            let isDark = false;
+            let isChatOpen = false;
+            let isSidebarOpen = false;
+            let isDrawerOpen = false;
+            let iframeLoaded = false;
+            let employeeIframeLoaded = false;
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+            let selectedDate = null;
+            let holidays = [];
+            let holidaysLoaded = false;
+            let customEvents = {
+                "2026-08-10": [{ title: "KT Meeting", type: "meeting" }],
+                "2026-08-15": [{ title: "Town Hall", type: "event" }],
+            };
+
+            // Quick calendar state (dashboard)
+            let quickMonth = new Date().getMonth();
+            let quickYear = new Date().getFullYear();
+
+            // ===== FETCH HOLIDAYS =====
+            function fetchHolidays(year) {
+                return fetch(`https://malaysia-holiday.dydxsoft.my/api/v1/holidays?year=${year}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const existingDates = new Set(holidays.map((h) => h.date));
+                        data.data.forEach((h) => {
+                            if (!existingDates.has(h.date)) {
+                                holidays.push(h);
+                            }
+                        });
+                        return holidays;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching holidays:", error);
+                        return holidays;
+                    });
+            }
+
+            // ===== FETCH ALL HOLIDAYS =====
+            async function fetchAllHolidays() {
+                const currentYear = new Date().getFullYear();
+                await fetchHolidays(currentYear - 1);
+                await fetchHolidays(currentYear);
+                await fetchHolidays(currentYear + 1);
+                holidaysLoaded = true;
+            }
+
+            // ===== GET HOLIDAYS FOR A SPECIFIC DATE =====
+            function getHolidaysForDate(dateStr) {
+                return holidays.filter((h) => h.date === dateStr);
+            }
+
+            // ===== GET ALL EVENTS FOR A DATE (holidays + custom) =====
+            function getEventsForDate(dateStr) {
+                const holidayEvents = getHolidaysForDate(dateStr).map((h) => ({
+                    title: h.name,
+                    type: "holiday",
+                    holiday: h,
+                }));
+                const custom = customEvents[dateStr] || [];
+                return [...holidayEvents, ...custom];
+            }
+
+            // ===== POPULATE YEAR SELECTORS =====
+            function populateYearSelectors() {
+                const currentYear = new Date().getFullYear();
+                const selectors = ["calYearSelect", "quickYearSelect"];
+
+                selectors.forEach((id) => {
+                    const select = document.getElementById(id);
+                    if (!select) return;
+                    select.innerHTML = "";
+                    for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+                        const option = document.createElement("option");
+                        option.value = y;
+                        option.textContent = y;
+                        if (y === (id === "calYearSelect" ? currentYear : quickYear)) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    }
+                });
+            }
+
+            // ===== RENDER CALENDAR (Full Page) =====
+            function renderCalendar() {
+                const monthNames = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                const daysContainer = document.getElementById("calDays");
+                const monthDisplay = document.getElementById("calMonth");
+
+                if (!daysContainer) return;
+
+                // Update year selector
+                const yearSelect = document.getElementById("calYearSelect");
+                if (yearSelect) yearSelect.value = currentYear;
+
+                monthDisplay.textContent = monthNames[currentMonth] + " " + currentYear;
+
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+                const today = new Date();
+                const todayDate = today.getDate();
+                const todayMonth = today.getMonth();
+                const todayYear = today.getFullYear();
+
+                let html = "";
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    const day = daysInPrevMonth - i;
+                    html += `<div class="day other-month">${day}</div>`;
+                }
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateStr =
+                        currentYear +
+                        "-" +
+                        String(currentMonth + 1).padStart(2, "0") +
+                        "-" +
+                        String(d).padStart(2, "0");
+                    const events = getEventsForDate(dateStr);
+                    const hasHoliday = events.some((e) => e.type === "holiday");
+                    const hasMeeting = events.some((e) => e.type === "meeting");
+                    const hasEvent = events.some((e) => e.type === "event");
+                    const isToday = d === todayDate && currentMonth === todayMonth && currentYear === todayYear;
+                    const isSelected = selectedDate === dateStr;
+
+                    let cls = "day";
+                    if (isToday) cls += " today";
+                    if (hasHoliday) cls += " holiday";
+                    if (hasMeeting || hasEvent) cls += " has-event";
+                    if (isSelected) cls += " selected";
+
+                    let dots = "";
+                    if (hasHoliday || hasMeeting || hasEvent) {
+                        dots = '<div class="event-dot">';
+                        if (hasHoliday) dots += '<span class="dot-holiday"></span>';
+                        if (hasMeeting) dots += '<span class="dot-meeting"></span>';
+                        if (hasEvent) dots += '<span class="dot-event"></span>';
+                        dots += "</div>";
+                    }
+
+                    html += `<div class="${cls}" data-date="${dateStr}" onclick="selectDate('${dateStr}')">
+                ${d}${dots}
+            </div>`;
+                }
+                const totalDays = firstDay + daysInMonth;
+                const remaining = 42 - totalDays;
+                for (let d = 1; d <= remaining; d++) {
+                    html += `<div class="day other-month">${d}</div>`;
+                }
+                daysContainer.innerHTML = html;
+
+                if (selectedDate) {
+                    showEvents(selectedDate);
+                } else {
+                    let found = false;
+                    for (let d = 1; d <= daysInMonth; d++) {
+                        const dateStr =
+                            currentYear +
+                            "-" +
+                            String(currentMonth + 1).padStart(2, "0") +
+                            "-" +
+                            String(d).padStart(2, "0");
+                        const events = getEventsForDate(dateStr);
+                        if (events.length > 0) {
+                            selectDate(dateStr);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        document.getElementById("calEvents").innerHTML =
+                            '<div class="empty-events">📅 No events this month</div>';
+                    }
+                }
+            }
+
+            // ===== SELECT DATE =====
+            function selectDate(dateStr) {
+                selectedDate = dateStr;
+                renderCalendar();
+                showEvents(dateStr);
+                updateQuickCalendar();
+            }
+
+            // ===== SHOW EVENTS =====
+            function showEvents(dateStr) {
+                const container = document.getElementById("calEvents");
+                const events = getEventsForDate(dateStr);
+
+                if (!events || events.length === 0) {
+                    container.innerHTML = '<div class="empty-events">📅 No events on this day</div>';
+                    return;
+                }
+
+                const dateObj = new Date(dateStr + "T00:00:00");
+                const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+                const dateDisplay = dateObj.toLocaleDateString("en-US", options);
+
+                let html = `<div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">${dateDisplay}</div>`;
+                events.forEach((ev) => {
+                    let dotClass = "event";
+                    if (ev.type === "holiday") dotClass = "holiday";
+                    else if (ev.type === "meeting") dotClass = "meeting";
+
+                    let typeLabel = "";
+                    if (ev.type === "holiday") typeLabel = "🇲🇾 Public Holiday";
+                    else if (ev.type === "meeting") typeLabel = "Meeting";
+                    else if (ev.type === "event") typeLabel = "Event";
+
+                    html += `<div class="cal-event-item">
+                <span class="dot ${dotClass}"></span>
+                <div class="info">
+                    <div class="name">${ev.title}</div>
+                    <div class="type">${typeLabel}</div>
+                </div>
+            </div>`;
+                });
+                container.innerHTML = html;
+            }
+
+            // ===== CHANGE MONTH (Full Calendar) =====
+            function changeMonth(delta) {
+                currentMonth += delta;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                selectedDate = null;
+                fetchHolidays(currentYear);
+                renderCalendar();
+                updateQuickCalendar();
+            }
+
+            // ===== CHANGE YEAR (Full Calendar) =====
+            function changeYear(year) {
+                currentYear = parseInt(year);
+                fetchHolidays(currentYear);
+                renderCalendar();
+                updateQuickCalendar();
+            }
+
+            // ===== UPDATE QUICK CALENDAR (Dashboard) =====
+            function updateQuickCalendar() {
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const monthDisplay = document.getElementById("quickMonthLabel");
+                const daysContainer = document.getElementById("quickCalendarDays");
+                const eventsContainer = document.getElementById("quickCalendarEvents");
+                const monthCount = document.getElementById("quickCalendarMonth");
+
+                if (!daysContainer) return;
+
+                const yearSelect = document.getElementById("quickYearSelect");
+                if (yearSelect) yearSelect.value = quickYear;
+
+                monthDisplay.textContent = monthNames[quickMonth] + " " + quickYear;
+                if (monthCount) monthCount.textContent = monthNames[quickMonth] + " " + quickYear;
+
+                const firstDay = new Date(quickYear, quickMonth, 1).getDay();
+                const daysInMonth = new Date(quickYear, quickMonth + 1, 0).getDate();
+                const daysInPrevMonth = new Date(quickYear, quickMonth, 0).getDate();
+                const today = new Date();
+                const todayDate = today.getDate();
+                const todayMonth = today.getMonth();
+                const todayYear = today.getFullYear();
+
+                let html = "";
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    const day = daysInPrevMonth - i;
+                    html += `<div style="text-align:center;padding:4px 0;font-size:12px;color:var(--text-muted);opacity:0.4;">${day}</div>`;
+                }
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateStr =
+                        quickYear + "-" + String(quickMonth + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+                    const events = getEventsForDate(dateStr);
+                    const hasHoliday = events.some((e) => e.type === "holiday");
+                    const isToday = d === todayDate && quickMonth === todayMonth && quickYear === todayYear;
+
+                    let style = "text-align:center;padding:4px 0;font-size:13px;border-radius:6px;";
+                    let color = "var(--text-secondary)";
+                    let bg = "transparent";
+                    let fontWeight = "normal";
+
+                    if (isToday) {
+                        bg = "var(--accent-light)";
+                        color = "var(--accent)";
+                        fontWeight = "700";
+                    } else if (hasHoliday) {
+                        color = "var(--accent-red)";
+                        fontWeight = "600";
+                    }
+
+                    html += `<div style="${style}background:${bg};color:${color};font-weight:${fontWeight};position:relative;cursor:pointer;" onclick="switchPage('page-calendar')">
+                ${d}
+                ${hasHoliday ? '<span style="display:block;width:4px;height:4px;border-radius:50%;background:var(--accent-red);margin:2px auto 0;"></span>' : ""}
+            </div>`;
+                }
+                daysContainer.innerHTML = html;
+
+                let eventHtml = "";
+                let foundEvents = false;
+                const eventLimit = 5;
+                let count = 0;
+                for (let d = 1; d <= daysInMonth && count < eventLimit; d++) {
+                    const dateStr =
+                        quickYear + "-" + String(quickMonth + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+                    const events = getEventsForDate(dateStr);
+                    if (events.length > 0) {
+                        foundEvents = true;
+                        const displayDate = d + " " + monthNames[quickMonth];
+                        events.forEach((ev) => {
+                            if (count >= eventLimit) return;
+                            const dotColor =
+                                ev.type === "holiday"
+                                    ? "var(--accent-red)"
+                                    : ev.type === "meeting"
+                                      ? "var(--accent)"
+                                      : "#1a56db";
+                            eventHtml += `<div style="display:flex;align-items:center;gap:10px;padding:2px 0;font-size:11px;">
+                        <span style="width:6px;height:6px;border-radius:50%;background:${dotColor};"></span>
+                        <span style="color:var(--text-secondary);">${displayDate}</span>
+                        <span style="color:var(--text-primary);font-weight:500;">${ev.title}</span>
+                    </div>`;
+                            count++;
+                        });
+                    }
+                }
+                if (!foundEvents) {
+                    eventHtml =
+                        '<div style="text-align:center;color:var(--text-muted);font-size:11px;padding:4px 0;">No events this month</div>';
+                }
+                if (count >= eventLimit && foundEvents) {
+                    eventHtml += `<div style="text-align:center;color:var(--text-muted);font-size:10px;padding:2px 0;">+ more events... <span style="color:var(--accent);cursor:pointer;" onclick="switchPage('page-calendar')">View Full Calendar →</span></div>`;
+                }
+                eventsContainer.innerHTML = eventHtml;
+            }
+
+            // ===== CHANGE QUICK MONTH (Dashboard) =====
+            function changeQuickMonth(delta) {
+                quickMonth += delta;
+                if (quickMonth < 0) {
+                    quickMonth = 11;
+                    quickYear--;
+                }
+                if (quickMonth > 11) {
+                    quickMonth = 0;
+                    quickYear++;
+                }
+                fetchHolidays(quickYear);
+                updateQuickCalendar();
+            }
+
+            // ===== CHANGE QUICK YEAR (Dashboard) =====
+            function changeQuickYear(year) {
+                quickYear = parseInt(year);
+                fetchHolidays(quickYear);
+                updateQuickCalendar();
+            }
+
+            // ===== INIT CALENDAR =====
+            async function initCalendar() {
+                // Show loading state
+                const daysContainer = document.getElementById("calDays");
+                if (daysContainer) {
+                    daysContainer.innerHTML = `
+                <div class="calendar-loading">
+                    <div class="spinner"></div>
+                    <span>Loading holidays...</span>
+                </div>
+            `;
+                }
+
+                // Fetch all holidays first
+                await fetchAllHolidays();
+
+                // Populate year selectors
+                populateYearSelectors();
+
+                // Set current month/year
+                const now = new Date();
+                currentMonth = now.getMonth();
+                currentYear = now.getFullYear();
+                quickMonth = currentMonth;
+                quickYear = currentYear;
+
+                // Render calendars
+                renderCalendar();
+                updateQuickCalendar();
+            }
+
+            // ===== LOGIN =====
+            function togglePassword() {
+                const input = document.getElementById("passwordInput");
+                const icon = document.getElementById("toggleIcon");
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.className = "fas fa-eye-slash";
+                } else {
+                    input.type = "password";
+                    icon.className = "fas fa-eye";
+                }
+            }
+
+            function handleLogin() {
+                const user = document.getElementById("usernameInput").value.trim();
+                const pass = document.getElementById("passwordInput").value.trim();
+                if (user !== "kp.digital" || pass !== "kp@123") {
+                    alert("Use kp.digital / kp@123");
+                    return;
+                }
+                document.getElementById("loginScreen").classList.add("hidden");
+                document.getElementById("dashboard").classList.add("active");
+                document.querySelector(".user-profile .avatar").textContent = "KD";
+                document.querySelector(".user-profile .name").textContent = "KP Digital";
+                document.querySelector(".user-profile .role").textContent = "Executive · IT";
+                switchPage("page-dashboard");
+                initCalendar();
+            }
+
+            // ===== PAGE =====
+            function switchPage(pageId) {
+                document.querySelectorAll(".page").forEach((p) => p.classList.remove("active-page"));
+                const target = document.getElementById(pageId);
+                if (target) target.classList.add("active-page");
+                document.querySelectorAll(".bottom-nav-item").forEach((item) => {
+                    item.classList.toggle("active", item.getAttribute("onclick")?.includes(pageId));
+                });
+                closeSidebar();
+                closeAppDrawer();
+                if (pageId === "page-calendar") {
+                    currentMonth = quickMonth;
+                    currentYear = quickYear;
+                    renderCalendar();
+                }
+            }
+
+            // ===== SIDEBAR =====
+            function toggleSidebar() {
+                isSidebarOpen = !isSidebarOpen;
+                document.getElementById("sidebar").classList.toggle("open", isSidebarOpen);
+                document.getElementById("sidebarOverlay").classList.toggle("open", isSidebarOpen);
+            }
+            function closeSidebar() {
+                isSidebarOpen = false;
+                document.getElementById("sidebar").classList.remove("open");
+                document.getElementById("sidebarOverlay").classList.remove("open");
+            }
+
+            // ===== APP DRAWER =====
+            function openAppDrawer() {
+                isDrawerOpen = true;
+                document.getElementById("appDrawer").classList.add("open");
+                document.getElementById("drawerSearch").value = "";
+                document.getElementById("drawerSearch").focus();
+                document.getElementById("serviceCategories").style.display = "block";
+                document.getElementById("drawerNoResults").style.display = "none";
+                document.querySelectorAll(".service-category").forEach((c) => (c.style.display = "block"));
+            }
+            function closeAppDrawer() {
+                isDrawerOpen = false;
+                document.getElementById("appDrawer").classList.remove("open");
+            }
+            function filterDrawer(query) {
+                const term = query.toLowerCase().trim();
+                const items = document.querySelectorAll(".service-item");
+                const categories = document.querySelectorAll(".service-category");
+                let hasVisible = false;
+                items.forEach((item) => {
+                    const name = item.querySelector(".name")?.textContent?.toLowerCase() || "";
+                    const match = !term || name.includes(term);
+                    item.style.display = match ? "flex" : "none";
+                    if (match) hasVisible = true;
+                });
+                categories.forEach((cat) => {
+                    const visible = Array.from(cat.querySelectorAll(".service-item")).some(
+                        (el) => el.style.display !== "none"
+                    );
+                    cat.style.display = visible ? "block" : "none";
+                });
+                document.getElementById("drawerNoResults").style.display = term && !hasVisible ? "block" : "none";
+                document.getElementById("serviceCategories").style.display = "block";
+            }
+
+            // ===== THEME =====
+            function toggleTheme() {
+                isDark = !isDark;
+                document.body.classList.toggle("dark-mode", isDark);
+                const toggle = document.getElementById("themeToggle");
+                if (toggle) toggle.classList.toggle("active", isDark);
+                const icon = document.getElementById("themeIcon");
+                const label = document.getElementById("themeLabel");
+                if (icon) icon.className = isDark ? "fas fa-sun" : "fas fa-moon";
+                if (label) label.textContent = isDark ? "Light Mode" : "Dark Mode";
+            }
+
+            // ===== SETTINGS =====
+            function openSettings(section) {
+                document.getElementById("settingsOverlay").classList.add("open");
+                if (section)
+                    setTimeout(() => {
+                        const item = document.querySelector('.settings-sidebar-item[data-section="' + section + '"]');
+                        if (item) switchSettings(section, item);
+                    }, 100);
+            }
+            function closeSettings() {
+                document.getElementById("settingsOverlay").classList.remove("open");
+            }
+            function switchSettings(section, el) {
+                document.querySelectorAll(".settings-sidebar-item").forEach((i) => i.classList.remove("active"));
+                document.querySelectorAll(".settings-tabs .tab").forEach((t) => t.classList.remove("active"));
+                if (el) el.classList.add("active");
+                document.querySelectorAll(".settings-section").forEach((s) => s.classList.remove("active"));
+                const target = document.getElementById("settings-" + section);
+                if (target) target.classList.add("active");
+                document.querySelectorAll(".settings-tabs .tab").forEach((t) => {
+                    t.classList.toggle("active", t.dataset.section === section);
+                });
+            }
+
+            // ===== IMPORTANT NOTICE FUNCTIONS =====
+            function openNotice(id) {
+                document.getElementById("noticeListView").style.display = "none";
+                document.getElementById(id).classList.add("open");
+            }
+
+            function closeNotice(id) {
+                document.getElementById(id).classList.remove("open");
+                document.getElementById("noticeListView").style.display = "block";
+            }
+
+            function toggleBM(id) {
+                const el = document.getElementById(id);
+                el.classList.toggle("open");
+            }
+
+            // ===== AI PANEL =====
+            function toggleAIPanel() {
+                isChatOpen = !isChatOpen;
+                document.getElementById("aiPanel").classList.toggle("open", isChatOpen);
+                document.getElementById("aiFloat").style.display = isChatOpen ? "none" : "flex";
+                if (isChatOpen) switchAITab("kb");
+            }
+            function openAIPanel() {
+                if (!isChatOpen) toggleAIPanel();
+            }
+
+            function switchAITab(tab) {
+                document.querySelectorAll(".ai-panel .tabs .tab").forEach((t) => t.classList.remove("active"));
+                document.querySelectorAll(".ai-panel .body .tab-content").forEach((c) => c.classList.remove("active"));
+                document.querySelector('.ai-panel .tabs .tab[data-tab="' + tab + '"]').classList.add("active");
+                document.getElementById("tab-" + tab).classList.add("active");
+            }
+
+            // ===== DRAGGABLE AI PANEL =====
+            document.addEventListener("DOMContentLoaded", function () {
+                const panel = document.getElementById("aiPanel");
+                const header = document.getElementById("aiPanelHeader");
+                let isDragging = false,
+                    startX,
+                    startY;
+
+                function onStart(e) {
+                    if (!panel.classList.contains("open")) return;
+                    if (e.target.closest(".close-btn")) return;
+                    isDragging = true;
+                    const rect = panel.getBoundingClientRect();
+                    const cx = e.clientX || e.touches[0].clientX;
+                    const cy = e.clientY || e.touches[0].clientY;
+                    startX = cx - rect.left;
+                    startY = cy - rect.top;
+                    panel.classList.add("dragging");
+                    panel.style.transition = "none";
+                }
+
+                function onMove(e) {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const cx = e.clientX || e.touches[0].clientX;
+                    const cy = e.clientY || e.touches[0].clientY;
+                    let nx = cx - startX,
+                        ny = cy - startY;
+                    const rect = panel.getBoundingClientRect();
+                    nx = Math.max(0, Math.min(nx, window.innerWidth - rect.width));
+                    ny = Math.max(0, Math.min(ny, window.innerHeight - rect.height));
+                    panel.style.right = "auto";
+                    panel.style.bottom = "auto";
+                    panel.style.left = nx + "px";
+                    panel.style.top = ny + "px";
+                }
+
+                function onEnd() {
+                    if (isDragging) {
+                        isDragging = false;
+                        panel.classList.remove("dragging");
+                        panel.style.transition = "all 0.3s ease";
+                    }
+                }
+
+                header.addEventListener("mousedown", onStart);
+                document.addEventListener("mousemove", onMove);
+                document.addEventListener("mouseup", onEnd);
+                header.addEventListener("touchstart", onStart, { passive: true });
+                document.addEventListener("touchmove", onMove, { passive: false });
+                document.addEventListener("touchend", onEnd, { passive: true });
+            });
+
+            // ===== CHAT =====
+            function sendChat() {
+                const input = document.getElementById("chatInput");
+                const msg = input.value.trim();
+                if (!msg) return;
+                const container = document.getElementById("chatMessages");
+                const userDiv = document.createElement("div");
+                userDiv.className = "chat-msg user";
+                userDiv.innerHTML = '<div class="bubble">' + msg + "</div>";
+                container.appendChild(userDiv);
+                input.value = "";
+                setTimeout(() => {
+                    const aiDiv = document.createElement("div");
+                    aiDiv.className = "chat-msg";
+                    aiDiv.innerHTML =
+                        '<div class="avatar"><img src="https://qjy02.github.io/react/vipo/vipo.png" alt="AI"></div><div class="bubble">Let me check that for you... 🤔</div>';
+                    container.appendChild(aiDiv);
+                    container.scrollTop = container.scrollHeight;
+                    setTimeout(() => {
+                        const replies = [
+                            "Found it in our knowledge base! 📚",
+                            "Let me connect you to support.",
+                            "Here's what I know...",
+                            "Great question! I'll help.",
+                            "One moment please...",
+                        ];
+                        aiDiv.querySelector(".bubble").textContent =
+                            replies[Math.floor(Math.random() * replies.length)];
+                        container.scrollTop = container.scrollHeight;
+                    }, 700);
+                }, 300);
+            }
+
+            // ===== IFRAME =====
+            function handleIframeLoad() {
+                iframeLoaded = true;
+                document.getElementById("iframeLoading").classList.add("hidden");
+                document.getElementById("iframeFallback").classList.remove("visible");
+            }
+            function handleIframeError() {
+                document.getElementById("iframeLoading").classList.add("hidden");
+                document.getElementById("iframeFallback").classList.add("visible");
+            }
+            setTimeout(() => {
+                if (!iframeLoaded) {
+                    document.getElementById("iframeLoading").classList.add("hidden");
+                    document.getElementById("iframeFallback").classList.add("visible");
+                }
+            }, 5000);
+
+            function handleEmployeeIframeLoad() {
+                employeeIframeLoaded = true;
+                document.getElementById("employeeIframeLoading").classList.add("hidden");
+                document.getElementById("employeeIframeFallback").classList.remove("visible");
+            }
+            function handleEmployeeIframeError() {
+                document.getElementById("employeeIframeLoading").classList.add("hidden");
+                document.getElementById("employeeIframeFallback").classList.add("visible");
+            }
+            setTimeout(() => {
+                if (!employeeIframeLoaded) {
+                    const loading = document.getElementById("employeeIframeLoading");
+                    const fallback = document.getElementById("employeeIframeFallback");
+                    if (loading) loading.classList.add("hidden");
+                    if (fallback) fallback.classList.add("visible");
+                }
+            }, 5000);
+
+            // ===== LOGOUT =====
+            function handleLogout() {
+                closeSettings();
+                document.getElementById("dashboard").classList.remove("active");
+                document.getElementById("loginScreen").classList.remove("hidden");
+                document.getElementById("passwordInput").value = "";
+                closeSidebar();
+                closeAppDrawer();
+            }
+
+            // ===== KEYBOARD =====
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" && !document.getElementById("loginScreen").classList.contains("hidden"))
+                    handleLogin();
+                if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+                    e.preventDefault();
+                    openAppDrawer();
+                }
+                if (e.key === "Escape") {
+                    closeSidebar();
+                    closeSettings();
+                    closeAppDrawer();
+                    if (isChatOpen) toggleAIPanel();
+                }
+            });
+
+            // ===== INIT =====
+            if (window.navigator.userAgent.includes("iPhone")) {
+                document.documentElement.style.setProperty("--safe-bottom", "env(safe-area-inset-bottom, 0px)");
+            }
+        </script>
+    </body>
+</html>
