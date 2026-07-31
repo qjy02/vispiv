@@ -795,7 +795,7 @@
             }
         </style>
     </head>
-    <body class="dark-mode">
+    <body>
         <div class="container">
             <!-- HEADER -->
             <header class="header">
@@ -1635,8 +1635,8 @@
             }
 
             // ---- THEME ----
-            let isDark = true;
-            document.body.classList.add("dark-mode");
+            let isDark = false;
+            //document.body.classList.add("dark-mode");
             function toggleTheme() {
                 isDark = !isDark;
                 document.body.classList.toggle("dark-mode", isDark);
