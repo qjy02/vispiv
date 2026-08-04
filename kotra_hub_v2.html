@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
         <title>Kotra Hub</title>
         <link
             rel="icon"
@@ -11,7 +11,6 @@
         />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
         <style>
-            /* ===== VARIABLES ===== */
             :root {
                 --bg-body: #f5f7fa;
                 --bg-topbar: #ffffff;
@@ -58,14 +57,12 @@
                 --accent-light: #1b3a1b;
                 --accent-hover: #66bb6a;
             }
-
-            /* ===== RESET ===== */
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
                 font-family:
-                    "Inter",
+                    Inter,
                     -apple-system,
                     sans-serif;
             }
@@ -78,24 +75,21 @@
                 transition: background var(--transition);
                 overflow: hidden;
             }
-
             ::-webkit-scrollbar {
-                width: 0px;
-                background: transparent;
+                width: 0;
+                background: 0 0;
             }
             ::-webkit-scrollbar-thumb {
-                background: transparent;
+                background: 0 0;
             }
             * {
                 scrollbar-width: none;
                 -ms-overflow-style: none;
             }
-
-            /* ===== LOGIN ===== */
             #loginScreen {
                 width: 100%;
                 height: 100vh;
-                background-image: url("https://assets.theedgemarkets.com/kotrapharma_www.kotrapharma.com_.jpg");
+                background-image: url(https://assets.theedgemarkets.com/kotrapharma_www.kotrapharma.com_.jpg);
                 background-size: cover;
                 background-position: center;
                 display: flex;
@@ -163,14 +157,14 @@
             }
             .login-box input:focus {
                 border-color: var(--accent);
-                outline: none;
+                outline: 0;
                 box-shadow: 0 0 0 4px rgba(13, 107, 42, 0.15);
             }
             .login-btn {
                 width: 100%;
                 padding: 14px;
                 background: var(--accent);
-                color: white;
+                color: #fff;
                 border: none;
                 border-radius: var(--radius-sm);
                 font-size: 16px;
@@ -208,15 +202,13 @@
                 cursor: pointer;
                 color: var(--text-muted);
                 font-size: 18px;
-                background: none;
+                background: 0 0;
                 border: none;
                 padding: 4px;
             }
             .password-toggle:hover {
                 color: var(--accent);
             }
-
-            /* ===== DASHBOARD ===== */
             #dashboard {
                 display: none;
                 width: 100%;
@@ -229,8 +221,6 @@
             #dashboard.active {
                 display: flex;
             }
-
-            /* ===== HEADER ===== */
             .top-header {
                 background: var(--bg-topbar);
                 padding: 0 16px;
@@ -272,12 +262,11 @@
                 border-radius: 30px;
                 font-weight: 600;
             }
-
             .header-btn {
                 width: 34px;
                 height: 34px;
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-secondary);
                 font-size: 15px;
                 cursor: pointer;
@@ -291,7 +280,6 @@
                 background: var(--bg-hover);
                 color: var(--text-primary);
             }
-
             .header-right {
                 display: flex;
                 align-items: center;
@@ -301,7 +289,7 @@
                 width: 34px;
                 height: 34px;
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-secondary);
                 font-size: 15px;
                 cursor: pointer;
@@ -326,7 +314,6 @@
                 border-radius: 50%;
                 border: 2px solid var(--bg-topbar);
             }
-
             .user-profile {
                 display: flex;
                 align-items: center;
@@ -346,7 +333,7 @@
                 height: 30px;
                 border-radius: 50%;
                 background: var(--accent);
-                color: white;
+                color: #fff;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -372,12 +359,9 @@
                 font-size: 9px;
                 color: var(--text-muted);
             }
-
             .desktop-home {
                 display: none;
             }
-
-            /* ===== SIDEBAR ===== */
             .sidebar-overlay {
                 position: fixed;
                 top: 0;
@@ -392,7 +376,6 @@
             .sidebar-overlay.open {
                 display: block;
             }
-
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -411,7 +394,6 @@
             .sidebar.open {
                 left: 0;
             }
-
             .sidebar-header {
                 display: flex;
                 align-items: center;
@@ -445,7 +427,6 @@
             .sidebar-close:hover {
                 background: var(--border-color);
             }
-
             .sidebar-body {
                 flex: 1;
                 overflow-y: auto;
@@ -461,7 +442,7 @@
                 cursor: pointer;
                 transition: var(--transition);
                 border: none;
-                background: transparent;
+                background: 0 0;
                 width: 100%;
                 text-align: left;
             }
@@ -496,8 +477,6 @@
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
             }
-
-            /* ===== BODY ===== */
             .body-layout {
                 display: flex;
                 flex: 1;
@@ -513,7 +492,6 @@
                 height: 100%;
                 padding-bottom: 30px;
             }
-
             .page {
                 display: none;
                 animation: fadeSlideIn 0.3s ease forwards;
@@ -541,8 +519,6 @@
                     opacity: 1;
                 }
             }
-
-            /* ===== BOTTOM NAV (Mobile Only) ===== */
             .bottom-nav {
                 display: flex;
                 position: fixed;
@@ -569,7 +545,7 @@
                 gap: 2px;
                 padding: 4px 12px;
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-muted);
                 cursor: pointer;
                 transition: var(--transition);
@@ -598,8 +574,6 @@
             .bottom-nav-item.active i {
                 transform: scale(1.1);
             }
-
-            /* ===== APP DRAWER ===== */
             .app-drawer {
                 position: fixed;
                 top: 0;
@@ -616,7 +590,6 @@
             .app-drawer.open {
                 display: flex;
             }
-
             .app-drawer-header {
                 display: flex;
                 align-items: center;
@@ -650,7 +623,6 @@
             .app-drawer-close:hover {
                 background: var(--border-color);
             }
-
             .app-drawer-search {
                 position: relative;
                 margin-bottom: 12px;
@@ -675,16 +647,14 @@
             }
             .app-drawer-search input:focus {
                 border-color: var(--accent);
-                outline: none;
+                outline: 0;
                 box-shadow: 0 0 0 3px rgba(13, 107, 42, 0.15);
             }
-
             .app-drawer-body {
                 flex: 1;
                 overflow-y: auto;
                 padding-bottom: 20px;
             }
-
             .quick-actions-row {
                 display: flex;
                 gap: 8px;
@@ -712,7 +682,6 @@
                 color: var(--accent);
                 font-size: 13px;
             }
-
             .service-category {
                 margin-bottom: 12px;
             }
@@ -736,7 +705,6 @@
                 font-weight: 400;
                 margin-left: auto;
             }
-
             .service-item {
                 display: flex;
                 align-items: center;
@@ -767,7 +735,6 @@
                 border-radius: 30px;
                 font-weight: 500;
             }
-
             .no-results {
                 text-align: center;
                 color: var(--text-muted);
@@ -779,8 +746,6 @@
                 margin-bottom: 8px;
                 opacity: 0.5;
             }
-
-            /* ===== WIDGETS ===== */
             .page-header {
                 margin-bottom: 16px;
                 flex-shrink: 0;
@@ -795,7 +760,6 @@
                 font-size: 14px;
                 margin-top: 2px;
             }
-
             .widget-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -803,13 +767,12 @@
                 margin-bottom: 16px;
             }
             .widget-grid .full-width {
-                grid-column: 1 / -1;
+                grid-column: 1/-1;
             }
             .widget-grid .widget {
                 display: flex;
                 flex-direction: column;
             }
-
             .widget {
                 background: var(--bg-card);
                 border-radius: var(--radius-sm);
@@ -855,8 +818,6 @@
                 font-size: 13px;
                 padding: 12px 0;
             }
-
-            /* Stats Grid */
             .stats-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -903,22 +864,20 @@
                 color: var(--accent);
                 font-size: 13px;
             }
-
-            /* Task / Action Items */
-            .task-item,
-            .action-item {
+            .action-item,
+            .task-item {
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 padding: 6px 0;
                 border-bottom: 1px solid var(--border-color);
             }
-            .task-item:last-child,
-            .action-item:last-child {
+            .action-item:last-child,
+            .task-item:last-child {
                 border-bottom: none;
             }
-            .task-item .info,
-            .action-item .info {
+            .action-item .info,
+            .task-item .info {
                 flex: 1;
                 min-width: 0;
             }
@@ -967,7 +926,6 @@
                 background: #f0f0f0;
                 color: var(--text-muted);
             }
-
             .widget-footer {
                 padding: 8px 16px;
                 border-top: 1px solid var(--border-color);
@@ -976,7 +934,7 @@
             }
             .widget-footer button {
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--accent);
                 font-size: 12px;
                 font-weight: 600;
@@ -986,8 +944,6 @@
             .widget-footer button:hover {
                 color: var(--accent-hover);
             }
-
-            /* Quick Access */
             .quick-grid {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
@@ -1018,8 +974,6 @@
                 color: var(--text-secondary);
                 text-align: center;
             }
-
-            /* Phone Directory */
             .contact-item {
                 display: flex;
                 align-items: center;
@@ -1044,8 +998,6 @@
                 margin-right: 4px;
                 font-size: 11px;
             }
-
-            /* Important Notice - List Style */
             .notice-list-item {
                 display: flex;
                 align-items: center;
@@ -1082,8 +1034,6 @@
                 color: var(--text-muted);
                 font-size: 12px;
             }
-
-            /* Notice Detail View (expanded) */
             .notice-detail {
                 display: none;
                 padding: 12px 4px;
@@ -1093,7 +1043,7 @@
             }
             .notice-detail .back-btn {
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--accent);
                 font-size: 12px;
                 font-weight: 600;
@@ -1158,8 +1108,6 @@
             .notice-detail .notice-bilingual .bm-content.open {
                 display: block;
             }
-
-            /* Dashboard Footer */
             .dashboard-footer {
                 margin-top: 24px;
                 padding: 16px 0 8px;
@@ -1185,8 +1133,6 @@
                 color: var(--text-muted);
                 margin-top: 4px;
             }
-
-            /* ===== CALENDAR ===== */
             .calendar-grid {
                 background: var(--bg-card);
                 border-radius: var(--radius-sm);
@@ -1217,7 +1163,7 @@
             }
             .calendar-grid .cal-header .nav-btn {
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-secondary);
                 cursor: pointer;
                 font-size: 16px;
@@ -1243,7 +1189,7 @@
                 cursor: pointer;
             }
             .calendar-grid .cal-header .year-selector select:focus {
-                outline: none;
+                outline: 0;
                 border-color: var(--accent);
             }
             .calendar-grid .cal-weekdays {
@@ -1316,15 +1262,15 @@
             }
             .calendar-grid .cal-days .day.selected {
                 background: var(--accent);
-                color: white;
+                color: #fff;
             }
             .calendar-grid .cal-days .day.selected.holiday {
                 background: var(--accent-red);
-                color: white;
+                color: #fff;
             }
             .calendar-grid .cal-days .day.selected.has-event::after,
             .calendar-grid .cal-days .day.selected.holiday::after {
-                background: white;
+                background: #fff;
             }
             .calendar-grid .cal-days .day .event-dot {
                 display: flex;
@@ -1346,57 +1292,6 @@
             .calendar-grid .cal-days .day .event-dot .dot-event {
                 background: #1a56db;
             }
-
-            .calendar-events-list {
-                padding: 12px 16px;
-                border-top: 1px solid var(--border-color);
-                max-height: 200px;
-                overflow-y: auto;
-            }
-            .calendar-events-list .empty-events {
-                text-align: center;
-                color: var(--text-muted);
-                font-size: 13px;
-                padding: 8px 0;
-            }
-            .calendar-events-list .cal-event-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 6px 0;
-                border-bottom: 1px solid var(--border-color);
-            }
-            .calendar-events-list .cal-event-item:last-child {
-                border-bottom: none;
-            }
-            .calendar-events-list .cal-event-item .dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                flex-shrink: 0;
-            }
-            .calendar-events-list .cal-event-item .dot.holiday {
-                background: var(--accent-red);
-            }
-            .calendar-events-list .cal-event-item .dot.meeting {
-                background: var(--accent);
-            }
-            .calendar-events-list .cal-event-item .dot.event {
-                background: #1a56db;
-            }
-            .calendar-events-list .cal-event-item .info {
-                flex: 1;
-            }
-            .calendar-events-list .cal-event-item .info .name {
-                font-size: 13px;
-                color: var(--text-primary);
-            }
-            .calendar-events-list .cal-event-item .info .type {
-                font-size: 10px;
-                color: var(--text-muted);
-            }
-
-            /* Calendar loading state */
             .calendar-loading {
                 display: flex;
                 align-items: center;
@@ -1414,8 +1309,132 @@
                 border-radius: 50%;
                 animation: spin 0.8s linear infinite;
             }
-
-            /* ===== ANNOUNCEMENT ===== */
+            .event-dialog-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--bg-overlay);
+                z-index: 500;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                animation: fadeIn 0.2s ease;
+                padding: 20px;
+            }
+            .event-dialog-overlay.open {
+                display: flex;
+            }
+            .event-dialog {
+                background: var(--bg-card);
+                border-radius: var(--radius-lg);
+                width: 100%;
+                max-width: 420px;
+                max-height: 80vh;
+                box-shadow: var(--shadow-lg);
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+                animation: scaleIn 0.25s ease;
+            }
+            @keyframes scaleIn {
+                from {
+                    transform: scale(0.95);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            .event-dialog .dialog-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 20px;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .event-dialog .dialog-header .left {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .event-dialog .dialog-header .left .date {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+            .event-dialog .dialog-header .left .count {
+                font-size: 12px;
+                color: var(--text-muted);
+            }
+            .event-dialog .dialog-header .close-btn {
+                width: 32px;
+                height: 32px;
+                border: none;
+                background: var(--bg-hover);
+                color: var(--text-secondary);
+                font-size: 14px;
+                cursor: pointer;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            .event-dialog .dialog-header .close-btn:hover {
+                background: var(--border-color);
+            }
+            .event-dialog .dialog-body {
+                padding: 12px 20px 20px;
+                overflow-y: auto;
+                max-height: 300px;
+            }
+            .event-dialog .dialog-body .no-events {
+                text-align: center;
+                color: var(--text-muted);
+                padding: 20px 0;
+                font-size: 14px;
+            }
+            .event-dialog .dialog-body .event-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .event-dialog .dialog-body .event-item:last-child {
+                border-bottom: none;
+            }
+            .event-dialog .dialog-body .event-item .dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                margin-top: 3px;
+            }
+            .event-dialog .dialog-body .event-item .dot.holiday {
+                background: var(--accent-red);
+            }
+            .event-dialog .dialog-body .event-item .dot.meeting {
+                background: var(--accent);
+            }
+            .event-dialog .dialog-body .event-item .dot.event {
+                background: #1a56db;
+            }
+            .event-dialog .dialog-body .event-item .info {
+                flex: 1;
+            }
+            .event-dialog .dialog-body .event-item .info .title {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+            .event-dialog .dialog-body .event-item .info .desc {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 2px;
+            }
             .announcement-banner {
                 background: var(--accent-light);
                 border: 1px solid var(--accent);
@@ -1447,14 +1466,12 @@
             }
             .announcement-banner .dismiss {
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-muted);
                 cursor: pointer;
                 font-size: 14px;
                 padding: 4px;
             }
-
-            /* ===== KOTRA AI ===== */
             .ai-float {
                 position: fixed;
                 bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 12px);
@@ -1485,7 +1502,7 @@
                 height: 100%;
                 border-radius: 50%;
                 object-fit: cover;
-                background: white;
+                background: #fff;
             }
             .ai-float .label {
                 font-size: 9px;
@@ -1506,7 +1523,6 @@
                     transform: translateY(-4px);
                 }
             }
-
             .ai-panel {
                 position: fixed;
                 bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 76px);
@@ -1532,7 +1548,6 @@
                 transition: none;
                 cursor: grabbing;
             }
-
             .ai-panel .header {
                 display: flex;
                 align-items: center;
@@ -1562,7 +1577,7 @@
             }
             .ai-panel .header .close-btn {
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-muted);
                 cursor: pointer;
                 font-size: 14px;
@@ -1572,7 +1587,6 @@
             .ai-panel .header .close-btn:hover {
                 color: var(--text-primary);
             }
-
             .ai-panel .tabs {
                 display: flex;
                 border-bottom: 1px solid var(--border-color);
@@ -1583,7 +1597,7 @@
                 flex: 1;
                 padding: 6px;
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-muted);
                 font-size: 11px;
                 font-weight: 500;
@@ -1600,7 +1614,6 @@
                 border-bottom-color: var(--accent);
                 background: var(--bg-card);
             }
-
             .ai-panel .body {
                 flex: 1;
                 overflow-y: auto;
@@ -1612,7 +1625,6 @@
             .ai-panel .body .tab-content.active {
                 display: block;
             }
-
             .kb-item {
                 display: flex;
                 align-items: center;
@@ -1638,7 +1650,6 @@
                 color: var(--text-primary);
                 flex: 1;
             }
-
             .ticket-item {
                 display: flex;
                 align-items: center;
@@ -1678,12 +1689,11 @@
                 background: #f0f0f0;
                 color: var(--text-muted);
             }
-
             .report-btn {
                 width: 100%;
                 padding: 8px;
                 background: var(--accent);
-                color: white;
+                color: #fff;
                 border: none;
                 border-radius: var(--radius-sm);
                 cursor: pointer;
@@ -1695,7 +1705,6 @@
             .report-btn:hover {
                 background: var(--accent-hover);
             }
-
             .chat-messages {
                 max-height: 180px;
                 overflow-y: auto;
@@ -1719,7 +1728,7 @@
                 height: 100%;
                 border-radius: 50%;
                 object-fit: cover;
-                background: white;
+                background: #fff;
             }
             .chat-msg .bubble {
                 background: var(--bg-hover);
@@ -1734,7 +1743,7 @@
             }
             .chat-msg.user .bubble {
                 background: var(--accent);
-                color: white;
+                color: #fff;
             }
             .chat-input-area {
                 display: flex;
@@ -1752,13 +1761,13 @@
                 color: var(--text-primary);
             }
             .chat-input-area input:focus {
-                outline: none;
+                outline: 0;
                 border-color: var(--accent);
             }
             .chat-input-area button {
                 padding: 6px 12px;
                 background: var(--accent);
-                color: white;
+                color: #fff;
                 border: none;
                 border-radius: var(--radius-sm);
                 cursor: pointer;
@@ -1768,8 +1777,6 @@
             .chat-input-area button:hover {
                 background: var(--accent-hover);
             }
-
-            /* ===== SETTINGS ===== */
             .settings-overlay {
                 position: fixed;
                 top: 0;
@@ -1831,7 +1838,6 @@
             .settings-close:hover {
                 background: var(--border-color);
             }
-
             .settings-body {
                 display: flex;
                 flex: 1;
@@ -1856,7 +1862,7 @@
                 cursor: pointer;
                 transition: var(--transition);
                 border: none;
-                background: transparent;
+                background: 0 0;
                 width: 100%;
                 text-align: left;
             }
@@ -1873,7 +1879,6 @@
                 width: 16px;
                 font-size: 13px;
             }
-
             .settings-content {
                 flex: 1;
                 padding: 16px 20px;
@@ -1919,7 +1924,6 @@
                 font-size: 11px;
                 color: var(--text-muted);
             }
-
             .toggle-switch {
                 width: 40px;
                 height: 22px;
@@ -1934,7 +1938,7 @@
             .toggle-switch .slider {
                 width: 16px;
                 height: 16px;
-                background: white;
+                background: #fff;
                 border-radius: 50%;
                 position: absolute;
                 top: 3px;
@@ -1948,12 +1952,11 @@
             .toggle-switch.active .slider {
                 left: 21px;
             }
-
             .settings-logout-btn {
                 width: 100%;
                 padding: 10px;
                 background: var(--accent-red);
-                color: white;
+                color: #fff;
                 border: none;
                 border-radius: var(--radius-sm);
                 font-size: 14px;
@@ -1969,7 +1972,6 @@
             .settings-logout-btn:hover {
                 opacity: 0.9;
             }
-
             .settings-tabs {
                 display: none;
                 background: var(--bg-hover);
@@ -1986,7 +1988,7 @@
                 gap: 6px;
                 padding: 8px 12px;
                 border: none;
-                background: transparent;
+                background: 0 0;
                 color: var(--text-muted);
                 font-size: 12px;
                 font-weight: 500;
@@ -2005,8 +2007,6 @@
                 border-bottom-color: var(--accent);
                 background: var(--bg-card);
             }
-
-            /* ===== IFRAME ===== */
             .iframe-wrapper {
                 background: var(--bg-card);
                 border-radius: var(--radius-sm);
@@ -2058,7 +2058,6 @@
                 color: var(--text-muted);
                 font-size: 12px;
             }
-
             .iframe-fallback {
                 display: none;
                 flex-direction: column;
@@ -2090,7 +2089,7 @@
             .iframe-fallback .btn-open {
                 padding: 8px 20px;
                 background: var(--accent);
-                color: white;
+                color: #fff;
                 border: none;
                 border-radius: var(--radius-sm);
                 font-size: 13px;
@@ -2105,8 +2104,6 @@
             .iframe-fallback .btn-open:hover {
                 background: var(--accent-hover);
             }
-
-            /* ===== RESPONSIVE ===== */
             @media (min-width: 768px) {
                 .desktop-home {
                     display: flex;
@@ -2153,7 +2150,6 @@
                     flex: 1;
                 }
             }
-
             @media (max-width: 767px) {
                 .bottom-nav {
                     display: flex;
@@ -2225,7 +2221,6 @@
                     justify-content: center;
                 }
             }
-
             @media (min-width: 1400px) {
                 .content-area {
                     padding: 32px 48px 40px;
@@ -2234,18 +2229,15 @@
                     width: 100%;
                 }
             }
-
             body.dark-mode .action-item .info .name {
-                color: #ffffff !important;
+                color: #fff !important;
             }
             body.dark-mode .action-item .info .meta {
                 color: #b0b0b0 !important;
             }
         </style>
     </head>
-
     <body>
-        <!-- ===== LOGIN ===== -->
         <div id="loginScreen">
             <div class="login-box">
                 <div class="brand-icon">
@@ -2254,8 +2246,8 @@
                         alt="Kotra"
                     />
                 </div>
-                <h1>Kotra <span>Hub</span></h1>
-                <p class="sub">Kotra Hub - Unified Digital Ecosystem</p>
+                <h1>Kotra<span> Hub</span></h1>
+                <p class="sub">Unified Digital Ecosystem</p>
                 <input type="text" placeholder="Username" value="kp.digital" id="usernameInput" />
                 <div class="password-wrapper">
                     <input type="password" placeholder="Password" value="kp@123" id="passwordInput" />
@@ -2264,18 +2256,16 @@
                     </button>
                 </div>
                 <button class="login-btn" onclick="handleLogin()">
-                    <i class="fas fa-arrow-right-to-bracket" style="margin-right: 10px"></i> Sign In
+                    <i class="fas fa-arrow-right-to-bracket" style="margin-right: 10px"></i>Sign In
                 </button>
-                <p class="note">
-                    <i class="fas fa-shield-halved"></i> After 3 failed attempts, account will be locked.
-                </p>
+                <p class="note"><i class="fas fa-shield-halved"></i>After 3 failed attempts, account will be locked.</p>
             </div>
             <div style="position: absolute; bottom: 24px; text-align: center; width: 100%">
                 <a
                     href="https://www.kotrapharma.com"
                     target="_blank"
                     style="
-                        color: #ffffff;
+                        color: #fff;
                         text-decoration: none;
                         font-size: 14px;
                         font-weight: 500;
@@ -2288,104 +2278,93 @@
                 >
             </div>
         </div>
-
-        <!-- ===== DASHBOARD ===== -->
         <div id="dashboard">
-            <!-- ===== HEADER ===== -->
             <header class="top-header">
                 <div class="header-left">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jL08GKJy3CTYG0Co9KQLcAmwXkdya7B_KF08rPFvVw&s=10"
-                        alt="Kotra"
-                        class="logo-img"
-                    />
-                    <span class="brand">Kotra <span>Hub</span></span>
-                    <!-- <span class="version">v3.0</span> -->
-                    <button class="header-btn" onclick="toggleSidebar()" title="Menu">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <button class="header-btn desktop-home" onclick="switchPage('page-dashboard')" title="Home">
-                        <i class="fas fa-home"></i>
-                    </button>
+                    <a
+                        href="#"
+                        onclick='switchPage("page-dashboard")'
+                        style="text-decoration: none; display: flex; align-items: center; gap: 6px"
+                    >
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1jL08GKJy3CTYG0Co9KQLcAmwXkdya7B_KF08rPFvVw&s=10"
+                            alt="Kotra"
+                            class="logo-img"
+                        />
+                        <span class="brand">Kotra<span> Hub</span></span>
+                    </a>
                 </div>
                 <div class="header-right">
                     <button class="icon-btn" onclick="openAppDrawer()" title="Search (Ctrl+K)">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button class="icon-btn" onclick="alert('Notifications')" title="Notifications">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge-dot"></span>
+                    <button class="icon-btn" onclick='alert("Notifications")' title="Notifications">
+                        <i class="fas fa-bell"></i><span class="badge-dot"></span>
                     </button>
-                    <button class="icon-btn" onclick="openSettings('general')" title="Settings">
+                    <button class="icon-btn" onclick='openSettings("general")' title="Settings">
                         <i class="fas fa-cog"></i>
                     </button>
-                    <div class="user-profile" onclick="openSettings('account')">
+                    <div class="user-profile" onclick='openSettings("account")'>
                         <div class="avatar">KD</div>
                         <div class="info">
-                            <span class="name">KP Digital</span>
-                            <span class="role">Executive · IT</span>
+                            <span class="name">KP Digital</span><span class="role">Executive · IT</span>
                         </div>
                         <i class="fas fa-chevron-down chevron"></i>
                     </div>
                 </div>
             </header>
-
-            <!-- ===== SIDEBAR ===== -->
             <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
-                    <span class="brand">Kotra <span>Hub</span></span>
+                    <span class="brand">Kotra<span>Hub</span></span>
                     <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="sidebar-body">
                     <button class="sidebar-item" onclick="toggleTheme()">
-                        <i class="fas fa-moon" id="themeIcon"></i>
-                        <span id="themeLabel">Dark Mode</span>
+                        <i class="fas fa-moon" id="themeIcon"></i><span id="themeLabel">Dark Mode</span>
                     </button>
                     <div class="sidebar-divider"></div>
-                    <button class="sidebar-item" onclick="switchPage('page-dashboard')">
-                        <i class="fas fa-th-large"></i> Dashboard
+                    <button class="sidebar-item" onclick='switchPage("page-dashboard")'>
+                        <i class="fas fa-th-large"></i>Dashboard
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-tasks')">
-                        <i class="fas fa-tasks"></i> My Tasks <span class="badge">4</span>
+                    <button class="sidebar-item" onclick='switchPage("page-tasks")'>
+                        <i class="fas fa-tasks"></i>My Tasks<span class="badge">4</span>
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-pending')">
-                        <i class="fas fa-clock"></i> Pending <span class="badge">3</span>
+                    <button class="sidebar-item" onclick='switchPage("page-pending")'>
+                        <i class="fas fa-clock"></i>Pending<span class="badge">3</span>
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-calendar')">
-                        <i class="fas fa-calendar"></i> Calendar
+                    <button class="sidebar-item" onclick='switchPage("page-calendar")'>
+                        <i class="fas fa-calendar"></i>Calendar
                     </button>
                     <div class="sidebar-divider"></div>
                     <div class="sidebar-section-title">🌐 Services</div>
-                    <button class="sidebar-item" onclick="switchPage('page-hr')">
-                        <i class="fas fa-user-tie"></i> HR Portal
+                    <button class="sidebar-item" onclick='switchPage("page-hr")'>
+                        <i class="fas fa-user-tie"></i>HR Portal
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-it')">
-                        <i class="fas fa-laptop"></i> IT Portal
+                    <button class="sidebar-item" onclick='switchPage("page-it")'>
+                        <i class="fas fa-laptop"></i>IT Portal
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-eservices')">
-                        <i class="fas fa-headset"></i> E-Services
+                    <button class="sidebar-item" onclick='switchPage("page-eservices")'>
+                        <i class="fas fa-headset"></i>E-Services
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-ndms')">
-                        <i class="fas fa-flask"></i> NDMS
+                    <button class="sidebar-item" onclick='switchPage("page-ndms")'>
+                        <i class="fas fa-flask"></i>NDMS
                     </button>
-                    <button class="sidebar-item" onclick="switchPage('page-employee')">
-                        <i class="fas fa-users"></i> Employee
+                    <button class="sidebar-item" onclick='switchPage("page-employee")'>
+                        <i class="fas fa-users"></i>Employee
                     </button>
                     <div class="sidebar-divider"></div>
                     <button class="sidebar-item" onclick="openAIPanel()">
-                        <i class="fas fa-question-circle"></i> Help & Support
+                        <i class="fas fa-question-circle"></i>Help & Support
                     </button>
                     <button class="sidebar-item" onclick="handleLogout()" style="color: var(--accent-red)">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i>Logout
                     </button>
                 </div>
             </aside>
-
-            <!-- ===== APP DRAWER ===== -->
             <div class="app-drawer" id="appDrawer">
                 <div class="app-drawer-header">
-                    <h3><i class="fas fa-search"></i> Find Services</h3>
+                    <h3><i class="fas fa-search"></i>Find Services</h3>
                     <button class="app-drawer-close" onclick="closeAppDrawer()"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="app-drawer-search">
@@ -2399,91 +2378,88 @@
                 </div>
                 <div class="app-drawer-body" id="drawerBody">
                     <div class="quick-actions-row">
-                        <div class="quick-action-chip" onclick="switchPage('page-hr'); closeAppDrawer();">
-                            <i class="fas fa-calendar-plus"></i> Apply Leave
+                        <div class="quick-action-chip" onclick='switchPage("page-hr"),closeAppDrawer()'>
+                            <i class="fas fa-calendar-plus"></i>Apply Leave
                         </div>
-                        <div class="quick-action-chip" onclick="switchPage('page-hr'); closeAppDrawer();">
-                            <i class="fas fa-clock"></i> Timesheet
+                        <div class="quick-action-chip" onclick='switchPage("page-hr"),closeAppDrawer()'>
+                            <i class="fas fa-clock"></i>Timesheet
                         </div>
-                        <div class="quick-action-chip" onclick="switchPage('page-it'); closeAppDrawer();">
-                            <i class="fas fa-key"></i> Password Reset
+                        <div class="quick-action-chip" onclick='switchPage("page-it"),closeAppDrawer()'>
+                            <i class="fas fa-key"></i>Password Reset
                         </div>
-                        <div class="quick-action-chip" onclick="switchPage('page-eservices'); closeAppDrawer();">
-                            <i class="fas fa-headset"></i> Support
+                        <div class="quick-action-chip" onclick='switchPage("page-eservices"),closeAppDrawer()'>
+                            <i class="fas fa-headset"></i>Support
                         </div>
                     </div>
                     <div id="serviceCategories">
                         <div class="service-category">
                             <div class="cat-header">
-                                <i class="fas fa-user-tie"></i> HR Portal <span class="count">6 services</span>
+                                <i class="fas fa-user-tie"></i>HR Portal<span class="count">6 services</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-hr"),closeAppDrawer()'>
                                 <i class="fas fa-calendar-plus"></i><span class="name">Apply Leave</span
                                 ><span class="tag">Quick</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-hr"),closeAppDrawer()'>
                                 <i class="fas fa-calendar-days"></i><span class="name">Leave Calendar</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-hr"),closeAppDrawer()'>
                                 <i class="fas fa-hospital-user"></i><span class="name">Medical Claim</span
                                 ><span class="tag">Quick</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-hr"),closeAppDrawer()'>
                                 <i class="fas fa-clock"></i><span class="name">Timesheet</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-hr"),closeAppDrawer()'>
                                 <i class="fas fa-wallet"></i><span class="name">Leave Balance</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-hr'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-hr"),closeAppDrawer()'>
                                 <i class="fas fa-user-edit"></i><span class="name">Employee Profile</span>
                             </div>
                         </div>
                         <div class="service-category">
                             <div class="cat-header">
-                                <i class="fas fa-laptop"></i> IT Portal <span class="count">4 services</span>
+                                <i class="fas fa-laptop"></i>IT Portal<span class="count">4 services</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-it"),closeAppDrawer()'>
                                 <i class="fas fa-keyboard"></i><span class="name">Hardware Request</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-it"),closeAppDrawer()'>
                                 <i class="fas fa-key"></i><span class="name">Password Reset</span
                                 ><span class="tag">Quick</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-it"),closeAppDrawer()'>
                                 <i class="fas fa-envelope"></i><span class="name">Email Setup</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-it'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-it"),closeAppDrawer()'>
                                 <i class="fas fa-shield"></i><span class="name">Access Request</span>
                             </div>
                         </div>
                         <div class="service-category">
                             <div class="cat-header">
-                                <i class="fas fa-ellipsis-h"></i> Other Services <span class="count">4 services</span>
+                                <i class="fas fa-ellipsis-h"></i>Other Services<span class="count">4 services</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-eservices'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-eservices"),closeAppDrawer()'>
                                 <i class="fas fa-headset"></i><span class="name">E-Services</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-ndms'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-ndms"),closeAppDrawer()'>
                                 <i class="fas fa-flask"></i><span class="name">NDMS Portal</span>
                             </div>
-                            <div class="service-item" onclick="switchPage('page-employee'); closeAppDrawer();">
+                            <div class="service-item" onclick='switchPage("page-employee"),closeAppDrawer()'>
                                 <i class="fas fa-users"></i><span class="name">Employee Portal</span>
                             </div>
-                            <div class="service-item" onclick="openAIPanel(); closeAppDrawer();">
+                            <div class="service-item" onclick="openAIPanel(),closeAppDrawer()">
                                 <i class="fas fa-life-ring"></i><span class="name">Help & Support</span>
                             </div>
                         </div>
                     </div>
                     <div class="no-results" id="drawerNoResults" style="display: none">
-                        <i class="fas fa-search-minus"></i> No services found. Try a different search.
+                        <i class="fas fa-search-minus"></i>No services found. Try a different search.
                     </div>
                 </div>
             </div>
-
-            <!-- ===== BODY ===== -->
             <div class="body-layout">
                 <main class="content-area" id="contentArea">
-                    <!-- Announcement -->
                     <div class="announcement-banner show" id="announcementBanner">
                         <i class="fas fa-bullhorn icon"></i>
                         <div class="content">
@@ -2492,19 +2468,16 @@
                         </div>
                         <button
                             class="dismiss"
-                            onclick="document.getElementById('announcementBanner').classList.remove('show')"
+                            onclick='document.getElementById("announcementBanner").classList.remove("show")'
                         >
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-
-                    <!-- ===== PAGE: DASHBOARD ===== -->
                     <div id="page-dashboard" class="page active-page">
-                        <!-- Row 1: Tasks + Pending -->
                         <div class="widget-grid">
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-tasks"></i> My Tasks</span
+                                    <span class="title"><i class="fas fa-tasks"></i>My Tasks</span
                                     ><span class="count">4</span>
                                 </div>
                                 <div class="widget-body">
@@ -2538,12 +2511,12 @@
                                     </div>
                                 </div>
                                 <div class="widget-footer">
-                                    <button onclick="switchPage('page-tasks')">View All →</button>
+                                    <button onclick='switchPage("page-tasks")'>View All →</button>
                                 </div>
                             </div>
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-clock"></i> Pending Actions</span
+                                    <span class="title"><i class="fas fa-clock"></i>Pending Actions</span
                                     ><span class="count">3</span>
                                 </div>
                                 <div class="widget-body">
@@ -2570,24 +2543,39 @@
                                     </div>
                                 </div>
                                 <div class="widget-footer">
-                                    <button onclick="switchPage('page-pending')">View All →</button>
+                                    <button onclick='switchPage("page-pending")'>View All →</button>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Row 2: Calendar + Quick Access -->
                         <div class="widget-grid">
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-calendar"></i> Calendar</span
-                                    ><span class="count" id="quickCalendarMonth">Loading...</span>
+                                    <span class="title"><i class="fas fa-calendar"></i>Calendar</span>
+                                    <div style="display: flex; align-items: center; gap: 8px">
+                                        <span class="count" id="quickCalendarMonth">Loading...</span>
+                                        <button
+                                            onclick="switchPage('page-calendar')"
+                                            style="
+                                                border: none;
+                                                background: var(--accent-light);
+                                                color: var(--accent-);
+                                                padding: 2px 12px;
+                                                border-radius: 30px;
+                                                font-size: 10px;
+                                                font-weight: 600;
+                                                cursor: pointer;
+                                                transition: var(--transition);
+                                            "
+                                        >
+                                            View Full Calendar
+                                        </button>
+                                    </div>
                                 </div>
                                 <div
                                     class="widget-body"
                                     style="max-height: none; padding: 8px 12px"
                                     id="quickCalendarBody"
                                 >
-                                    <!-- Month Navigation -->
                                     <div
                                         style="
                                             display: flex;
@@ -2632,7 +2620,6 @@
                                             <i class="fas fa-chevron-right"></i>
                                         </button>
                                     </div>
-                                    <!-- Year Selector -->
                                     <div style="display: flex; justify-content: center; margin-bottom: 8px">
                                         <select
                                             id="quickYearSelect"
@@ -2647,7 +2634,6 @@
                                             "
                                         ></select>
                                     </div>
-                                    <!-- Weekdays -->
                                     <div
                                         style="
                                             display: grid;
@@ -2666,39 +2652,25 @@
                                         ><span style="text-align: center">F</span
                                         ><span style="text-align: center">S</span>
                                     </div>
-                                    <!-- Days -->
                                     <div
                                         style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px"
                                         id="quickCalendarDays"
-                                    >
-                                        <!-- Populated by JavaScript -->
-                                    </div>
-                                    <!-- Events -->
-                                    <div
-                                        style="
-                                            margin-top: 8px;
-                                            padding-top: 8px;
-                                            border-top: 1px solid var(--border-color);
-                                        "
-                                        id="quickCalendarEvents"
-                                    >
-                                        <!-- Populated by JavaScript -->
-                                    </div>
+                                    ></div>
                                 </div>
                             </div>
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-rocket"></i> Quick Access</span>
+                                    <span class="title"><i class="fas fa-rocket"></i>Quick Access</span>
                                 </div>
                                 <div class="widget-body">
                                     <div class="quick-grid">
-                                        <div class="quick-item" onclick="switchPage('page-hr')">
+                                        <div class="quick-item" onclick='switchPage("page-hr")'>
                                             <i class="fas fa-calendar-plus"></i><span>Apply Leave</span>
                                         </div>
-                                        <div class="quick-item" onclick="switchPage('page-hr')">
+                                        <div class="quick-item" onclick='switchPage("page-hr")'>
                                             <i class="fas fa-clock"></i><span>Timesheet</span>
                                         </div>
-                                        <div class="quick-item" onclick="switchPage('page-employee')">
+                                        <div class="quick-item" onclick='switchPage("page-employee")'>
                                             <i class="fas fa-users"></i><span>Directory</span>
                                         </div>
                                         <div class="quick-item" onclick="openAIPanel()">
@@ -2708,54 +2680,50 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Row 3: Phone Directory + Important Notice -->
                         <div class="widget-grid">
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-phone"></i> Phone Directory</span
+                                    <span class="title"><i class="fas fa-phone"></i>Phone Directory</span
                                     ><span class="count">6 contacts</span>
                                 </div>
                                 <div class="widget-body" style="max-height: 220px">
                                     <div class="contact-item">
                                         <span class="name">Aiman</span
-                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 5111</span>
+                                        ><span class="ext"><i class="fas fa-phone"></i>Ext 5111</span>
                                     </div>
                                     <div class="contact-item">
                                         <span class="name">Vivian</span
-                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 6156</span>
+                                        ><span class="ext"><i class="fas fa-phone"></i>Ext 6156</span>
                                     </div>
                                     <div class="contact-item">
                                         <span class="name">Sarah Tan</span
-                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 5234</span>
+                                        ><span class="ext"><i class="fas fa-phone"></i>Ext 5234</span>
                                     </div>
                                     <div class="contact-item">
                                         <span class="name">John Lim</span
-                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 4782</span>
+                                        ><span class="ext"><i class="fas fa-phone"></i>Ext 4782</span>
                                     </div>
                                     <div class="contact-item">
                                         <span class="name">Ahmad Rizal</span
-                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 6123</span>
+                                        ><span class="ext"><i class="fas fa-phone"></i>Ext 6123</span>
                                     </div>
                                     <div class="contact-item">
                                         <span class="name">Tasha</span
-                                        ><span class="ext"><i class="fas fa-phone"></i> Ext 2222</span>
+                                        ><span class="ext"><i class="fas fa-phone"></i>Ext 2222</span>
                                     </div>
                                 </div>
                                 <div class="widget-footer">
-                                    <button onclick="alert('Opening full directory...')">View All →</button>
+                                    <button onclick='alert("Opening full directory...")'>View All →</button>
                                 </div>
                             </div>
-
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-bullhorn"></i> Important Notices</span
+                                    <span class="title"><i class="fas fa-bullhorn"></i>Important Notices</span
                                     ><span class="count">2</span>
                                 </div>
                                 <div class="widget-body" style="max-height: 220px; padding: 8px 12px">
-                                    <!-- Notice List View -->
                                     <div id="noticeListView">
-                                        <div class="notice-list-item" onclick="openNotice('notice1')">
+                                        <div class="notice-list-item" onclick='openNotice("notice1")'>
                                             <span class="icon"><i class="fas fa-calendar-exclamation"></i></span>
                                             <div class="info">
                                                 <div class="title">Replacement Holiday – HQ only</div>
@@ -2763,7 +2731,7 @@
                                             </div>
                                             <span class="chevron"><i class="fas fa-chevron-right"></i></span>
                                         </div>
-                                        <div class="notice-list-item" onclick="openNotice('notice2')">
+                                        <div class="notice-list-item" onclick='openNotice("notice2")'>
                                             <span class="icon"><i class="fas fa-file-alt"></i></span>
                                             <div class="info">
                                                 <div class="title">New Annual Leave Policy Update</div>
@@ -2772,11 +2740,9 @@
                                             <span class="chevron"><i class="fas fa-chevron-right"></i></span>
                                         </div>
                                     </div>
-
-                                    <!-- Notice Detail View 1 -->
                                     <div class="notice-detail" id="notice1">
-                                        <button class="back-btn" onclick="closeNotice('notice1')">
-                                            <i class="fas fa-arrow-left"></i> Back to notices
+                                        <button class="back-btn" onclick='closeNotice("notice1")'>
+                                            <i class="fas fa-arrow-left"></i>Back to notices
                                         </button>
                                         <div class="notice-title">📢 Replacement Holiday – HQ only</div>
                                         <div class="notice-date">31 August &amp; 1 September 2026</div>
@@ -2784,21 +2750,23 @@
                                             <p>
                                                 Further to memo dated 16 March 2026 regarding the additional public
                                                 holiday in conjunction with Hari Raya Aidilfitri, please be informed
-                                                that the company has designated
-                                                <strong>1 September 2026 (Tuesday)</strong> as the replacement holiday.
+                                                that the company has designated<strong
+                                                    >1 September 2026 (Tuesday)</strong
+                                                >as the replacement holiday.
                                             </p>
                                             <p>
-                                                The company will be closed on
-                                                <strong>31 August 2026 (Monday) &amp; 1 September 2026 (Tuesday)</strong
-                                                >. Operation will resume on
-                                                <strong>2 September 2026 (Wednesday)</strong>.
+                                                The company will be closed on<strong
+                                                    >31 August 2026 (Monday) &amp; 1 September 2026 (Tuesday)</strong
+                                                >. Operation will resume on<strong>2 September 2026 (Wednesday)</strong
+                                                >.
                                             </p>
                                             <p>
-                                                <span style="color: var(--accent-red); font-weight: 600">⚠️</span>
-                                                Employees who take medical leave (MC) immediately before or after this
-                                                replacement holiday may be subject to a
-                                                <strong>six (6) months suspension</strong> of outpatient medical card
-                                                benefits, in accordance with the company's policies.
+                                                <span style="color: var(--accent-red); font-weight: 600">⚠️</span
+                                                >Employees who take medical leave (MC) immediately before or after this
+                                                replacement holiday may be subject to a<strong
+                                                    >six (6) months suspension</strong
+                                                >of outpatient medical card benefits, in accordance with the company's
+                                                policies.
                                             </p>
                                             <p>Should you have any queries, kindly refer to the HR Department.</p>
                                         </div>
@@ -2809,7 +2777,7 @@
                                             </p>
                                         </div>
                                         <div class="notice-bilingual">
-                                            <span class="bm-toggle" onclick="toggleBM('bm1')"
+                                            <span class="bm-toggle" onclick='toggleBM("bm1")'
                                                 >📖 Baca dalam Bahasa Malaysia</span
                                             >
                                             <div class="bm-content" id="bm1">
@@ -2817,20 +2785,21 @@
                                                 <p>
                                                     Merujuk kepada memo bertarikh 16 Mac 2026 mengenai cuti umum
                                                     tambahan sempena Hari Raya Aidilfitri, dimaklumkan bahawa syarikat
-                                                    telah menetapkan <strong>1 September 2026 (Selasa)</strong> sebagai
+                                                    telah menetapkan<strong>1 September 2026 (Selasa)</strong>sebagai
                                                     cuti gantian.
                                                 </p>
                                                 <p>
-                                                    Syarikat akan ditutup pada
-                                                    <strong>31 Ogos 2026 (Isnin) dan 1 September 2026 (Selasa)</strong>.
-                                                    Operasi akan disambung semula pada
-                                                    <strong>2 September 2026 (Rabu)</strong>.
+                                                    Syarikat akan ditutup pada<strong
+                                                        >31 Ogos 2026 (Isnin) dan 1 September 2026 (Selasa)</strong
+                                                    >. Operasi akan disambung semula pada<strong
+                                                        >2 September 2026 (Rabu)</strong
+                                                    >.
                                                 </p>
                                                 <p>
-                                                    <span style="color: var(--accent-red); font-weight: 600">⚠️</span>
-                                                    Pekerja yang mengambil cuti sakit (MC) sejurus sebelum atau selepas
+                                                    <span style="color: var(--accent-red); font-weight: 600">⚠️</span
+                                                    >Pekerja yang mengambil cuti sakit (MC) sejurus sebelum atau selepas
                                                     cuti gantian ini mungkin dikenakan penggantungan kemudahan kad
-                                                    perubatan pesakit luar selama <strong>enam (6) bulan</strong>,
+                                                    perubatan pesakit luar selama<strong>enam (6) bulan</strong>,
                                                     selaras dengan polisi syarikat.
                                                 </p>
                                                 <p>
@@ -2841,27 +2810,27 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Notice Detail View 2 -->
                                     <div class="notice-detail" id="notice2">
-                                        <button class="back-btn" onclick="closeNotice('notice2')">
-                                            <i class="fas fa-arrow-left"></i> Back to notices
+                                        <button class="back-btn" onclick='closeNotice("notice2")'>
+                                            <i class="fas fa-arrow-left"></i>Back to notices
                                         </button>
                                         <div class="notice-title">📋 New Annual Leave Policy Update</div>
                                         <div class="notice-date">Effective 1 September 2026</div>
                                         <div class="notice-body">
                                             <p>
-                                                We are pleased to announce the updated Annual Leave Policy effective
-                                                <strong>1 September 2026</strong>.
+                                                We are pleased to announce the updated Annual Leave Policy
+                                                effective<strong>1 September 2026</strong>.
                                             </p>
                                             <p><strong>Key Changes:</strong></p>
                                             <p>
-                                                • Annual leave carry-forward limit increased from 10 to
-                                                <strong>15 days</strong>
+                                                • Annual leave carry-forward limit increased from 10 to<strong
+                                                    >15 days</strong
+                                                >
                                             </p>
                                             <p>
-                                                • Leave application must be submitted at least
-                                                <strong>5 working days</strong> in advance
+                                                • Leave application must be submitted at least<strong
+                                                    >5 working days</strong
+                                                >in advance
                                             </p>
                                             <p>• Emergency leave requests can be submitted via the HR Portal</p>
                                             <p>
@@ -2879,19 +2848,15 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- ===== DASHBOARD FOOTER ===== -->
                         <div class="dashboard-footer">
-                            <a href="https://www.kotrapharma.com" target="_blank" class="footer-link">
-                                <i class="fas fa-globe"></i> www.kotrapharma.com
-                            </a>
+                            <a href="https://www.kotrapharma.com" target="_blank" class="footer-link"
+                                ><i class="fas fa-globe"></i>www.kotrapharma.com</a
+                            >
                             <div class="footer-copy">
                                 © 2026 Kotra Pharma (M) Sdn Bhd (90082-V). All Rights Reserved.
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: CALENDAR ===== -->
                     <div id="page-calendar" class="page">
                         <div class="page-header">
                             <h2>
@@ -2914,9 +2879,7 @@
                                     <label style="font-size: 12px; color: var(--text-muted); margin-right: 4px"
                                         >Year:</label
                                     >
-                                    <select id="calYearSelect" onchange="changeYear(this.value)">
-                                        <!-- Populated by JavaScript -->
-                                    </select>
+                                    <select id="calYearSelect" onchange="changeYear(this.value)"></select>
                                 </div>
                             </div>
                             <div class="cal-weekdays">
@@ -2929,13 +2892,28 @@
                                     <span>Loading holidays...</span>
                                 </div>
                             </div>
-                            <div class="calendar-events-list" id="calEvents">
-                                <div class="empty-events">Select a date to see events</div>
+                        </div>
+                    </div>
+                    <div
+                        class="event-dialog-overlay"
+                        id="eventDialogOverlay"
+                        onclick="event.target===this&&closeEventDialog()"
+                    >
+                        <div class="event-dialog">
+                            <div class="dialog-header">
+                                <div class="left">
+                                    <div class="date" id="dialogDate">Loading...</div>
+                                    <div class="count" id="dialogCount">0 events</div>
+                                </div>
+                                <button class="close-btn" onclick="closeEventDialog()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="dialog-body" id="dialogBody">
+                                <div class="no-events">📅 No events on this day</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: TASKS ===== -->
                     <div id="page-tasks" class="page">
                         <div class="page-header">
                             <h2>
@@ -2976,8 +2954,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: PENDING ===== -->
                     <div id="page-pending" class="page">
                         <div class="page-header">
                             <h2>
@@ -3012,8 +2988,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: HR ===== -->
                     <div id="page-hr" class="page iframe-page">
                         <div class="page-header">
                             <h2>
@@ -3040,15 +3014,13 @@
                                 <p>HR portal cannot be embedded directly for security.</p>
                                 <button
                                     class="btn-open"
-                                    onclick="window.open('https://ehr.kotrapharma.com/hrmsnet/','_blank')"
+                                    onclick='window.open("https://ehr.kotrapharma.com/hrmsnet/","_blank")'
                                 >
-                                    <i class="fas fa-external-link-alt"></i> Open HR Portal
+                                    <i class="fas fa-external-link-alt"></i>Open HR Portal
                                 </button>
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: IT ===== -->
                     <div id="page-it" class="page">
                         <div class="page-header">
                             <h2>
@@ -3059,7 +3031,7 @@
                         <div class="widget-grid">
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-keyboard"></i> Hardware</span
+                                    <span class="title"><i class="fas fa-keyboard"></i>Hardware</span
                                     ><span class="count">3</span>
                                 </div>
                                 <div class="widget-body">
@@ -3081,7 +3053,7 @@
                             </div>
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-key"></i> Access</span
+                                    <span class="title"><i class="fas fa-key"></i>Access</span
                                     ><span class="count">2</span>
                                 </div>
                                 <div class="widget-body">
@@ -3096,8 +3068,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: E-SERVICES ===== -->
                     <div id="page-eservices" class="page">
                         <div class="page-header">
                             <h2>
@@ -3108,7 +3078,7 @@
                         </div>
                         <div class="widget">
                             <div class="widget-header">
-                                <span class="title"><i class="fas fa-ticket"></i> Active Tickets</span
+                                <span class="title"><i class="fas fa-ticket"></i>Active Tickets</span
                                 ><span class="count">3</span>
                             </div>
                             <div class="widget-body" style="max-height: none">
@@ -3136,8 +3106,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: NDMS ===== -->
                     <div id="page-ndms" class="page">
                         <div class="page-header">
                             <h2>
@@ -3148,7 +3116,7 @@
                         <div class="widget-grid">
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-file"></i> Documents</span
+                                    <span class="title"><i class="fas fa-file"></i>Documents</span
                                     ><span class="count">3</span>
                                 </div>
                                 <div class="widget-body">
@@ -3170,7 +3138,7 @@
                             </div>
                             <div class="widget">
                                 <div class="widget-header">
-                                    <span class="title"><i class="fas fa-flask"></i> Inventory</span
+                                    <span class="title"><i class="fas fa-flask"></i>Inventory</span
                                     ><span class="count">2</span>
                                 </div>
                                 <div class="widget-body">
@@ -3185,8 +3153,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- ===== PAGE: EMPLOYEE ===== -->
                     <div id="page-employee" class="page iframe-page">
                         <div class="page-header">
                             <h2>
@@ -3211,32 +3177,23 @@
                                 <i class="fas fa-user-plus"></i>
                                 <h3>Employee Portal Unavailable</h3>
                                 <p>Please ensure employee_onboarding.html is accessible.</p>
-                                <button class="btn-open" onclick="window.open('employee_onboarding.html','_blank')">
-                                    <i class="fas fa-external-link-alt"></i> Open Employee Portal
+                                <button class="btn-open" onclick='window.open("employee_onboarding.html","_blank")'>
+                                    <i class="fas fa-external-link-alt"></i>Open Employee Portal
                                 </button>
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
-
-            <!-- ===== BOTTOM NAV ===== -->
             <nav class="bottom-nav">
-                <button class="bottom-nav-item active" onclick="switchPage('page-dashboard')">
-                    <i class="fas fa-home"></i><span>Home</span>
-                </button>
                 <button class="bottom-nav-item" onclick="openAppDrawer()">
                     <i class="fas fa-th"></i><span>Apps</span>
                 </button>
             </nav>
-
-            <!-- ===== KOTRA AI ===== -->
             <div class="ai-float" id="aiFloat" onclick="toggleAIPanel()">
                 <div class="avatar"><img src="https://qjy02.github.io/react/vipo/vipo.png" alt="Kotra AI" /></div>
                 <span class="label"><i class="fas fa-bolt" style="color: var(--accent)"></i> Kotra AI</span>
             </div>
-
-            <!-- ===== AI PANEL ===== -->
             <div class="ai-panel" id="aiPanel">
                 <div class="header" id="aiPanelHeader">
                     <div class="title">
@@ -3245,31 +3202,31 @@
                     <button class="close-btn" onclick="toggleAIPanel()"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="tabs">
-                    <button class="tab active" data-tab="kb" onclick="switchAITab('kb')">
+                    <button class="tab active" data-tab="kb" onclick='switchAITab("kb")'>
                         <i class="fas fa-book"></i> Knowledge
                     </button>
-                    <button class="tab" data-tab="support" onclick="switchAITab('support')">
+                    <button class="tab" data-tab="support" onclick='switchAITab("support")'>
                         <i class="fas fa-ticket"></i> Support
                     </button>
-                    <button class="tab" data-tab="chat" onclick="switchAITab('chat')">
+                    <button class="tab" data-tab="chat" onclick='switchAITab("chat")'>
                         <i class="fas fa-comment"></i> Chat
                     </button>
                 </div>
                 <div class="body">
                     <div class="tab-content active" id="tab-kb">
-                        <div class="kb-item" onclick="alert('Opening User Manual...')">
+                        <div class="kb-item" onclick='alert("Opening User Manual...")'>
                             <i class="fas fa-book"></i><span class="name">User Manual v3.2</span
                             ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
                         </div>
-                        <div class="kb-item" onclick="alert('Opening FAQ...')">
+                        <div class="kb-item" onclick='alert("Opening FAQ...")'>
                             <i class="fas fa-question-circle"></i><span class="name">Frequently Asked Questions</span
                             ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
                         </div>
-                        <div class="kb-item" onclick="alert('Opening How-to Videos...')">
+                        <div class="kb-item" onclick='alert("Opening How-to Videos...")'>
                             <i class="fas fa-video"></i><span class="name">How-to Videos</span
                             ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
                         </div>
-                        <div class="kb-item" onclick="alert('Searching Knowledge Base...')">
+                        <div class="kb-item" onclick='alert("Searching Knowledge Base...")'>
                             <i class="fas fa-search"></i><span class="name">Search Knowledge Base</span
                             ><i class="fas fa-chevron-right" style="font-size: 11px; color: var(--text-muted)"></i>
                         </div>
@@ -3296,8 +3253,8 @@
                             </div>
                             <span class="ticket-status closed">Closed</span>
                         </div>
-                        <button class="report-btn" onclick="alert('Opening new ticket form...')">
-                            <i class="fas fa-plus"></i> Report Issue
+                        <button class="report-btn" onclick='alert("Opening new ticket form...")'>
+                            <i class="fas fa-plus"></i>Report Issue
                         </button>
                     </div>
                     <div class="tab-content" id="tab-chat">
@@ -3314,30 +3271,28 @@
                                 type="text"
                                 id="chatInput"
                                 placeholder="Ask me anything..."
-                                onkeydown="if(event.key==='Enter') sendChat()"
+                                onkeydown='"Enter"===event.key&&sendChat()'
                             />
                             <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- ===== SETTINGS ===== -->
-            <div class="settings-overlay" id="settingsOverlay" onclick="if(event.target===this) closeSettings()">
+            <div class="settings-overlay" id="settingsOverlay" onclick="event.target===this&&closeSettings()">
                 <div class="settings-dialog">
                     <div class="settings-header">
                         <h2><i class="fas fa-cog"></i>Settings</h2>
                         <button class="settings-close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="settings-tabs" id="settingsTabs">
-                        <button class="tab active" data-section="general" onclick="switchSettings('general',this)">
-                            <i class="fas fa-sliders-h"></i> General
+                        <button class="tab active" data-section="general" onclick='switchSettings("general",this)'>
+                            <i class="fas fa-sliders-h"></i>General
                         </button>
-                        <button class="tab" data-section="appearance" onclick="switchSettings('appearance',this)">
-                            <i class="fas fa-palette"></i> Appearance
+                        <button class="tab" data-section="appearance" onclick='switchSettings("appearance",this)'>
+                            <i class="fas fa-palette"></i>Appearance
                         </button>
-                        <button class="tab" data-section="account" onclick="switchSettings('account',this)">
-                            <i class="fas fa-user"></i> Account
+                        <button class="tab" data-section="account" onclick='switchSettings("account",this)'>
+                            <i class="fas fa-user"></i>Account
                         </button>
                     </div>
                     <div class="settings-body">
@@ -3345,23 +3300,23 @@
                             <button
                                 class="settings-sidebar-item active"
                                 data-section="general"
-                                onclick="switchSettings('general',this)"
+                                onclick='switchSettings("general",this)'
                             >
-                                <i class="fas fa-sliders-h"></i> General
+                                <i class="fas fa-sliders-h"></i>General
                             </button>
                             <button
                                 class="settings-sidebar-item"
                                 data-section="appearance"
-                                onclick="switchSettings('appearance',this)"
+                                onclick='switchSettings("appearance",this)'
                             >
-                                <i class="fas fa-palette"></i> Appearance
+                                <i class="fas fa-palette"></i>Appearance
                             </button>
                             <button
                                 class="settings-sidebar-item"
                                 data-section="account"
-                                onclick="switchSettings('account',this)"
+                                onclick='switchSettings("account",this)'
                             >
-                                <i class="fas fa-user"></i> Account
+                                <i class="fas fa-user"></i>Account
                             </button>
                         </div>
                         <div class="settings-content">
@@ -3425,7 +3380,7 @@
                                         <span class="title">Compact Mode</span
                                         ><span class="desc">Reduce spacing for denser layout</span>
                                     </div>
-                                    <button class="toggle-switch" onclick="this.classList.toggle('active')">
+                                    <button class="toggle-switch" onclick='this.classList.toggle("active")'>
                                         <span class="slider"></span>
                                     </button>
                                 </div>
@@ -3471,7 +3426,7 @@
                                     </button>
                                 </div>
                                 <button class="settings-logout-btn" onclick="handleLogout()">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                    <i class="fas fa-sign-out-alt"></i>Logout
                                 </button>
                             </div>
                         </div>
@@ -3479,8 +3434,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- ===== JAVASCRIPT ===== -->
         <script>
             // ===== STATE =====
             let isDark = false;
@@ -3499,7 +3452,6 @@
                 "2026-08-15": [{ title: "Town Hall", type: "event" }],
             };
 
-            // Quick calendar state (dashboard)
             let quickMonth = new Date().getMonth();
             let quickYear = new Date().getFullYear();
 
@@ -3522,7 +3474,6 @@
                     });
             }
 
-            // ===== FETCH ALL HOLIDAYS =====
             async function fetchAllHolidays() {
                 const currentYear = new Date().getFullYear();
                 await fetchHolidays(currentYear - 1);
@@ -3531,12 +3482,10 @@
                 holidaysLoaded = true;
             }
 
-            // ===== GET HOLIDAYS FOR A SPECIFIC DATE =====
             function getHolidaysForDate(dateStr) {
                 return holidays.filter((h) => h.date === dateStr);
             }
 
-            // ===== GET ALL EVENTS FOR A DATE (holidays + custom) =====
             function getEventsForDate(dateStr) {
                 const holidayEvents = getHolidaysForDate(dateStr).map((h) => ({
                     title: h.name,
@@ -3547,11 +3496,9 @@
                 return [...holidayEvents, ...custom];
             }
 
-            // ===== POPULATE YEAR SELECTORS =====
             function populateYearSelectors() {
                 const currentYear = new Date().getFullYear();
                 const selectors = ["calYearSelect", "quickYearSelect"];
-
                 selectors.forEach((id) => {
                     const select = document.getElementById(id);
                     if (!select) return;
@@ -3568,7 +3515,7 @@
                 });
             }
 
-            // ===== RENDER CALENDAR (Full Page) =====
+            // ===== RENDER CALENDAR =====
             function renderCalendar() {
                 const monthNames = [
                     "January",
@@ -3586,13 +3533,10 @@
                 ];
                 const daysContainer = document.getElementById("calDays");
                 const monthDisplay = document.getElementById("calMonth");
-
                 if (!daysContainer) return;
 
-                // Update year selector
                 const yearSelect = document.getElementById("calYearSelect");
                 if (yearSelect) yearSelect.value = currentYear;
-
                 monthDisplay.textContent = monthNames[currentMonth] + " " + currentYear;
 
                 const firstDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -3636,10 +3580,7 @@
                         if (hasEvent) dots += '<span class="dot-event"></span>';
                         dots += "</div>";
                     }
-
-                    html += `<div class="${cls}" data-date="${dateStr}" onclick="selectDate('${dateStr}')">
-                ${d}${dots}
-            </div>`;
+                    html += `<div class="${cls}" data-date="${dateStr}" onclick="openEventDialog('${dateStr}')">${d}${dots}</div>`;
                 }
                 const totalDays = firstDay + daysInMonth;
                 const remaining = 42 - totalDays;
@@ -3647,77 +3588,60 @@
                     html += `<div class="day other-month">${d}</div>`;
                 }
                 daysContainer.innerHTML = html;
-
-                if (selectedDate) {
-                    showEvents(selectedDate);
-                } else {
-                    let found = false;
-                    for (let d = 1; d <= daysInMonth; d++) {
-                        const dateStr =
-                            currentYear +
-                            "-" +
-                            String(currentMonth + 1).padStart(2, "0") +
-                            "-" +
-                            String(d).padStart(2, "0");
-                        const events = getEventsForDate(dateStr);
-                        if (events.length > 0) {
-                            selectDate(dateStr);
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        document.getElementById("calEvents").innerHTML =
-                            '<div class="empty-events">📅 No events this month</div>';
-                    }
-                }
             }
 
-            // ===== SELECT DATE =====
-            function selectDate(dateStr) {
+            // ===== EVENT DIALOG =====
+            function openEventDialog(dateStr) {
                 selectedDate = dateStr;
                 renderCalendar();
-                showEvents(dateStr);
-                updateQuickCalendar();
-            }
 
-            // ===== SHOW EVENTS =====
-            function showEvents(dateStr) {
-                const container = document.getElementById("calEvents");
+                const overlay = document.getElementById("eventDialogOverlay");
+                const dateDisplay = document.getElementById("dialogDate");
+                const countDisplay = document.getElementById("dialogCount");
+                const body = document.getElementById("dialogBody");
+
                 const events = getEventsForDate(dateStr);
+                const dateObj = new Date(dateStr + "T00:00:00");
+                const options = { weekday: "short", year: "numeric", month: "short", day: "numeric" };
+                dateDisplay.textContent = dateObj.toLocaleDateString("en-US", options);
+                countDisplay.textContent = events.length + " event" + (events.length > 1 ? "s" : "");
 
-                if (!events || events.length === 0) {
-                    container.innerHTML = '<div class="empty-events">📅 No events on this day</div>';
-                    return;
+                if (events.length === 0) {
+                    body.innerHTML = '<div class="no-events">📅 No events on this day</div>';
+                } else {
+                    let html = "";
+                    events.forEach((ev) => {
+                        let dotClass = "event";
+                        let desc = "";
+                        if (ev.type === "holiday") {
+                            dotClass = "holiday";
+                            desc = "🇲🇾 Public Holiday";
+                        } else if (ev.type === "meeting") {
+                            dotClass = "meeting";
+                            desc = "Meeting";
+                        } else if (ev.type === "event") {
+                            dotClass = "event";
+                            desc = "Event";
+                        }
+                        html += `<div class="event-item">
+                    <span class="dot ${dotClass}"></span>
+                    <div class="info">
+                        <div class="title">${ev.title}</div>
+                        <div class="desc">${desc}</div>
+                    </div>
+                </div>`;
+                    });
+                    body.innerHTML = html;
                 }
 
-                const dateObj = new Date(dateStr + "T00:00:00");
-                const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
-                const dateDisplay = dateObj.toLocaleDateString("en-US", options);
-
-                let html = `<div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">${dateDisplay}</div>`;
-                events.forEach((ev) => {
-                    let dotClass = "event";
-                    if (ev.type === "holiday") dotClass = "holiday";
-                    else if (ev.type === "meeting") dotClass = "meeting";
-
-                    let typeLabel = "";
-                    if (ev.type === "holiday") typeLabel = "🇲🇾 Public Holiday";
-                    else if (ev.type === "meeting") typeLabel = "Meeting";
-                    else if (ev.type === "event") typeLabel = "Event";
-
-                    html += `<div class="cal-event-item">
-                <span class="dot ${dotClass}"></span>
-                <div class="info">
-                    <div class="name">${ev.title}</div>
-                    <div class="type">${typeLabel}</div>
-                </div>
-            </div>`;
-                });
-                container.innerHTML = html;
+                overlay.classList.add("open");
             }
 
-            // ===== CHANGE MONTH (Full Calendar) =====
+            function closeEventDialog() {
+                document.getElementById("eventDialogOverlay").classList.remove("open");
+            }
+
+            // ===== CHANGE MONTH / YEAR =====
             function changeMonth(delta) {
                 currentMonth += delta;
                 if (currentMonth < 0) {
@@ -3734,7 +3658,6 @@
                 updateQuickCalendar();
             }
 
-            // ===== CHANGE YEAR (Full Calendar) =====
             function changeYear(year) {
                 currentYear = parseInt(year);
                 fetchHolidays(currentYear);
@@ -3742,19 +3665,16 @@
                 updateQuickCalendar();
             }
 
-            // ===== UPDATE QUICK CALENDAR (Dashboard) =====
+            // ===== QUICK CALENDAR =====
             function updateQuickCalendar() {
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 const monthDisplay = document.getElementById("quickMonthLabel");
                 const daysContainer = document.getElementById("quickCalendarDays");
-                const eventsContainer = document.getElementById("quickCalendarEvents");
                 const monthCount = document.getElementById("quickCalendarMonth");
-
                 if (!daysContainer) return;
 
                 const yearSelect = document.getElementById("quickYearSelect");
                 if (yearSelect) yearSelect.value = quickYear;
-
                 monthDisplay.textContent = monthNames[quickMonth] + " " + quickYear;
                 if (monthCount) monthCount.textContent = monthNames[quickMonth] + " " + quickYear;
 
@@ -3798,46 +3718,8 @@
             </div>`;
                 }
                 daysContainer.innerHTML = html;
-
-                let eventHtml = "";
-                let foundEvents = false;
-                const eventLimit = 5;
-                let count = 0;
-                for (let d = 1; d <= daysInMonth && count < eventLimit; d++) {
-                    const dateStr =
-                        quickYear + "-" + String(quickMonth + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
-                    const events = getEventsForDate(dateStr);
-                    if (events.length > 0) {
-                        foundEvents = true;
-                        const displayDate = d + " " + monthNames[quickMonth];
-                        events.forEach((ev) => {
-                            if (count >= eventLimit) return;
-                            const dotColor =
-                                ev.type === "holiday"
-                                    ? "var(--accent-red)"
-                                    : ev.type === "meeting"
-                                      ? "var(--accent)"
-                                      : "#1a56db";
-                            eventHtml += `<div style="display:flex;align-items:center;gap:10px;padding:2px 0;font-size:11px;">
-                        <span style="width:6px;height:6px;border-radius:50%;background:${dotColor};"></span>
-                        <span style="color:var(--text-secondary);">${displayDate}</span>
-                        <span style="color:var(--text-primary);font-weight:500;">${ev.title}</span>
-                    </div>`;
-                            count++;
-                        });
-                    }
-                }
-                if (!foundEvents) {
-                    eventHtml =
-                        '<div style="text-align:center;color:var(--text-muted);font-size:11px;padding:4px 0;">No events this month</div>';
-                }
-                if (count >= eventLimit && foundEvents) {
-                    eventHtml += `<div style="text-align:center;color:var(--text-muted);font-size:10px;padding:2px 0;">+ more events... <span style="color:var(--accent);cursor:pointer;" onclick="switchPage('page-calendar')">View Full Calendar →</span></div>`;
-                }
-                eventsContainer.innerHTML = eventHtml;
             }
 
-            // ===== CHANGE QUICK MONTH (Dashboard) =====
             function changeQuickMonth(delta) {
                 quickMonth += delta;
                 if (quickMonth < 0) {
@@ -3852,45 +3734,29 @@
                 updateQuickCalendar();
             }
 
-            // ===== CHANGE QUICK YEAR (Dashboard) =====
             function changeQuickYear(year) {
                 quickYear = parseInt(year);
                 fetchHolidays(quickYear);
                 updateQuickCalendar();
             }
 
-            // ===== INIT CALENDAR =====
             async function initCalendar() {
-                // Show loading state
                 const daysContainer = document.getElementById("calDays");
                 if (daysContainer) {
-                    daysContainer.innerHTML = `
-                <div class="calendar-loading">
-                    <div class="spinner"></div>
-                    <span>Loading holidays...</span>
-                </div>
-            `;
+                    daysContainer.innerHTML = `<div class="calendar-loading"><div class="spinner"></div><span>Loading holidays...</span></div>`;
                 }
-
-                // Fetch all holidays first
                 await fetchAllHolidays();
-
-                // Populate year selectors
                 populateYearSelectors();
-
-                // Set current month/year
                 const now = new Date();
                 currentMonth = now.getMonth();
                 currentYear = now.getFullYear();
                 quickMonth = currentMonth;
                 quickYear = currentYear;
-
-                // Render calendars
                 renderCalendar();
                 updateQuickCalendar();
             }
 
-            // ===== LOGIN =====
+            // ===== LOGIN & NAVIGATION =====
             function togglePassword() {
                 const input = document.getElementById("passwordInput");
                 const icon = document.getElementById("toggleIcon");
@@ -3919,7 +3785,6 @@
                 initCalendar();
             }
 
-            // ===== PAGE =====
             function switchPage(pageId) {
                 document.querySelectorAll(".page").forEach((p) => p.classList.remove("active-page"));
                 const target = document.getElementById(pageId);
@@ -3936,7 +3801,6 @@
                 }
             }
 
-            // ===== SIDEBAR =====
             function toggleSidebar() {
                 isSidebarOpen = !isSidebarOpen;
                 document.getElementById("sidebar").classList.toggle("open", isSidebarOpen);
@@ -3948,7 +3812,6 @@
                 document.getElementById("sidebarOverlay").classList.remove("open");
             }
 
-            // ===== APP DRAWER =====
             function openAppDrawer() {
                 isDrawerOpen = true;
                 document.getElementById("appDrawer").classList.add("open");
@@ -3983,7 +3846,6 @@
                 document.getElementById("serviceCategories").style.display = "block";
             }
 
-            // ===== THEME =====
             function toggleTheme() {
                 isDark = !isDark;
                 document.body.classList.toggle("dark-mode", isDark);
@@ -4019,23 +3881,20 @@
                 });
             }
 
-            // ===== IMPORTANT NOTICE FUNCTIONS =====
+            // ===== NOTICES =====
             function openNotice(id) {
                 document.getElementById("noticeListView").style.display = "none";
                 document.getElementById(id).classList.add("open");
             }
-
             function closeNotice(id) {
                 document.getElementById(id).classList.remove("open");
                 document.getElementById("noticeListView").style.display = "block";
             }
-
             function toggleBM(id) {
-                const el = document.getElementById(id);
-                el.classList.toggle("open");
+                document.getElementById(id).classList.toggle("open");
             }
 
-            // ===== AI PANEL =====
+            // ===== AI =====
             function toggleAIPanel() {
                 isChatOpen = !isChatOpen;
                 document.getElementById("aiPanel").classList.toggle("open", isChatOpen);
@@ -4045,7 +3904,6 @@
             function openAIPanel() {
                 if (!isChatOpen) toggleAIPanel();
             }
-
             function switchAITab(tab) {
                 document.querySelectorAll(".ai-panel .tabs .tab").forEach((t) => t.classList.remove("active"));
                 document.querySelectorAll(".ai-panel .body .tab-content").forEach((c) => c.classList.remove("active"));
@@ -4053,7 +3911,7 @@
                 document.getElementById("tab-" + tab).classList.add("active");
             }
 
-            // ===== DRAGGABLE AI PANEL =====
+            // ===== DRAGGABLE AI =====
             document.addEventListener("DOMContentLoaded", function () {
                 const panel = document.getElementById("aiPanel");
                 const header = document.getElementById("aiPanelHeader");
@@ -4174,7 +4032,6 @@
                 }
             }, 5000);
 
-            // ===== LOGOUT =====
             function handleLogout() {
                 closeSettings();
                 document.getElementById("dashboard").classList.remove("active");
@@ -4196,11 +4053,11 @@
                     closeSidebar();
                     closeSettings();
                     closeAppDrawer();
+                    closeEventDialog();
                     if (isChatOpen) toggleAIPanel();
                 }
             });
 
-            // ===== INIT =====
             if (window.navigator.userAgent.includes("iPhone")) {
                 document.documentElement.style.setProperty("--safe-bottom", "env(safe-area-inset-bottom, 0px)");
             }
