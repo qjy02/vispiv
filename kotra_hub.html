@@ -2155,6 +2155,11 @@
                         } else if (lower.includes("logout") || lower.includes("sign out") || lower.includes("log out")) {
                             response = "👋 Logging you out... Goodbye!";
                             action = () => this.logout();
+                        } else if (lower.includes("clear") || lower.includes("clear chat") || lower.includes("clear conversation") || lower.includes("reset chat") || lower.includes("erase chat")) {
+                            this.chatMessages = [{ from: "ai", text: "Hello! I'm Kotra AI. How can I help? 😊" }];
+                            this.chatInput = "";
+                            this.scrollChatToBottom();
+                            return;
                         } else {
                             // fallback AI reply
                             const replies = [
