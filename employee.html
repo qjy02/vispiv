@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kotra Pharma — Employee Management System</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { display: ['Manrope','sans-serif'], body: ['Inter','sans-serif'] },
+        colors: {
+          teal: { 950:'#062F2C', 900:'#0B4F4A', 800:'#0F6560', 700:'#137D76', 600:'#1B978F', 100:'#DCEFEC', 50:'#F2F8F7' },
+          coral: { 600:'#D85A34', 500:'#E8734A', 100:'#FBE4D8' },
+          sand: { 50:'#F8F6F2' }
+        }
+      }
+    }
+  }
+</script>
+<style>
+  [v-cloak]{display:none}
+  body{font-family:'Inter',sans-serif}
+  h1,h2,h3,h4,.font-display{font-family:'Manrope',sans-serif}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#CBD5D1;border-radius:8px}
+</style>
+</head>
+<body class="bg-sand-50 text-slate-800">
+<div id="app" v-cloak>
+
+  <div class="min-h-screen flex">
+
+    <!-- Mobile overlay -->
+    <div v-if="mobileNavOpen" class="fixed inset-0 bg-black/40 z-30 md:hidden" @click="mobileNavOpen=false"></div>
+
+    <!-- Sidebar -->
+    <aside :class="mobileNavOpen ? 'translate-x-0' : '-translate-x-full'"
+      class="fixed md:static inset-y-0 left-0 z-40 w-60 shrink-0 bg-teal-950 text-teal-50 flex flex-col transform transition-transform duration-200 md:translate-x-0">
+      <div class="px-5 py-6 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <p class="font-display font-800 text-lg tracking-tight">KOTRA<span class="text-coral-500">.</span>PHARMA</p>
+          <p class="text-[11px] uppercase tracking-widest text-teal-300 mt-0.5">People Operations</p>
+        </div>
+        <button @click="mobileNavOpen=false" class="md:hidden text-teal-300 text-xl leading-none">✕</button>
+      </div>
+      <nav class="flex-1 px-3 py-4 space-y-1">
+        <button v-for="t in tabs" :key="t.id" @click="activeTab=t.id; mobileNavOpen=false"
+          :class="['w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition',
+                    activeTab===t.id ? 'bg-teal-800 text-white' : 'text-teal-200 hover:bg-white/5 hover:text-white']">
+          <span class="text-base leading-none">{{ t.icon }}</span>{{ t.label }}
+          <span v-if="t.count" class="ml-auto text-[11px] bg-white/10 rounded-full px-2 py-0.5">{{ t.count }}</span>
+        </button>
+      </nav>
+      <div class="px-5 py-4 border-t border-white/10 text-xs text-teal-300">
+        Logged in as <span class="text-white font-medium">HR Admin</span>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 min-w-0">
+      <div class="md:hidden sticky top-0 z-20 bg-teal-950 text-white px-4 py-3 flex items-center justify-between">
+        <button @click="mobileNavOpen=true" class="text-xl leading-none">☰</button>
+        <p class="font-display font-800 text-sm">KOTRA<span class="text-coral-500">.</span>PHARMA</p>
+        <span class="w-5"></span>
+      </div>
+
+      <header class="sticky top-0 z-10 bg-sand-50/90 backdrop-blur border-b border-teal-900/10 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <h1 class="font-display font-800 text-xl md:text-2xl text-teal-950 truncate">{{ tabs.find(t=>t.id===activeTab).label }}</h1>
+          <p class="text-xs md:text-sm text-slate-500 truncate">{{ tabs.find(t=>t.id===activeTab).sub }}</p>
+        </div>
+        <div class="hidden sm:block text-sm text-slate-400 shrink-0">{{ today }}</div>
+      </header>
+
+      <div class="p-4 md:p-8">
+
+        <!-- DASHBOARD -->
+        <section v-if="activeTab==='dashboard'" class="space-y-6 md:space-y-8">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+            <button @click="goToEmployees('Active')" class="text-left bg-white rounded-2xl p-5 border border-teal-900/10 hover:border-teal-600 transition">
+              <p class="text-xs uppercase tracking-wide text-slate-400">Active Employees</p>
+              <p class="font-display font-800 text-3xl text-teal-950 mt-1">{{ countByStatus('Active') }}</p>
+            </button>
+            <button @click="goToEmployees('Onboarding')" class="text-left bg-white rounded-2xl p-5 border border-teal-900/10 hover:border-coral-500 transition">
+              <p class="text-xs uppercase tracking-wide text-slate-400">Onboarding</p>
+              <p class="font-display font-800 text-3xl text-coral-600 mt-1">{{ countByStatus('Onboarding') }}</p>
+            </button>
+            <button @click="goToEmployees('Offboarding')" class="text-left bg-white rounded-2xl p-5 border border-teal-900/10 hover:border-teal-600 transition">
+              <p class="text-xs uppercase tracking-wide text-slate-400">Offboarding</p>
+              <p class="font-display font-800 text-3xl text-teal-700 mt-1">{{ countByStatus('Offboarding') }}</p>
+            </button>
+            <div class="bg-white rounded-2xl p-5 border border-teal-900/10">
+              <p class="text-xs uppercase tracking-wide text-slate-400">Departments</p>
+              <p class="font-display font-800 text-3xl text-teal-950 mt-1">{{ departments.length }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl border border-teal-900/10 p-5 md:p-6">
+              <h3 class="font-display font-700 text-teal-950 mb-4">Onboarding Pipeline</h3>
+              <div v-for="e in employees.filter(e=>e.status==='Onboarding')" :key="e.id" class="mb-4 last:mb-0 cursor-pointer" @click="openEmployee(e)">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="font-medium text-slate-700">{{ e.name }}</span>
+                  <span class="text-teal-700">{{ Math.round(onboardProgress(e)) }}%</span>
+                </div>
+                <div class="h-1.5 rounded-full bg-teal-100 overflow-hidden">
+                  <div class="h-full bg-coral-500" :style="{width: onboardProgress(e)+'%'}"></div>
+                </div>
+              </div>
+              <p v-if="!employees.some(e=>e.status==='Onboarding')" class="text-sm text-slate-400">No one onboarding right now.</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-teal-900/10 p-5 md:p-6">
+              <h3 class="font-display font-700 text-teal-950 mb-4">Offboarding Pipeline</h3>
+              <div v-for="e in employees.filter(e=>e.status==='Offboarding')" :key="e.id" class="mb-4 last:mb-0 cursor-pointer" @click="openEmployee(e)">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="font-medium text-slate-700">{{ e.name }}</span>
+                  <span class="text-teal-700">{{ Math.round(offboardProgress(e)) }}%</span>
+                </div>
+                <div class="h-1.5 rounded-full bg-teal-100 overflow-hidden">
+                  <div class="h-full bg-teal-700" :style="{width: offboardProgress(e)+'%'}"></div>
+                </div>
+              </div>
+              <p v-if="!employees.some(e=>e.status==='Offboarding')" class="text-sm text-slate-400">No one offboarding right now.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- EMPLOYEES (single hub: active / onboarding / offboarding / inactive) -->
+        <section v-if="activeTab==='employees'">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
+            <input v-model="search" type="text" placeholder="Search by name or position…"
+              class="flex-1 sm:max-w-xs w-full px-4 py-2.5 rounded-xl border border-teal-900/15 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-teal-600">
+            <select v-model="statusFilter" class="w-full sm:w-auto px-3 py-2.5 rounded-xl border border-teal-900/15 bg-white text-sm">
+              <option value="">All Statuses</option>
+              <option v-for="s in ['Onboarding','Active','Offboarding','Inactive']" :key="s">{{ s }}</option>
+            </select>
+            <select v-model="deptFilter" class="w-full sm:w-auto px-3 py-2.5 rounded-xl border border-teal-900/15 bg-white text-sm">
+              <option value="">All Departments</option>
+              <option v-for="d in departments" :key="d">{{ d }}</option>
+            </select>
+            <button @click="openAddEmployee" class="w-full sm:w-auto sm:ml-auto bg-teal-800 hover:bg-teal-900 text-white text-sm font-medium px-4 py-2.5 rounded-xl shrink-0">+ Add Employee</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-4">New hires start in <span class="font-medium text-coral-600">Onboarding</span> automatically — details, IT access, checklist, training and approvals are all tracked on their record.</p>
+
+          <!-- Mobile card list -->
+          <div class="md:hidden space-y-3">
+            <div v-for="e in filteredEmployees" :key="e.id" class="bg-white rounded-2xl border border-teal-900/10 p-4">
+              <div class="flex items-start gap-3">
+                <span class="w-9 h-9 rounded-full bg-teal-800 text-white text-xs flex items-center justify-center font-semibold shrink-0">{{ initials(e.name) }}</span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex justify-between items-start gap-2">
+                    <p class="font-medium text-slate-800 truncate">{{ e.name }}</p>
+                    <span :class="statusBadge(e.status)" class="text-[11px] px-2 py-0.5 rounded-full font-medium shrink-0">{{ e.status }}</span>
+                  </div>
+                  <p class="text-xs text-slate-400 truncate">{{ e.position }} · {{ e.department }}</p>
+                </div>
+              </div>
+              <div v-if="e.status==='Onboarding' || e.status==='Offboarding'" class="mt-3">
+                <div class="h-1.5 rounded-full bg-teal-100 overflow-hidden">
+                  <div class="h-full" :class="e.status==='Onboarding' ? 'bg-coral-500' : 'bg-teal-700'"
+                       :style="{width: (e.status==='Onboarding' ? onboardProgress(e) : offboardProgress(e))+'%'}"></div>
+                </div>
+              </div>
+              <div class="flex gap-4 mt-3 pt-3 border-t border-teal-900/5 text-sm">
+                <template v-if="e.status==='Onboarding'">
+                  <button @click="openEmployee(e)" class="text-coral-600 font-medium">Continue Onboarding</button>
+                </template>
+                <template v-else-if="e.status==='Offboarding'">
+                  <button @click="openEmployee(e)" class="text-teal-700 font-medium">Continue Offboarding</button>
+                </template>
+                <template v-else>
+                  <button @click="viewEmployee(e)" class="text-teal-700 font-medium">View</button>
+                  <button v-if="e.status==='Active'" @click="editEmployee(e)" class="text-coral-600 font-medium">Edit</button>
+                </template>
+              </div>
+            </div>
+            <p v-if="!filteredEmployees.length" class="text-center text-sm text-slate-400 py-6">No employees match your filters.</p>
+          </div>
+
+          <div class="hidden md:block bg-white rounded-2xl border border-teal-900/10 overflow-hidden">
+            <table class="w-full text-sm">
+              <thead class="bg-teal-50 text-teal-900 text-xs uppercase tracking-wide">
+                <tr>
+                  <th class="text-left px-5 py-3">Employee</th>
+                  <th class="text-left px-5 py-3">Department</th>
+                  <th class="text-left px-5 py-3">Position</th>
+                  <th class="text-left px-5 py-3">Status</th>
+                  <th class="text-left px-5 py-3 w-40">Progress</th>
+                  <th class="text-right px-5 py-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="e in filteredEmployees" :key="e.id" class="border-t border-teal-900/5 hover:bg-sand-50">
+                  <td class="px-5 py-3 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-full bg-teal-800 text-white text-xs flex items-center justify-center font-semibold">{{ initials(e.name) }}</span>
+                    <div>
+                      <p class="font-medium text-slate-800">{{ e.name }}</p>
+                      <p class="text-xs text-slate-400">{{ e.email || '—' }}</p>
+                    </div>
+                  </td>
+                  <td class="px-5 py-3">{{ e.department }}</td>
+                  <td class="px-5 py-3">{{ e.position }}</td>
+                  <td class="px-5 py-3">
+                    <span :class="statusBadge(e.status)" class="text-xs px-2.5 py-1 rounded-full font-medium">{{ e.status }}</span>
+                  </td>
+                  <td class="px-5 py-3">
+                    <div v-if="e.status==='Onboarding' || e.status==='Offboarding'" class="h-1.5 rounded-full bg-teal-100 overflow-hidden w-32">
+                      <div class="h-full" :class="e.status==='Onboarding' ? 'bg-coral-500' : 'bg-teal-700'"
+                           :style="{width: (e.status==='Onboarding' ? onboardProgress(e) : offboardProgress(e))+'%'}"></div>
+                    </div>
+                    <span v-else class="text-slate-300">—</span>
+                  </td>
+                  <td class="px-5 py-3 text-right space-x-3">
+                    <template v-if="e.status==='Onboarding'">
+                      <button @click="openEmployee(e)" class="text-coral-600 hover:text-coral-700 font-medium">Continue Onboarding</button>
+                    </template>
+                    <template v-else-if="e.status==='Offboarding'">
+                      <button @click="openEmployee(e)" class="text-teal-700 hover:text-teal-900 font-medium">Continue Offboarding</button>
+                    </template>
+                    <template v-else>
+                      <button @click="viewEmployee(e)" class="text-teal-700 hover:text-teal-900 font-medium">View</button>
+                      <button v-if="e.status==='Active'" @click="editEmployee(e)" class="text-coral-600 hover:text-coral-700 font-medium">Edit</button>
+                    </template>
+                  </td>
+                </tr>
+                <tr v-if="!filteredEmployees.length"><td colspan="6" class="px-5 py-8 text-center text-slate-400">No employees match your filters.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== MODAL: View Employee (Active / Inactive) ===== -->
+  <div v-if="showView" class="fixed inset-0 bg-teal-950/40 flex items-center justify-center z-50 p-3 sm:p-6" @click.self="showView=false">
+    <div class="bg-white rounded-2xl w-full max-w-md p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center gap-4 mb-5">
+        <span class="w-14 h-14 rounded-full bg-teal-800 text-white flex items-center justify-center font-display font-700 text-lg shrink-0">{{ initials(selected.name) }}</span>
+        <div class="min-w-0">
+          <h3 class="font-display font-700 text-lg text-teal-950 truncate">{{ selected.name }}</h3>
+          <p class="text-sm text-slate-400 truncate">{{ selected.position }}</p>
+        </div>
+      </div>
+      <dl class="space-y-3 text-sm">
+        <div class="flex justify-between"><dt class="text-slate-400">Department</dt><dd class="font-medium">{{ selected.department }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-400">Email</dt><dd class="font-medium">{{ selected.email || '—' }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-400">Phone</dt><dd class="font-medium">{{ selected.phone || '—' }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-400">Reporting Manager</dt><dd class="font-medium">{{ selected.manager || '—' }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-400">Join Date</dt><dd class="font-medium">{{ selected.joinDate || '—' }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-400">Status</dt><dd><span :class="statusBadge(selected.status)" class="text-xs px-2.5 py-1 rounded-full font-medium">{{ selected.status }}</span></dd></div>
+        <div v-if="selected.status==='Inactive' && selected.offboarding" class="flex justify-between"><dt class="text-slate-400">Last Working Day</dt><dd class="font-medium">{{ selected.offboarding.lastDay }}</dd></div>
+      </dl>
+
+      <div class="mt-6 space-y-2">
+        <button v-if="selected.status==='Active'" @click="showView=false; startOffboarding(selected)"
+          class="w-full py-2.5 rounded-xl bg-coral-500 hover:bg-coral-600 text-white text-sm font-medium">Start Offboarding</button>
+        <button v-if="selected.status==='Inactive'" @click="reactivate(selected)"
+          class="w-full py-2.5 rounded-xl bg-teal-100 text-teal-800 text-sm font-medium">Reactivate Employee</button>
+        <button @click="showView=false" class="w-full py-2.5 rounded-xl border border-teal-900/15 text-sm font-medium">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Edit Employee ===== -->
+  <div v-if="showEdit" class="fixed inset-0 bg-teal-950/40 flex items-center justify-center z-50 p-3 sm:p-6" @click.self="showEdit=false">
+    <div class="bg-white rounded-2xl w-full max-w-md p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="font-display font-700 text-lg text-teal-950 mb-5">Edit Employee</h3>
+      <div class="space-y-3">
+        <label class="block text-xs text-slate-400">Full Name
+          <input v-model="selected.name" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Position
+          <input v-model="selected.position" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Department
+          <select v-model="selected.department" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <option v-for="d in departments" :key="d">{{ d }}</option>
+          </select>
+        </label>
+        <label class="block text-xs text-slate-400">Email
+          <input v-model="selected.email" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Phone
+          <input v-model="selected.phone" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Reporting Manager
+          <input v-model="selected.manager" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+      </div>
+      <div class="flex gap-3 mt-6">
+        <button @click="showEdit=false" class="flex-1 py-2.5 rounded-xl border border-teal-900/15 text-sm font-medium">Cancel</button>
+        <button @click="showEdit=false" class="flex-1 py-2.5 rounded-xl bg-teal-800 text-white text-sm font-medium">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Add Employee (always starts onboarding) ===== -->
+  <div v-if="showAddEmployee" class="fixed inset-0 bg-teal-950/40 flex items-center justify-center z-50 p-3 sm:p-6" @click.self="showAddEmployee=false">
+    <div class="bg-white rounded-2xl w-full max-w-md p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="font-display font-700 text-lg text-teal-950 mb-1">Add Employee</h3>
+      <p class="text-xs text-slate-400 mb-5">Every new employee goes through onboarding — this creates their record and opens the tracker so you can capture their details, IT access, checklist, training and approvals.</p>
+      <div class="space-y-3">
+        <label class="block text-xs text-slate-400">Full Name
+          <input v-model="draftEmployee.name" placeholder="e.g. Nurul Izzah" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Position
+          <input v-model="draftEmployee.position" placeholder="e.g. Finance Executive" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Department
+          <select v-model="draftEmployee.department" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <option value="" disabled selected>Select department</option>
+            <option v-for="d in departments" :key="d">{{ d }}</option>
+          </select>
+        </label>
+        <label class="block text-xs text-slate-400">Offer Date
+          <input v-model="draftEmployee.offerDate" type="date" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Reporting Manager <span class="text-slate-300">(optional)</span>
+          <input v-model="draftEmployee.manager" placeholder="e.g. Siti Rahman" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+      </div>
+      <p v-if="addEmployeeError" class="text-xs text-coral-600 mt-3">{{ addEmployeeError }}</p>
+      <div class="flex gap-3 mt-6">
+        <button @click="showAddEmployee=false" class="flex-1 py-2.5 rounded-xl border border-teal-900/15 text-sm font-medium">Cancel</button>
+        <button @click="addEmployee" class="flex-1 py-2.5 rounded-xl bg-teal-800 text-white text-sm font-medium">Create & Start Onboarding</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Start Offboarding (from an Active employee) ===== -->
+  <div v-if="showOffboardStart" class="fixed inset-0 bg-teal-950/40 flex items-center justify-center z-50 p-3 sm:p-6" @click.self="showOffboardStart=false">
+    <div class="bg-white rounded-2xl w-full max-w-md p-5 sm:p-6">
+      <h3 class="font-display font-700 text-lg text-teal-950 mb-1">Start Offboarding</h3>
+      <p class="text-xs text-slate-400 mb-5">{{ offboardStartTarget.name }} · {{ offboardStartTarget.department }}</p>
+      <div class="space-y-3">
+        <label class="block text-xs text-slate-400">Last Working Day
+          <input v-model="draftOffboard.lastDay" type="date" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+        </label>
+        <label class="block text-xs text-slate-400">Reason for Leaving
+          <select v-model="draftOffboard.reason" class="mt-1 w-full px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <option value="" disabled selected>Select reason</option>
+            <option>Resignation</option><option>Contract End</option><option>Retirement</option><option>Termination</option>
+          </select>
+        </label>
+      </div>
+      <div class="flex gap-3 mt-6">
+        <button @click="showOffboardStart=false" class="flex-1 py-2.5 rounded-xl border border-teal-900/15 text-sm font-medium">Cancel</button>
+        <button @click="confirmStartOffboarding" :disabled="!draftOffboard.lastDay||!draftOffboard.reason" class="flex-1 py-2.5 rounded-xl bg-coral-500 disabled:opacity-40 text-white text-sm font-medium">Start Offboarding</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Onboarding Tracker ===== -->
+  <div v-if="showOnboardModal" class="fixed inset-0 bg-teal-950/40 flex items-center justify-center z-50 p-2 sm:p-6" @click.self="showOnboardModal=false">
+    <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[92vh] sm:max-h-[88vh] overflow-y-auto p-4 sm:p-7">
+      <div class="flex justify-between items-start mb-6 gap-2">
+        <div class="min-w-0">
+          <h3 class="font-display font-800 text-lg sm:text-xl text-teal-950 truncate">{{ ob.name }}</h3>
+          <p class="text-xs sm:text-sm text-slate-400">{{ ob.position }} · {{ ob.department }} · Offer dated {{ ob.onboarding.offerDate || '—' }}</p>
+        </div>
+        <button @click="showOnboardModal=false" class="text-slate-400 hover:text-slate-700 text-xl leading-none shrink-0">✕</button>
+      </div>
+
+      <div class="flex items-center mb-8 overflow-x-auto">
+        <template v-for="(s,i) in obSteps" :key="s">
+          <div class="flex flex-col items-center gap-1.5" :class="i>0 ? 'flex-1 min-w-[3.5rem]' : 'min-w-[3.5rem]'">
+            <div class="flex items-center w-full">
+              <div v-if="i>0" class="h-0.5 flex-1" :class="obStepDone(i-1) ? 'bg-teal-700' : 'bg-teal-100'"></div>
+              <div :class="['w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0',
+                            obStepDone(i) ? 'bg-teal-700 text-white' : 'bg-teal-100 text-teal-700']">{{ i+1 }}</div>
+              <div v-if="i<obSteps.length-1" class="h-0.5 flex-1" :class="obStepDone(i) ? 'bg-teal-700' : 'bg-teal-100'"></div>
+            </div>
+            <span class="text-[9px] sm:text-[10px] text-slate-500 text-center w-14 sm:w-20">{{ s }}</span>
+          </div>
+        </template>
+      </div>
+
+      <div class="space-y-8">
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">1. Personal Details</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input v-model="ob.email" placeholder="Personal / Contact Email" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <input v-model="ob.phone" placeholder="Contact Number" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <input v-model="ob.onboarding.details.ic" placeholder="NRIC / Passport No." class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <input v-model="ob.onboarding.details.address" placeholder="Residential Address" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <input v-model="ob.onboarding.details.bank" placeholder="Bank Account No." class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <input v-model="ob.onboarding.details.emergency" placeholder="Emergency Contact" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">2. IT / System Access Request</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <label v-for="item in ob.onboarding.itAccess" :key="item.name" class="flex items-center gap-2 text-sm bg-sand-50 rounded-lg px-3 py-2 border border-teal-900/5">
+              <input type="checkbox" v-model="item.requested" class="accent-teal-700 w-4 h-4"> {{ item.name }}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">3. Onboarding Checklist</h4>
+          <div class="space-y-2">
+            <label v-for="item in ob.onboarding.checklist" :key="item.name" class="flex items-center gap-2 text-sm">
+              <input type="checkbox" v-model="item.done" class="accent-teal-700 w-4 h-4"> {{ item.name }}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">4. Onboarding Training</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <label v-for="(item,i) in ob.onboarding.training" :key="item.name" class="flex items-center gap-2 text-sm bg-sand-50 rounded-lg px-3 py-2 border border-teal-900/5">
+              <input type="checkbox" v-model="item.done" class="accent-coral-500 w-4 h-4">
+              <span class="text-slate-400 w-4">{{ i+1 }}.</span> {{ item.name }}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">5. Sign-off Approval</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <label v-for="k in ['deptManager','it','hr']" :key="k"
+              :class="['flex items-center justify-between px-4 py-3 rounded-xl border text-sm font-medium cursor-pointer',
+                       ob.onboarding.approval[k] ? 'bg-teal-50 border-teal-600 text-teal-800' : 'border-teal-900/15 text-slate-500']">
+              {{ approvalLabel(k) }}
+              <input type="checkbox" v-model="ob.onboarding.approval[k]" class="accent-teal-700 w-4 h-4">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button @click="completeOnboarding" :disabled="!allObApproved"
+        class="mt-8 w-full py-3 rounded-xl bg-teal-800 disabled:opacity-30 text-white font-medium">
+        {{ allObApproved ? 'Complete Onboarding & Activate Employee' : 'Awaiting all approvals to complete' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Offboarding Tracker ===== -->
+  <div v-if="showOffboardModal" class="fixed inset-0 bg-teal-950/40 flex items-center justify-center z-50 p-2 sm:p-6" @click.self="showOffboardModal=false">
+    <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[92vh] sm:max-h-[88vh] overflow-y-auto p-4 sm:p-7">
+      <div class="flex justify-between items-start mb-6 gap-2">
+        <div class="min-w-0">
+          <h3 class="font-display font-800 text-lg sm:text-xl text-teal-950 truncate">{{ ofb.name }}</h3>
+          <p class="text-xs sm:text-sm text-slate-400">{{ ofb.department }} · Last working day {{ ofb.offboarding.lastDay }} · {{ ofb.offboarding.reason }}</p>
+        </div>
+        <button @click="showOffboardModal=false" class="text-slate-400 hover:text-slate-700 text-xl leading-none shrink-0">✕</button>
+      </div>
+
+      <div class="flex items-center mb-8 overflow-x-auto">
+        <template v-for="(s,i) in ofSteps" :key="s">
+          <div class="flex flex-col items-center gap-1.5" :class="i>0 ? 'flex-1 min-w-[3.5rem]' : 'min-w-[3.5rem]'">
+            <div class="flex items-center w-full">
+              <div v-if="i>0" class="h-0.5 flex-1" :class="ofStepDone(i-1) ? 'bg-teal-700' : 'bg-teal-100'"></div>
+              <div :class="['w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0',
+                            ofStepDone(i) ? 'bg-teal-700 text-white' : 'bg-teal-100 text-teal-700']">{{ i+1 }}</div>
+              <div v-if="i<ofSteps.length-1" class="h-0.5 flex-1" :class="ofStepDone(i) ? 'bg-teal-700' : 'bg-teal-100'"></div>
+            </div>
+            <span class="text-[9px] sm:text-[10px] text-slate-500 text-center w-14 sm:w-20">{{ s }}</span>
+          </div>
+        </template>
+      </div>
+
+      <div class="space-y-8">
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">1. Handover List</h4>
+          <div class="space-y-2">
+            <div v-for="item in ofb.offboarding.handover" :key="item.name" class="flex items-center gap-2 text-sm">
+              <input type="checkbox" v-model="item.done" class="accent-teal-700 w-4 h-4"> {{ item.name }}
+            </div>
+            <div class="flex gap-2 pt-1">
+              <input v-model="newHandoverItem" @keyup.enter="addHandoverItem" placeholder="Add handover item…" class="flex-1 px-3 py-1.5 rounded-lg border border-teal-900/15 text-sm">
+              <button @click="addHandoverItem" class="px-3 py-1.5 rounded-lg bg-teal-100 text-teal-800 text-sm font-medium">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">2. Company Assets to Return</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <label v-for="item in ofb.offboarding.assets" :key="item.name" class="flex items-center gap-2 text-sm bg-sand-50 rounded-lg px-3 py-2 border border-teal-900/5">
+              <input type="checkbox" v-model="item.returned" class="accent-teal-700 w-4 h-4"> {{ item.name }}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">3. Exit Interview</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input v-model="ofb.offboarding.exitInterview.date" type="date" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <input v-model="ofb.offboarding.exitInterview.conductedBy" placeholder="Conducted by" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm">
+            <textarea v-model="ofb.offboarding.exitInterview.notes" placeholder="Notes / feedback" rows="2" class="px-3 py-2 rounded-lg border border-teal-900/15 text-sm col-span-1 sm:col-span-2"></textarea>
+            <label class="flex items-center gap-2 text-sm col-span-1 sm:col-span-2">
+              <input type="checkbox" v-model="ofb.offboarding.exitInterview.completed" class="accent-teal-700 w-4 h-4"> Exit interview completed
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">4. Disable System Access</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <label v-for="item in ofb.offboarding.accessRevoke" :key="item.name" class="flex items-center gap-2 text-sm bg-sand-50 rounded-lg px-3 py-2 border border-teal-900/5">
+              <input type="checkbox" v-model="item.disabled" class="accent-coral-500 w-4 h-4"> {{ item.name }}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-700 text-teal-950 mb-3">5. Sign-off Approval</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label v-for="k in ['deptManager','hr']" :key="k"
+              :class="['flex items-center justify-between px-4 py-3 rounded-xl border text-sm font-medium cursor-pointer',
+                       ofb.offboarding.approval[k] ? 'bg-teal-50 border-teal-600 text-teal-800' : 'border-teal-900/15 text-slate-500']">
+              {{ k==='deptManager' ? 'Department Manager' : 'HR' }}
+              <input type="checkbox" v-model="ofb.offboarding.approval[k]" class="accent-teal-700 w-4 h-4">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button @click="completeOffboarding" :disabled="!allOfApproved"
+        class="mt-8 w-full py-3 rounded-xl bg-teal-800 disabled:opacity-30 text-white font-medium">
+        {{ allOfApproved ? 'Finalize Offboarding & Deactivate Employee' : 'Awaiting all approvals to finalize' }}
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const { createApp } = Vue;
+
+const TRAINING_ITEMS = ['HR Induction Slide','Employee Handbook','Good Toilet Practice','Company Tour','Staff Purchase','EHR','Kotra Toastmaster Club','IT Induction'];
+const CHECKLIST_ITEMS = ['Sign Employment Contract','Submit NRIC / Passport Copy','Submit Educational Certificates','Complete Pre-employment Medical Checkup','Provide Emergency Contact Form'];
+const IT_ACCESS_ITEMS = ['Company Email Account','Laptop / Desktop','ERP / EHR System Access','Access Card','VPN Access'];
+const ASSET_ITEMS = ['Laptop / Desktop','Access Card','Company Mobile Phone','Uniform / PPE','ID Badge'];
+const ACCESS_REVOKE_ITEMS = ['Email Account','ERP / EHR System','VPN Access','Access Card Deactivation'];
+const DEPARTMENTS = ['Production','Quality Assurance','R&D','Regulatory Affairs','Sales & Marketing','Human Resources','IT','Finance'];
+
+function makeOnboardingRecord(offerDate){
+  return {
+    offerDate,
+    details: { ic:'', address:'', bank:'', emergency:'' },
+    itAccess: IT_ACCESS_ITEMS.map(n=>({ name:n, requested:false })),
+    checklist: CHECKLIST_ITEMS.map(n=>({ name:n, done:false })),
+    training: TRAINING_ITEMS.map(n=>({ name:n, done:false })),
+    approval: { deptManager:false, it:false, hr:false }
+  };
+}
+function makeOffboardingRecord(lastDay, reason){
+  return {
+    lastDay, reason,
+    handover: [{name:'Handover pending work items to successor', done:false},{name:'Handover key project documentation', done:false}],
+    assets: ASSET_ITEMS.map(n=>({ name:n, returned:false })),
+    exitInterview: { date:'', conductedBy:'', notes:'', completed:false },
+    accessRevoke: ACCESS_REVOKE_ITEMS.map(n=>({ name:n, disabled:false })),
+    approval: { deptManager:false, hr:false }
+  };
+}
+function makeEmployee(o){
+  return {
+    id: Date.now()+Math.random(),
+    name:o.name, position:o.position, department:o.department,
+    email:o.email||'', phone:o.phone||'', manager:o.manager||'', joinDate:'',
+    status:'Onboarding',
+    onboarding: makeOnboardingRecord(o.offerDate),
+    offboarding: null
+  };
+}
+
+createApp({
+  data(){
+    return {
+      activeTab: 'dashboard',
+      mobileNavOpen: false,
+      departments: DEPARTMENTS,
+      search: '', deptFilter: '', statusFilter: '',
+      today: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }),
+
+      employees: [
+        { id:1, name:'Aiman Yusof', position:'Production Executive', department:'Production', email:'aiman.yusof@kotra.com', phone:'012-3456789', manager:'Siti Rahman', joinDate:'2021-03-15', status:'Active', onboarding:null, offboarding:null },
+        { id:2, name:'Chen Wei Ling', position:'QA Officer', department:'Quality Assurance', email:'weiling.chen@kotra.com', phone:'013-2345678', manager:'David Ong', joinDate:'2019-07-01', status:'Active', onboarding:null, offboarding:null },
+        { id:3, name:'Priya Menon', position:'R&D Scientist', department:'R&D', email:'priya.menon@kotra.com', phone:'014-8765432', manager:'Dr. Farah Ismail', joinDate:'2022-01-10', status:'Active', onboarding:null, offboarding:null },
+        { id:4, name:'Muhammad Haziq', position:'IT Executive', department:'IT', email:'haziq.m@kotra.com', phone:'011-9988776', manager:'Kevin Tan', joinDate:'2020-11-05', status:'Active', onboarding:null, offboarding:null },
+        { id:5, name:'Nur Aisyah Bakar', position:'Regulatory Affairs Executive', department:'Regulatory Affairs', email:'', phone:'', manager:'', joinDate:'', status:'Onboarding', onboarding: makeOnboardingRecord('2026-08-01'), offboarding:null },
+      ],
+
+      showView:false, showEdit:false, selected:{},
+      showAddEmployee:false, draftEmployee:{ name:'', position:'', department:'', offerDate:'', manager:'' }, addEmployeeError:'',
+      showOffboardStart:false, offboardStartTarget:{}, draftOffboard:{ lastDay:'', reason:'' },
+      showOnboardModal:false, ob:{ onboarding:{ details:{}, itAccess:[], checklist:[], training:[], approval:{} } },
+      showOffboardModal:false, ofb:{ offboarding:{ handover:[], assets:[], exitInterview:{}, accessRevoke:[], approval:{} } },
+      newHandoverItem:'',
+
+      obSteps:['Details','IT Access','Checklist','Training','Approval'],
+      ofSteps:['Handover','Assets','Exit Interview','Access Revoke','Approval'],
+    }
+  },
+  computed: {
+    tabs(){
+      return [
+        { id:'dashboard', label:'Dashboard', icon:'◈', sub:'Overview of your workforce' },
+        { id:'employees', label:'Employees', icon:'◉', sub:'Active roster, onboarding & offboarding — all in one place', count: this.employees.length },
+      ]
+    },
+    filteredEmployees(){
+      return this.employees.filter(e=>{
+        const q = this.search.toLowerCase();
+        const matchesSearch = !q || e.name.toLowerCase().includes(q) || e.position.toLowerCase().includes(q);
+        const matchesDept = !this.deptFilter || e.department === this.deptFilter;
+        const matchesStatus = !this.statusFilter || e.status === this.statusFilter;
+        return matchesSearch && matchesDept && matchesStatus;
+      });
+    },
+    allObApproved(){ const a=this.ob.onboarding.approval; return a.deptManager && a.it && a.hr; },
+    allOfApproved(){ const a=this.ofb.offboarding.approval; return a.deptManager && a.hr; },
+  },
+  methods: {
+    initials(name){ return (name||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); },
+    statusBadge(status){
+      return {
+        Active:'bg-teal-100 text-teal-800',
+        Inactive:'bg-slate-100 text-slate-500',
+        Onboarding:'bg-coral-100 text-coral-600',
+        Offboarding:'bg-amber-100 text-amber-700',
+      }[status] || 'bg-slate-100 text-slate-500';
+    },
+    countByStatus(s){ return this.employees.filter(e=>e.status===s).length; },
+    goToEmployees(status){ this.activeTab='employees'; this.statusFilter=status; },
+
+    openEmployee(e){
+      if(e.status==='Onboarding'){ this.ob = e; this.showOnboardModal = true; }
+      else if(e.status==='Offboarding'){ this.ofb = e; this.showOffboardModal = true; }
+      else { this.viewEmployee(e); }
+    },
+    viewEmployee(e){ this.selected = e; this.showView = true; },
+    editEmployee(e){ this.selected = e; this.showEdit = true; },
+    reactivate(e){ e.status = 'Active'; this.showView = false; },
+
+    openAddEmployee(){
+      this.draftEmployee = { name:'', position:'', department:'', offerDate: new Date().toISOString().slice(0,10), manager:'' };
+      this.addEmployeeError = '';
+      this.showAddEmployee = true;
+    },
+    addEmployee(){
+      const d = this.draftEmployee;
+      if(!d.name.trim() || !d.position.trim() || !d.department){
+        this.addEmployeeError = 'Name, position and department are required.';
+        return;
+      }
+      const emp = makeEmployee(d);
+      this.employees.push(emp);
+      this.showAddEmployee = false;
+      this.openEmployee(emp);
+    },
+
+    startOffboarding(e){
+      this.offboardStartTarget = e;
+      this.draftOffboard = { lastDay:'', reason:'' };
+      this.showOffboardStart = true;
+    },
+    confirmStartOffboarding(){
+      const e = this.offboardStartTarget;
+      e.offboarding = makeOffboardingRecord(this.draftOffboard.lastDay, this.draftOffboard.reason);
+      e.status = 'Offboarding';
+      this.showOffboardStart = false;
+      this.openEmployee(e);
+    },
+
+    onboardProgress(e){
+      const o = e.onboarding;
+      const parts = [
+        !!(e.email || e.phone || Object.values(o.details).some(v=>v)),
+        o.itAccess.every(i=>i.requested),
+        o.checklist.every(i=>i.done),
+        o.training.every(i=>i.done),
+        o.approval.deptManager && o.approval.it && o.approval.hr,
+      ];
+      return Math.round((parts.filter(Boolean).length/parts.length)*100);
+    },
+    obStepDone(i){
+      const e = this.ob, o = e.onboarding;
+      const checks = [
+        !!(e.email || e.phone || Object.values(o.details).some(v=>v)),
+        o.itAccess.every(i=>i.requested),
+        o.checklist.every(i=>i.done),
+        o.training.every(i=>i.done),
+        o.approval.deptManager && o.approval.it && o.approval.hr,
+      ];
+      return checks[i];
+    },
+    approvalLabel(k){ return { deptManager:'Department Manager', it:'IT Department', hr:'Human Resources' }[k]; },
+    completeOnboarding(){
+      this.ob.status = 'Active';
+      this.ob.joinDate = new Date().toISOString().slice(0,10);
+      this.showOnboardModal = false;
+    },
+
+    addHandoverItem(){
+      if(!this.newHandoverItem.trim()) return;
+      this.ofb.offboarding.handover.push({ name:this.newHandoverItem.trim(), done:false });
+      this.newHandoverItem = '';
+    },
+    offboardProgress(e){
+      const o = e.offboarding;
+      const parts = [
+        o.handover.every(i=>i.done) && o.handover.length>0,
+        o.assets.every(i=>i.returned),
+        o.exitInterview.completed,
+        o.accessRevoke.every(i=>i.disabled),
+        o.approval.deptManager && o.approval.hr,
+      ];
+      return Math.round((parts.filter(Boolean).length/parts.length)*100);
+    },
+    ofStepDone(i){
+      const o = this.ofb.offboarding;
+      const checks = [
+        o.handover.every(i=>i.done) && o.handover.length>0,
+        o.assets.every(i=>i.returned),
+        o.exitInterview.completed,
+        o.accessRevoke.every(i=>i.disabled),
+        o.approval.deptManager && o.approval.hr,
+      ];
+      return checks[i];
+    },
+    completeOffboarding(){
+      this.ofb.status = 'Inactive';
+      this.showOffboardModal = false;
+    },
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
