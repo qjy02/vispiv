@@ -1160,7 +1160,7 @@
                                 </div>
                             </div>
                             <div class="flex gap-1.5 border-t border-slate-100 dark:border-slate-800 pt-2">
-                                <input v-model="chatInput" @keydown.enter="sendChat" type="text" placeholder="Ask me anything..." class="flex-1 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-white outline-none focus:border-teal-500" />
+                                <input ref="chatInput" v-model="chatInput" @keydown.enter="sendChat" type="text" placeholder="Ask me anything..." class="flex-1 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-white outline-none focus:border-teal-500" />                                
                                 <button @click="sendChat" class="px-3.5 py-2 rounded-lg bg-gradient-to-br from-teal-500 to-emerald-600 text-white text-sm hover:opacity-90 transition"><i class="fas fa-paper-plane"></i></button>
                             </div>
                         </div>
@@ -2061,10 +2061,25 @@
                         this.eventDialogOpen = true;
                     },
 
-                    // AI - enhanced with keyword navigation
+                    // AI
+                    focusChatInput() {
+                        this.$nextTick(() => {
+                            // Check if chat tab is active and input exists
+                            if (this.aiTab === "chat" && this.$refs.chatInput) {
+                                // Small delay to ensure DOM is ready
+                                setTimeout(() => {
+                                    this.$refs.chatInput.focus();
+                                }, 50);
+                            }
+                        });
+                    },
                     openAIPanel() {
                         this.aiOpen = true;
-                        this.aiTab = "chat"; // open chat tab for keyword detection
+                        this.aiTab = "chat";
+                        // Use setTimeout with a slightly longer delay
+                        setTimeout(() => {
+                            this.focusChatInput();
+                        }, 200);
                     },
                     sendChat() {
                         const msg = this.chatInput.trim();
@@ -2085,7 +2100,7 @@
                         } else if (lower.includes("contact") || lower.includes("directory") || lower.includes("phone")) {
                             response = "📍 Taking you to the Contacts page...";
                             action = () => this.switchPage("contacts");
-                        } else if (lower.includes("quick access") || lower.includes("quickaccess")) {
+                        } else if (lower.includes("quick access") || lower.includes("quick") || lower.includes("access") || lower.includes("quickaccess")) {
                             response = "⚡ Opening Quick Access...";
                             action = () => this.switchPage("quickaccess");
                         } else if (lower.includes("my tasks") || lower.includes("task")) {
@@ -2118,10 +2133,10 @@
                         } else if (lower.includes("settings") || lower.includes("preferences") || lower.includes("options")) {
                             response = "⚙️ Opening Settings...";
                             action = () => this.openSettings("general");
-                        } else if (lower.includes("find services") || lower.includes("services") || lower.includes("apps") || lower.includes("search")) {
+                        } else if (lower.includes("find services") || lower.includes("service") || lower.includes("services") || lower.includes("apps") || lower.includes("search")) {
                             response = "🔍 Opening Services...";
                             action = () => this.drawerOpen = true;
-                        } else if (lower.includes("dark mode") || lower.includes("darkmode") || lower.includes("go dark")) {
+                        } else if (lower.includes("dark mode") || lower.includes("darkmode") || lower.includes("dark")) {
                             if (this.isDark) {
                                 response = "🌙 It's already in Dark Mode!";
                             } else {
@@ -2129,7 +2144,7 @@
                                 response = "🌙 Switching to Dark Mode...";
                             }
                             action = null; // No navigation needed
-                        } else if (lower.includes("light mode") || lower.includes("lightmode") || lower.includes("go light")) {
+                        } else if (lower.includes("light mode") || lower.includes("lightmode") || lower.includes("light")) {
                             if (!this.isDark) {
                                 response = "☀️ It's already in Light Mode!";
                             } else {
@@ -2166,6 +2181,8 @@
 
                     aiDragStart(e) {
                         if (e.target.closest(".ai-close-btn")) return;
+                        // Prevent focus from being stolen during drag
+                        e.preventDefault();
                         this.aiDrag.active = true;
                         const rect = this.$refs.aiPanel.getBoundingClientRect();
                         const point = e.touches ? e.touches[0] : e;
@@ -2185,6 +2202,10 @@
                     },
                     aiDragEnd() {
                         this.aiDrag.active = false;
+                        // Refocus the input after dragging
+                        setTimeout(() => {
+                            this.focusChatInput();
+                        }, 100);
                     },
 
                     // Iframes
