@@ -2121,6 +2121,25 @@
                         } else if (lower.includes("find services") || lower.includes("services") || lower.includes("apps") || lower.includes("search")) {
                             response = "🔍 Opening Services...";
                             action = () => this.drawerOpen = true;
+                        } else if (lower.includes("dark mode") || lower.includes("darkmode") || lower.includes("go dark")) {
+                            if (this.isDark) {
+                                response = "🌙 It's already in Dark Mode!";
+                            } else {
+                                this.toggleTheme();
+                                response = "🌙 Switching to Dark Mode...";
+                            }
+                            action = null; // No navigation needed
+                        } else if (lower.includes("light mode") || lower.includes("lightmode") || lower.includes("go light")) {
+                            if (!this.isDark) {
+                                response = "☀️ It's already in Light Mode!";
+                            } else {
+                                this.toggleTheme();
+                                response = "☀️ Switching to Light Mode...";
+                            }
+                            action = null; // No navigation needed
+                        } else if (lower.includes("logout") || lower.includes("sign out") || lower.includes("log out")) {
+                            response = "👋 Logging you out... Goodbye!";
+                            action = () => this.logout();
                         } else {
                             // fallback AI reply
                             const replies = [
