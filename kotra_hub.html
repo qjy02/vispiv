@@ -601,7 +601,7 @@
                         <div class="h-px bg-slate-200 dark:bg-slate-800 my-2 mx-1.5"></div>-->
 
                         <!-- Navigation -->
-                        <button v-for="nav in [{page:'dashboard', icon:'fa-th-large', label:'Dashboard'}, {page:'tasks', icon:'fa-tasks', label:'My Tasks', badge: tasks?.length}, {page:'pending', icon:'fa-clock', label:'Pending Actions', badge: pendingActions?.length}, {page:'calendar', icon:'fa-calendar', label:'Calendar'}, {page:'announcements', icon:'fa-bullhorn', label:'Announcements', badge: announcementList?.length}, {page:'important', icon:'fa-exclamation-triangle', label:'Important Notices', badge: importantNoticeList?.length}]" :key="nav.page" @click="switchPage(nav.page)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                        <button v-for="nav in [{page:'recent-activities', icon:'fa-history', label:'Recent Activities'}, {page:'tasks', icon:'fa-tasks', label:'My Tasks', badge: tasks?.length}, {page:'pending', icon:'fa-clock', label:'Pending Actions', badge: pendingActions?.length}, {page:'calendar', icon:'fa-calendar', label:'Calendar'}, {page:'announcements', icon:'fa-bullhorn', label:'Announcements', badge: announcementList?.length}, {page:'important', icon:'fa-exclamation-triangle', label:'Important Notices', badge: importantNoticeList?.length}]" :key="nav.page" @click="switchPage(nav.page)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
                             <i class="fas w-[18px] text-purple-600" :class="nav.icon"></i>{{ nav.label }}
                             <span v-if="nav.badge" class="ml-auto bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ nav.badge }}</span>
                         </button>
@@ -720,15 +720,15 @@
                                 <i class="fas fa-home w-[20px] text-purple-600 text-[15px]"></i>Dashboard
                             </button>-->
 
-                            <!-- Activities -->
+                            <!-- Overview -->
                             <div class="relative"
-                                @mouseenter="showFlyout('activities')"
+                                @mouseenter="showFlyout('overview')"
                                 @mouseleave="hideFlyout()">
                                 <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition text-left"
-                                        :class="hoveredMenuItem === 'activities' ? 'bg-purple-50s dark:bg-purple-950/40 text-purple-600' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600'">
-                                    <i class="fas fa-th-large w-[20px] text-purple-600 text-[15px]"></i>Activities
+                                        :class="hoveredMenuItem === 'overview' ? 'bg-purple-50s dark:bg-purple-950/40 text-purple-600' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600'">
+                                    <i class="fas fa-th-large w-[20px] text-purple-600 text-[15px]"></i>Overview
                                     <span class="ml-auto flex items-center gap-1.5">
-                                        <span class="bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[11px] font-bold px-2 py-0.5 rounded-full">{{ tasks.length + pendingActions.length }}</span>
+                                        <span class="bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[11px] font-bold px-2 py-0.5 rounded-full">{{ overviewBadgeCount }}</span>
                                         <i class="fas fa-chevron-right text-[11px] text-slate-400"></i>
                                     </span>
                                 </button>
@@ -808,13 +808,13 @@
                                 <div class="relative">
                                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                                     <input v-model="flyoutSearch" type="text" 
-                                        :placeholder="hoveredMenuItem === 'activities' ? 'Search activities...' : 'Search services...'" 
+                                        :placeholder="hoveredMenuItem === 'overview' ? 'Search overview...' : 'Search services...'" 
                                         class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-sm text-slate-900 dark:text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 outline-none transition">
                                 </div>
                             </div>
 
                             <!-- RECENT -->
-                            <div v-if="hoveredMenuItem === 'activities'" class="px-3 py-1.5">
+                            <div v-if="hoveredMenuItem === 'overview'" class="px-3 py-1.5">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Recent</span>
                             </div>
                             
@@ -852,7 +852,7 @@
                                     </div>
                                 </template>
                                 
-                                <!-- For activities -->
+                                <!-- For overview -->
                                 <template v-else>
                                     <div v-if="filteredFlyoutItems.length > 0">
                                         <button v-for="item in filteredFlyoutItems" :key="item.id" 
@@ -873,10 +873,10 @@
                                         <span class="text-sm">No items found</span>
                                     </div>
 
-                                    <!-- View All Activities -->
-                                    <div v-if="hoveredMenuItem === 'activities'" class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                                        <button @click="viewAllActivities()" class="w-full text-[11px] font-semibold text-purple-600 px-3 py-1.5 hover:bg-purple-50s dark:hover:bg-purple-950/30 rounded-lg transition text-center">
-                                            View All Activities →
+                                    <!-- View All Overview -->
+                                    <div v-if="hoveredMenuItem === 'overview'" class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                                        <button @click="viewAllOverview()" class="w-full text-[11px] font-semibold text-purple-600 px-3 py-1.5 hover:bg-purple-50s dark:hover:bg-purple-950/30 rounded-lg transition text-center">
+                                            View All Overview →
                                         </button>
                                     </div>
                                 </template>
@@ -886,10 +886,234 @@
 
                     <!-- MAIN CONTENT AREA -->
                     <main class="flex-1 overflow-y-auto scrollbar-hide p-3 md:p-8 pb-24 md:pb-10 transition-all duration-300">
-                        <div v-show="currentPage === 'dashboard'" class="flex flex-col animate-pop-in">
-                            <!-- Tasks + Pending -->
+                        <!-- DASHBOARD -->
+                        <div v-show="currentPage === 'dashboard'" class="flex flex-col animate-pop-in">   
+                            <!-- Row 1: Announcement | Quick Access (50:50) -->
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                                <!-- My Tasks -->
+                                <!-- Announcement Slider -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[280px] max-h-[320px]">
+                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-bullhorn"></i></span>Announcements
+                                        </span>
+                                        <button @click="switchPage('announcements')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                            View All
+                                        </button>
+                                    </div>
+                                    <div class="flex-1 p-4 flex flex-col items-center justify-center relative overflow-hidden">
+                                        <!-- Slider Content - Clickable -->
+                                        <div class="w-full flex-1 flex items-center overflow-y-auto scrollbar-hide cursor-pointer hover:opacity-80 transition" 
+                                            @click="openSliderNotice(currentSlide.id)">
+                                            <div class="w-full text-center px-2 py-1">
+                                                <div class="text-[15px] font-bold text-slate-900 dark:text-white mt-1 leading-snug">{{ currentSlide.title }}</div>
+                                                <div class="text-[12px] text-slate-500 dark:text-slate-400 mt-1.5 max-h-[80px] overflow-y-auto scrollbar-hide leading-relaxed" 
+                                                    v-html="currentSlide.fullText || currentSlide.excerpt">
+                                                </div>
+                                                <div class="text-[10px] text-slate-400 mt-2">{{ currentSlide.date }}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Slider Controls -->
+                                        <div class="flex items-center gap-3 mt-2 shrink-0">
+                                            <button @click="prevSlide" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-purple-100 dark:hover:bg-purple-900/40 text-slate-500 hover:text-purple-600 transition flex items-center justify-center">
+                                                <i class="fas fa-chevron-left text-xs"></i>
+                                            </button>
+                                            <div class="flex gap-1.5">
+                                                <span v-for="(item, idx) in sliderItems" :key="idx" 
+                                                    class="w-2 h-2 rounded-full transition-all cursor-pointer" 
+                                                    :class="currentSlideIndex === idx ? 'bg-purple-600 w-4' : 'bg-slate-300 dark:bg-slate-600'"
+                                                    @click="currentSlideIndex = idx">
+                                                </span>
+                                            </div>
+                                            <button @click="nextSlide" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-purple-100 dark:hover:bg-purple-900/40 text-slate-500 hover:text-purple-600 transition flex items-center justify-center">
+                                                <i class="fas fa-chevron-right text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Access -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[280px] max-h-[320px]">
+                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-rocket"></i></span>Quick Access
+                                        </span>
+                                        <button @click="switchPage('quickaccess')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                            View All
+                                        </button>
+                                    </div>
+                                    <div class="flex-1 p-4 overflow-y-auto scrollbar-hide">
+                                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start">
+                                            <button v-for="qa in quickAccessItems.slice(0, 8)" :key="qa.id" @click="quickAccessAction(qa)" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:border-purple-400 hover:-translate-y-1 hover:shadow-md transition quick-access-chip">
+                                                <div class="w-11 h-11 rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-lg">
+                                                    <i class="fas" :class="qa.icon"></i>
+                                                </div>
+                                                <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight">{{ qa.label }}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Pending Action | Recent Activities (50:50) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                                <!-- Pending Actions -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[320px] max-h-[350px]">
+                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-clock"></i></span>Pending Actions
+                                        </span>
+                                        <button @click="switchPage('pending')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                            View All
+                                        </button>
+                                    </div>
+
+                                    <!-- Stacked urgency bar -->
+                                    <div class="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <div class="flex items-center justify-between mb-1.5">
+                                            <span class="text-xs text-slate-400">{{ pendingActions.length }} awaiting action</span>
+                                            <span v-if="pendingUrgencyCounts[0].count > 0" class="text-[11px] font-bold text-rose-500 flex items-center gap-1">
+                                                <i class="fas fa-triangle-exclamation"></i>{{ pendingUrgencyCounts[0].count }} urgent
+                                            </span>
+                                        </div>
+                                        <div class="flex w-full h-2 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 gap-[2px]">
+                                            <div v-for="u in pendingUrgencyCounts" :key="u.label" v-show="u.count > 0" class="h-full rounded-full transition-all" :class="u.bar" :style="{ width: (u.count / pendingActions.length * 100) + '%' }"></div>
+                                        </div>
+                                        <div class="flex items-center gap-3 mt-1.5">
+                                            <span v-for="u in pendingUrgencyCounts" :key="u.label" class="flex items-center gap-1.5 text-[10px] text-slate-500 dark:text-slate-400">
+                                                <span class="w-1.5 h-1.5 rounded-full shrink-0" :class="u.dot"></span>{{ u.label }} <span class="font-semibold text-slate-700 dark:text-slate-300">{{ u.count }}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 p-3 flex flex-col gap-1.5 overflow-y-auto scrollbar-hide">
+                                        <div v-for="a in pendingActions.slice(0, 4)" :key="a.id" class="flex items-center justify-between gap-2 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition border border-slate-100 dark:border-slate-800">
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="w-1.5 h-1.5 rounded-full shrink-0" :class="a.urgency === 'urgent' ? 'bg-rose-500' : a.urgency === 'normal' ? 'bg-amber-500' : 'bg-purple-500'"></span>
+                                                    <span class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">{{ a.name }}</span>
+                                                </div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5 truncate">{{ a.meta }}</div>
+                                            </div>
+                                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full shrink-0" :class="a.urgency === 'urgent' ? 'bg-rose-50 text-rose-600 dark:bg-rose-950/40' : a.urgency === 'normal' ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/40' : 'bg-purple-50 text-purple-600 dark:bg-purple-950/40'">{{ a.urgency }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Activities -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[320px] max-h-[350px]">
+                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-history"></i></span>Recent Activities
+                                        </span>
+                                        <button @click="switchPage('recent-activities')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                            View All
+                                        </button>
+                                    </div>
+                                    <div class="flex-1 p-3 overflow-y-auto scrollbar-hide">
+                                        <div class="space-y-2">
+                                            <div v-for="(activity, idx) in recentActivities.slice(0, 5)" :key="idx" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
+                                                <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0" 
+                                                    :class="activity.type === 'login' ? 'bg-purple-50 dark:bg-purple-950/40 text-purple-600' : 
+                                                            activity.type === 'quickaccess' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600' : 
+                                                            activity.type === 'task' ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600' : 
+                                                            activity.type === 'calendar' ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600' : 
+                                                            activity.type === 'pending' ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-600' : 
+                                                            'bg-slate-100 dark:bg-slate-800 text-slate-500'">
+                                                    <i class="fas" :class="activity.icon"></i>
+                                                </span>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="text-[12px] font-medium text-slate-800 dark:text-slate-200 truncate">{{ activity.action }}</div>
+                                                    <div class="text-[10px] text-slate-400 flex items-center gap-1.5">
+                                                        <i class="fas fa-clock text-[8px]"></i>
+                                                        {{ activity.time }}
+                                                        <span v-if="activity.detail" class="text-slate-500">· {{ activity.detail }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="recentActivities.length === 0" class="text-center text-slate-400 py-6 text-sm">
+                                                <i class="fas fa-inbox text-2xl block mb-2 opacity-50"></i>
+                                                No recent activities
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Calendar Agenda | Phone Directory (50:50) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                                <!-- Upcoming Events Card -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[320px] max-h-[350px]">
+                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-calendar"></i></span>Calendar Agenda
+                                        </span>
+                                        <button @click="switchPage('calendar')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                            View All
+                                        </button>
+                                    </div>
+                                    <div class="flex-1 p-3 flex flex-col gap-1.5 overflow-y-auto scrollbar-hide">
+                                        <div v-if="upcomingEvents.length === 0" class="flex flex-col items-center justify-center text-slate-400 py-6 text-sm flex-1">
+                                            <i class="fas fa-calendar-day text-3xl block mb-2 opacity-50"></i>
+                                            No upcoming events this month
+                                        </div>
+                                        <button v-for="event in upcomingEvents.slice(0, 4)" :key="event.dateStr" @click="openCalendarOnDate(event.dateStr)" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-left hover:-translate-y-0.5 hover:shadow-md transition cursor-pointer" :class="event.type === 'holiday' ? 'border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/25' : event.type === 'meeting' ? 'border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/25' : 'border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/25'">
+                                            <div class="flex flex-col items-center min-w-[44px]">
+                                                <span class="text-[18px] font-bold text-slate-900 dark:text-white leading-tight">{{ event.day }}</span>
+                                                <span class="text-[9px] font-medium text-slate-400 uppercase tracking-wider">{{ event.month }}</span>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="text-[10px] font-bold uppercase tracking-wide" :class="event.type === 'holiday' ? 'text-rose-600 dark:text-rose-400' : event.type === 'meeting' ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400'">
+                                                    {{ event.type === 'holiday' ? 'Public Holiday' : event.type === 'meeting' ? 'Meeting' : 'Event' }}
+                                                </div>
+                                                <div class="font-semibold text-[13px] text-slate-900 dark:text-white truncate">{{ event.title }}</div>
+                                            </div>
+                                            <i class="fas fa-chevron-right text-slate-300 text-xs shrink-0"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Phone Directory -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[320px] max-h-[350px]">
+                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-phone"></i></span>Phone Directory
+                                        </span>
+                                        <button @click="switchPage('contacts')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                            View All
+                                        </button>
+                                    </div>
+                                    <div class="flex-1 p-3 overflow-y-auto scrollbar-hide">
+                                        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-2">
+                                            <div v-for="c in contacts.slice(0, 4)" :key="c.name" class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
+                                                <span class="w-9 h-9 rounded-full bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-[12px] font-bold shrink-0">{{ initials(c.name) }}</span>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">{{ c.name }}</div>
+                                                    <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                                                        <span class="text-[10px] font-medium px-2 py-0.5 rounded" 
+                                                            :class="getDepartmentColor(c.department)">
+                                                            {{ c.department || '-' }}
+                                                        </span>
+                                                        <span class="text-[11px] font-medium text-slate-600 dark:text-slate-300">
+                                                            <i class="fas fa-phone text-purple-600 mr-1 text-[9px]"></i>Ext {{ c.ext }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="mt-2 pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
+                                <a href="https://www.kotrapharma.com" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-purple-600 transition"><i class="fas fa-globe"></i>www.kotrapharma.com</a>
+                                <div class="text-[11px] text-slate-400 mt-1">© 2026 Kotra Pharma (M) Sdn Bhd (90082-V). All Rights Reserved.</div>
+                            </div>
+
+                            <!-- My Tasks (Commented out - kept for reference) -->
+                            <!--
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                                 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[380px] max-h-[420px] sm:max-h-[380px]">
                                     <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
                                         <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
@@ -899,8 +1123,6 @@
                                             View All
                                         </button>
                                     </div>
-
-                                    <!-- Priority donut summary -->
                                     <div class="flex items-center gap-3 sm:gap-4 px-4 py-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
                                         <div class="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-full" :style="{ background: taskDonutGradient }">
                                             <div class="absolute inset-[6px] rounded-full bg-white dark:bg-slate-900 flex flex-col items-center justify-center">
@@ -919,7 +1141,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="flex-1 p-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
                                         <div v-for="t in tasks.slice(0, 4)" :key="t.id" class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition border border-slate-100 dark:border-slate-800">
                                             <div class="flex-1 min-w-0">
@@ -941,143 +1162,94 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            -->
+                        </div>
 
-                                <!-- Pending Actions -->
-                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[380px] max-h-[420px] sm:max-h-[380px]">
-                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
-                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
-                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-clock"></i></span>Pending Actions
-                                        </span>
-                                        <button @click="switchPage('pending')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50s dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
-                                            View All
-                                        </button>
-                                    </div>
-
-                                    <!-- Stacked urgency bar -->
-                                    <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-xs text-slate-400">{{ pendingActions.length }} awaiting action</span>
-                                            <span v-if="pendingUrgencyCounts[0].count > 0" class="text-[11px] font-bold text-rose-500 flex items-center gap-1">
-                                                <i class="fas fa-triangle-exclamation"></i>{{ pendingUrgencyCounts[0].count }} urgent
-                                            </span>
-                                        </div>
-                                        <div class="flex w-full h-2.5 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 gap-[2px]">
-                                            <div v-for="u in pendingUrgencyCounts" :key="u.label" v-show="u.count > 0" class="h-full rounded-full transition-all" :class="u.bar" :style="{ width: (u.count / pendingActions.length * 100) + '%' }"></div>
-                                        </div>
-                                        <div class="flex items-center gap-3 mt-2">
-                                            <span v-for="u in pendingUrgencyCounts" :key="u.label" class="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
-                                                <span class="w-2 h-2 rounded-full shrink-0" :class="u.dot"></span>{{ u.label }} <span class="font-semibold text-slate-700 dark:text-slate-300">{{ u.count }}</span>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex-1 p-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
-                                        <div v-for="a in pendingActions.slice(0, 4)" :key="a.id" class="flex items-center justify-between gap-2 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition border border-slate-100 dark:border-slate-800">
-                                            <div class="flex-1 min-w-0">
-                                                <div class="flex items-center gap-2">
-                                                    <span class="w-2 h-2 rounded-full shrink-0" :class="a.urgency === 'urgent' ? 'bg-rose-500' : a.urgency === 'normal' ? 'bg-amber-500' : 'bg-purple-50s0'"></span>
-                                                    <span class="text-[15px] font-semibold text-slate-900 dark:text-white truncate">{{ a.name }}</span>
-                                                </div>
-                                                <div class="text-[13px] text-slate-400 mt-0.5 truncate">{{ a.meta }}</div>
-                                            </div>
-                                            <span class="text-[11px] font-bold px-3 py-1 rounded-full shrink-0" :class="a.urgency === 'urgent' ? 'bg-rose-50 text-rose-600 dark:bg-rose-950/40' : a.urgency === 'normal' ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/40' : 'bg-purple-50s text-purple-600 dark:bg-purple-950/40'">{{ a.urgency }}</span>
-                                        </div>
+                        <!-- RECENT ACTIVITIES PAGE -->
+                        <div v-show="currentPage === 'recent-activities'" class="animate-pop-in">
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <h2 class="font-display text-xl font-bold text-slate-900 dark:text-white">
+                                            <i class="fas fa-history text-purple-600 mr-2"></i>Recent Activities
+                                        </h2>
+                                        <p class="text-sm text-slate-500 mt-0.5">Your recent system activities and actions</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Calendar + Quick Access -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                                <!-- Upcoming Events Card -->
-                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[380px] max-h-[380px]">
-                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
-                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
-                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-calendar"></i></span>Calendar Agenda
-                                        </span>
-                                        <button @click="switchPage('calendar')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50s dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
-                                            View All
-                                        </button>
-                                    </div>
-                                    <div class="flex-1 p-3 flex flex-col gap-1.5 overflow-y-auto scrollbar-hide">
-                                        <div v-if="upcomingEvents.length === 0" class="flex flex-col items-center justify-center text-slate-400 py-6 text-sm flex-1">
-                                            <i class="fas fa-calendar-day text-3xl block mb-2 opacity-50"></i>
-                                            No upcoming events this month
+                            <!-- Filters -->
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 mb-4">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <!-- Search -->
+                                    <div class="flex-1 min-w-[180px]">
+                                        <div class="relative">
+                                            <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                                            <input v-model="activitySearch" type="text" placeholder="Search activities..." class="w-full pl-10 pr-4 py-2 rounded-xl border-[1.5px] border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-900 dark:text-white text-[14px] focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 focus:bg-white dark:focus:bg-slate-800 outline-none transition" />
                                         </div>
-                                        <button v-for="event in upcomingEvents.slice(0, 4)" :key="event.dateStr" @click="openCalendarOnDate(event.dateStr)" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-left hover:-translate-y-0.5 hover:shadow-md transition cursor-pointer" :class="event.type === 'holiday' ? 'border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/25' : event.type === 'meeting' ? 'border-purple-200 dark:border-purple-900 bg-purple-50s dark:bg-purple-950/25' : 'border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/25'">
-                                            <div class="flex flex-col items-center min-w-[44px]">
-                                                <span class="text-[18px] font-bold text-slate-900 dark:text-white leading-tight">{{ event.day }}</span>
-                                                <span class="text-[9px] font-medium text-slate-400 uppercase tracking-wider">{{ event.month }}</span>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div class="text-[10px] font-bold uppercase tracking-wide" :class="event.type === 'holiday' ? 'text-rose-600 dark:text-rose-400' : event.type === 'meeting' ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400'">
-                                                    {{ event.type === 'holiday' ? 'Public Holiday' : event.type === 'meeting' ? 'Meeting' : 'Event' }}
-                                                </div>
-                                                <div class="font-semibold text-[13px] text-slate-900 dark:text-white truncate">{{ event.title }}</div>
-                                            </div>
-                                            <i class="fas fa-chevron-right text-slate-300 text-xs shrink-0"></i>
-                                        </button>
                                     </div>
-                                </div>
-
-                                <!-- Quick Access Card -->
-                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[380px] max-h-[380px]">
-                                    <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800 shrink-0">
-                                        <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
-                                            <span class="w-[26px] h-[26px] rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-rocket"></i></span>Quick Access
-                                        </span>
-                                        <button @click="switchPage('quickaccess')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50s dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
-                                            View All
+                                    
+                                    <!-- Type Filter -->
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Type:</span>
+                                        <button @click="activityTypeFilter = 'all'" 
+                                            class="px-3 py-1 rounded-full text-[11px] font-medium transition"
+                                            :class="activityTypeFilter === 'all' ? 'bg-purple-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'">
+                                            All
                                         </button>
-                                    </div>
-                                    <div class="flex-1 p-4 overflow-y-auto scrollbar-hide">
-                                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start">
-                                            <button v-for="qa in quickAccessItems.slice(0, 8)" :key="qa.id" @click="quickAccessAction(qa)" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:border-purple-400 hover:-translate-y-1 hover:shadow-md transition quick-access-chip">
-                                                <div class="w-11 h-11 rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-lg">
-                                                    <i class="fas" :class="qa.icon"></i>
-                                                </div>
-                                                <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight">{{ qa.label }}</span>
-                                            </button>
-                                        </div>
+                                        <button v-for="type in activityTypes" :key="type" 
+                                            @click="activityTypeFilter = type" 
+                                            class="px-3 py-1 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
+                                            :class="activityTypeFilter === type ? 'bg-purple-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'">
+                                            <i class="fas text-[10px]" :class="getActivityTypeIcon(type)"></i>
+                                            {{ type.charAt(0).toUpperCase() + type.slice(1) }}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Phone directory -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm mb-4">
-                                <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-slate-800">
-                                    <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
-                                        <span class="w-[26px] h-[26px] rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-phone"></i></span>Phone Directory
+                            <!-- Activities List -->
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                                <div class="px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between">
+                                    <span class="font-bold text-sm text-slate-900 dark:text-white">
+                                        <i class="fas fa-list text-purple-600 mr-2"></i>Activity Log
                                     </span>
-                                    <button @click="switchPage('contacts')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50s dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
-                                        View All
-                                    </button>
+                                    <span class="text-xs text-slate-400">{{ filteredActivities.length }} activity{{ filteredActivities.length !== 1 ? 's' : '' }}</span>
                                 </div>
-                                <div class="p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                                    <div v-for="c in contacts.slice(0, 6)" :key="c.name" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
-                                        <span class="w-10 h-10 rounded-full bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-[13px] font-bold shrink-0">{{ initials(c.name) }}</span>
+                                <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                                    <div v-if="filteredActivities.length === 0" class="text-center text-slate-400 py-12">
+                                        <i class="fas fa-search text-3xl block mb-3 opacity-50"></i>
+                                        <span class="text-sm">No activities found matching your filters</span>
+                                    </div>
+                                    <div v-for="(activity, idx) in filteredActivities" :key="idx" class="flex items-start gap-4 px-5 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
+                                        <!-- Icon -->
+                                        <span class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" 
+                                            :class="getActivityTypeClass(activity.type)">
+                                            <i class="fas" :class="activity.icon"></i>
+                                        </span>
                                         <div class="flex-1 min-w-0">
-                                            <div class="text-[14px] font-semibold text-slate-900 dark:text-white truncate">{{ c.name }}</div>
-                                            <div class="flex items-center gap-2 mt-0.5 flex-wrap">
-                                                <span class="text-[11px] font-medium px-2.5 py-0.5 rounded" 
-                                                    :class="getDepartmentColor(c.department)">
-                                                    {{ c.department || '-' }}
-                                                </span>
-                                                <span v-if="c.team" class="text-[11px] font-medium px-2.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                                                    {{ c.team }}
-                                                </span>
-                                                <span class="text-[12px] font-medium text-slate-600 dark:text-slate-300">
-                                                    <i class="fas fa-phone text-purple-600 mr-1 text-[10px]"></i>Ext {{ c.ext }}
+                                            <div class="flex items-start justify-between gap-2">
+                                                <div>
+                                                    <div class="flex items-center gap-2 flex-wrap">
+                                                        <span class="text-[13px] font-semibold text-slate-900 dark:text-white">{{ activity.action }}</span>
+                                                        <span class="text-[10px] font-medium px-2 py-0.5 rounded-full" 
+                                                            :class="getActivityTypePill(activity.type)">
+                                                            {{ activity.type }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                                        <span v-if="activity.detail">{{ activity.detail }}</span>
+                                                    </div>
+                                                </div>
+                                                <span class="text-[11px] text-slate-400 whitespace-nowrap shrink-0 flex items-center gap-1.5">
+                                                    <i class="fas fa-clock text-[9px]"></i>
+                                                    {{ activity.time }}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="mt-2 pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
-                                <a href="https://www.kotrapharma.com" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-purple-600 transition"><i class="fas fa-globe"></i>www.kotrapharma.com</a>
-                                <div class="text-[11px] text-slate-400 mt-1">© 2026 Kotra Pharma (M) Sdn Bhd (90082-V). All Rights Reserved.</div>
                             </div>
                         </div>
 
@@ -1972,24 +2144,82 @@
                             </div>
                         </div>
 
-                        <!-- ACTIVITIES PAGE -->
-                        <div v-show="currentPage === 'activities'" class="animate-pop-in">
+                        <!-- OVERVIEW PAGE -->
+                        <div v-show="currentPage === 'overview'" class="animate-pop-in">
                             <div class="mb-6">
                                 <div class="flex items-center justify-between flex-wrap gap-3">
                                     <div>
                                         <h2 class="font-display text-2xl font-bold text-slate-900 dark:text-white">
-                                            <i class="fas fa-th-large text-purple-600 mr-2"></i>All Activities
+                                            <i class="fas fa-th-large text-purple-600 mr-2"></i>Overview
                                         </h2>
                                         <p class="text-sm text-slate-500 mt-0.5">Everything you need to stay on top of your work</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Activity Cards Grid -->
+                            <!-- Search & Filter -->
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 mb-4">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <!-- Search -->
+                                    <div class="flex-1 min-w-[180px]">
+                                        <div class="relative">
+                                            <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                                            <input v-model="overviewSearch" type="text" placeholder="Search overview items..." class="w-full pl-10 pr-4 py-2 rounded-xl border-[1.5px] border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-900 dark:text-white text-[14px] focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 focus:bg-white dark:focus:bg-slate-800 outline-none transition" />
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Filter Chips -->
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter:</span>
+                                        <button @click="overviewFilter = 'all'" 
+                                            class="px-3 py-1 rounded-full text-[11px] font-medium transition"
+                                            :class="overviewFilter === 'all' ? 'bg-purple-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'">
+                                            All
+                                        </button>
+                                        <button v-for="cat in overviewCategories" :key="cat" 
+                                            @click="overviewFilter = cat" 
+                                            class="px-3 py-1 rounded-full text-[11px] font-medium transition"
+                                            :class="overviewFilter === cat ? 'bg-purple-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'">
+                                            {{ cat }}
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Results count -->
+                                    <span class="text-xs text-slate-400 ml-auto">{{ filteredOverviewCards.length }} item{{ filteredOverviewCards.length !== 1 ? 's' : '' }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Overview Cards Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 
-                                <!-- Announcements (1st) -->
-                                <div @click="switchPage('announcements')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                <!-- Recent Activities -->
+                                <div v-show="isOverviewVisible('Recent Activities')" @click="switchPage('recent-activities')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <span class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xl">
+                                                <i class="fas fa-history"></i>
+                                            </span>
+                                            <div>
+                                                <h3 class="font-semibold text-[15px] text-slate-900 dark:text-white">Recent Activities</h3>
+                                                <p class="text-[12px] text-slate-400">{{ recentActivities.length }} activities</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-purple-50 dark:bg-purple-950/40 text-purple-600">
+                                            New
+                                        </span>
+                                    </div>
+                                    <div class="mt-3 flex flex-wrap gap-1.5">
+                                        <span v-for="activity in recentActivities.slice(0, 2)" :key="activity.action" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 truncate max-w-[150px]">
+                                            {{ activity.action }}
+                                        </span>
+                                        <span v-if="recentActivities.length > 2" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                            +{{ recentActivities.length - 2 }} more
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Announcements -->
+                                <div v-show="isOverviewVisible('Announcements')" @click="switchPage('announcements')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-3">
                                             <span class="w-12 h-12 rounded-xl bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xl">
@@ -2014,8 +2244,34 @@
                                     </div>
                                 </div>
 
-                                <!-- Quick Access (2nd) -->
-                                <div @click="switchPage('quickaccess')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                <!-- Important Notices -->
+                                <div v-show="isOverviewVisible('Important Notices')" @click="switchPage('important')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <span class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-xl">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </span>
+                                            <div>
+                                                <h3 class="font-semibold text-[15px] text-slate-900 dark:text-white">Important Notices</h3>
+                                                <p class="text-[12px] text-slate-400">{{ importantNoticeList.length }} unread</p>
+                                            </div>
+                                        </div>
+                                        <span v-if="importantNoticeList.length > 0" class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-600">
+                                            {{ importantNoticeList.length }}
+                                        </span>
+                                    </div>
+                                    <div class="mt-3 flex flex-wrap gap-1.5">
+                                        <span v-for="n in importantNoticeList.slice(0, 2)" :key="n.id" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 truncate max-w-[150px]">
+                                            {{ n.title }}
+                                        </span>
+                                        <span v-if="importantNoticeList.length > 2" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                            +{{ importantNoticeList.length - 2 }} more
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Access -->
+                                <div v-show="isOverviewVisible('Quick Access')" @click="switchPage('quickaccess')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-3">
                                             <span class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-xl">
@@ -2037,8 +2293,8 @@
                                     </div>
                                 </div>
 
-                                <!-- Pending Actions (3rd) -->
-                                <div @click="switchPage('pending')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                <!-- Pending Actions -->
+                                <div v-show="isOverviewVisible('Pending Actions')" @click="switchPage('pending')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-3">
                                             <span class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-xl">
@@ -2063,8 +2319,8 @@
                                     </div>
                                 </div>
 
-                                <!-- My Tasks (4th) -->
-                                <div @click="switchPage('tasks')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                <!-- My Tasks -->
+                                <div v-show="isOverviewVisible('My Tasks')" @click="switchPage('tasks')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-3">
                                             <span class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 flex items-center justify-center text-xl">
@@ -2089,8 +2345,8 @@
                                     </div>
                                 </div>
 
-                                <!-- Calendar (5th) -->
-                                <div @click="switchPage('calendar')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                <!-- Calendar -->
+                                <div v-show="isOverviewVisible('Calendar')" @click="switchPage('calendar')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-3">
                                             <span class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center text-xl">
@@ -2112,8 +2368,8 @@
                                     </div>
                                 </div>
 
-                                <!-- Contacts (6th) -->
-                                <div @click="switchPage('contacts')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                <!-- Contacts -->
+                                <div v-show="isOverviewVisible('Contacts')" @click="switchPage('contacts')" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-3">
                                             <span class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 flex items-center justify-center text-xl">
@@ -2394,6 +2650,15 @@
                 data() {
                     return {
                         // Auth
+                        user: {
+                            name: "KP Digital",
+                            role: "IT Executive",
+                            initials: "KD",
+                            username: "kp.digital",
+                            email: "kp.digital@kotrapharma.com",
+                            department: "Information Technology",
+                            extension: "Ext 5000",
+                        },
                         loginUsername: "kp.digital",
                         loginPassword: "kp@123",
                         showPassword: false,
@@ -2411,15 +2676,10 @@
                         flyoutSearch: '',
                         hoveredMenuItem: null, // 'activities' | 'services' | 'hr' | 'it' | etc.
                         hoverTimeout: null,
-                        user: {
-                            name: "KP Digital",
-                            role: "IT Executive",
-                            initials: "KD",
-                            username: "kp.digital",
-                            email: "kp.digital@kotrapharma.com",
-                            department: "Information Technology",
-                            extension: "Ext 5000",
-                        },
+                        activitySearch: '',
+                        activityTypeFilter: 'all',
+                        overviewSearch: '',
+                        overviewFilter: 'all',
 
                         // Theme
                         isDark: false,
@@ -2598,6 +2858,51 @@
                             }
                         ],
 
+                        // Slider
+                        currentSlideIndex: 0,
+                        sliderTimer: null,
+
+                        // Recent Activities
+                        recentActivities: [
+                            {
+                                action: 'Logged in to the system',
+                                time: '2 minutes ago',
+                                type: 'login',
+                                icon: 'fa-sign-in-alt',
+                                color: '#8b6ff5'
+                            },
+                            {
+                                action: 'Updated Quick Access shortcuts',
+                                time: '15 minutes ago',
+                                type: 'quickaccess',
+                                icon: 'fa-bolt',
+                                color: '#10b981',
+                                detail: 'Added 2 new items'
+                            },
+                            {
+                                action: 'Completed pending action',
+                                time: '1 hour ago',
+                                type: 'pending',
+                                icon: 'fa-check-circle',
+                                color: '#ef4444',
+                                detail: 'Leave Request #4421'
+                            },
+                            {
+                                action: 'Checked Calendar events',
+                                time: '2 hours ago',
+                                type: 'calendar',
+                                icon: 'fa-calendar-check',
+                                color: '#3b82f6'
+                            },
+                            {
+                                action: 'Viewed Announcements',
+                                time: '3 hours ago',
+                                type: 'announcement',
+                                icon: 'fa-bullhorn',
+                                color: '#8b6ff5'
+                            },
+                        ],
+
                         // Notices
                         showAnnouncement: true,
                         showImportantNotice: true,
@@ -2748,6 +3053,111 @@
                 },
 
                 computed: {
+                    overviewCategories() {
+                        const categories = [
+                            'Recent Activities',
+                            'Announcements', 
+                            'Important Notices',
+                            'Quick Access',
+                            'Pending Actions',
+                            'My Tasks',
+                            'Calendar',
+                            'Contacts'
+                        ];
+                        return categories;
+                    },
+
+                    overviewBadgeCount() {
+                        // Count all items that have new/unread/urgent indicators
+                        let count = 0;
+                        
+                        // Recent Activities - always has some activities
+                        if (this.recentActivities.length > 0) count++;
+                        
+                        // Announcements
+                        count += this.announcementList.length;
+                        
+                        // Important Notices
+                        count += this.importantNoticeList.length;
+                        
+                        // Quick Access - always has some items
+                        if (this.quickAccessItems.length > 0) count++;
+                        
+                        // Pending Actions - urgent ones
+                        count += this.pendingActions.filter(a => a.urgency === 'urgent').length;
+                        
+                        // My Tasks - high priority ones
+                        count += this.tasks.filter(t => t.priority === 'high').length;
+                        
+                        // Calendar - upcoming events
+                        if (this.upcomingEvents.length > 0) count++;
+                        
+                        // Contacts - always has some contacts
+                        if (this.contacts.length > 0) count++;
+                        
+                        return count;
+                    },
+
+                    filteredOverviewCards() {
+                        const cards = [
+                            { id: 'recent-activities', category: 'Recent Activities', title: 'Recent Activities' },
+                            { id: 'announcements', category: 'Announcements', title: 'Announcements' },
+                            { id: 'important', category: 'Important Notices', title: 'Important Notices' },
+                            { id: 'quickaccess', category: 'Quick Access', title: 'Quick Access' },
+                            { id: 'pending', category: 'Pending Actions', title: 'Pending Actions' },
+                            { id: 'tasks', category: 'My Tasks', title: 'My Tasks' },
+                            { id: 'calendar', category: 'Calendar', title: 'Calendar' },
+                            { id: 'contacts', category: 'Contacts', title: 'Contacts' }
+                        ];
+                        
+                        let results = cards;
+                        
+                        // Filter by category
+                        if (this.overviewFilter !== 'all') {
+                            results = results.filter(card => card.category === this.overviewFilter);
+                        }
+                        
+                        // Filter by search
+                        if (this.overviewSearch.trim()) {
+                            const search = this.overviewSearch.toLowerCase().trim();
+                            results = results.filter(card => 
+                                card.title.toLowerCase().includes(search) ||
+                                card.category.toLowerCase().includes(search)
+                            );
+                        }
+                        
+                        return results;
+                    },
+
+                    activityTypes() {
+                        const types = new Set();
+                        this.recentActivities.forEach(a => {
+                            if (a.type) types.add(a.type);
+                        });
+                        return Array.from(types);
+                    },
+
+                    filteredActivities() {
+                        let results = [...this.recentActivities];
+                        
+                        // Filter by type
+                        if (this.activityTypeFilter !== 'all') {
+                            results = results.filter(a => a.type === this.activityTypeFilter);
+                        }
+                        
+                        // Filter by search
+                        if (this.activitySearch.trim()) {
+                            const search = this.activitySearch.toLowerCase().trim();
+                            results = results.filter(a => 
+                                a.action.toLowerCase().includes(search) ||
+                                (a.detail && a.detail.toLowerCase().includes(search)) ||
+                                (a.type && a.type.toLowerCase().includes(search))
+                            );
+                        }
+                        
+                        return results;
+                    },
+
                     // Quick Access filtered
                     filteredQuickAccess() {
                         const term = this.quickAccessSearch.toLowerCase().trim();
@@ -2758,9 +3168,10 @@
                     filteredFlyoutItems() {
                         const items = [];
                         
-                        // If hovered on Activities
-                        if (this.hoveredMenuItem === 'activities') {
+                        // If hovered on Overview
+                        if (this.hoveredMenuItem === 'overview') {
                             items.push(
+                                { id: 'recent-activities', label: 'Recent Activities', icon: 'fa-history', meta: 'Your activity log', page: 'recent-activities' },
                                 { id: 'tasks', label: 'My Tasks', icon: 'fa-tasks', meta: `${this.tasks.length} tasks pending`, page: 'tasks' },
                                 { id: 'pending', label: 'Pending Actions', icon: 'fa-clock', meta: `${this.pendingActions.length} awaiting action`, page: 'pending' },
                                 { id: 'calendar', label: 'Calendar', icon: 'fa-calendar', meta: 'View your schedule', page: 'calendar' },
@@ -2776,8 +3187,8 @@
                             return [];
                         }
                         
-                        // Apply search filter for activities
-                        if (this.flyoutSearch && this.hoveredMenuItem === 'activities') {
+                        // Apply search filter for overview
+                        if (this.flyoutSearch && this.hoveredMenuItem === 'overview') {
                             const search = this.flyoutSearch.toLowerCase();
                             return items.filter(item => 
                                 item.label.toLowerCase().includes(search) || 
@@ -2789,7 +3200,7 @@
                     },
                     
                     flyoutTitle() {
-                        if (this.hoveredMenuItem === 'activities') return 'Activities';
+                        if (this.hoveredMenuItem === 'overview') return 'Overview';
                         if (this.hoveredMenuItem === 'services') return 'Services';
                         if (this.hoveredMenuItem && this.hoveredMenuItem.startsWith('cat-')) {
                             const catId = this.hoveredMenuItem.replace('cat-', '');
@@ -2800,7 +3211,7 @@
                     },
                     
                     flyoutIcon() {
-                        if (this.hoveredMenuItem === 'activities') return 'fa-th-large';
+                        if (this.hoveredMenuItem === 'overview') return 'fa-th-large';
                         if (this.hoveredMenuItem === 'services') return 'fa-server';
                         if (this.hoveredMenuItem && this.hoveredMenuItem.startsWith('cat-')) {
                             const catId = this.hoveredMenuItem.replace('cat-', '');
@@ -2858,6 +3269,43 @@
                         }
                         
                         return groups;
+                    },
+
+                    sliderItems() {
+                        const items = [];
+                        // Add announcements
+                        this.announcementList.forEach(n => {
+                            items.push({
+                                type: 'announcement',
+                                title: n.title,
+                                excerpt: this.getExcerpt(n.body),
+                                fullText: this.getFullText(n.body),
+                                date: n.fullDate || n.date,
+                                id: n.id  // Make sure id is included
+                            });
+                        });
+                        // Add important notices
+                        this.importantNoticeList.forEach(n => {
+                            items.push({
+                                type: 'important',
+                                title: n.title,
+                                excerpt: this.getExcerpt(n.body),
+                                fullText: this.getFullText(n.body),
+                                date: n.fullDate || n.date,
+                                id: n.id  // Make sure id is included
+                            });
+                        });
+                        return items;
+                    },
+
+                    currentSlide() {
+                        return this.sliderItems[this.currentSlideIndex] || this.sliderItems[0] || { 
+                            title: 'No items', 
+                            excerpt: '', 
+                            fullText: '',
+                            date: '',
+                            id: null 
+                        };
                     },
 
                     // Get unique departments from contacts
@@ -3166,6 +3614,91 @@
                             // this.sidebarDesktopOpen = true;
                         }
                     },
+                    isOverviewVisible(category) {
+                        // Check if this card should be visible based on search and filter
+                        const card = this.filteredOverviewCards.find(c => c.category === category);
+                        return !!card;
+                    },
+                    openSliderNotice(noticeId) {
+                        if (!noticeId) return;
+                        this.activeNoticeId = noticeId;
+                        if (noticeId === 'notice1') {
+                            this.switchPage('announcements');
+                        } else if (noticeId === 'notice2') {
+                            this.switchPage('important');
+                        } else {
+                            const isAnnouncement = this.announcementList.some(n => n.id === noticeId);
+                            if (isAnnouncement) {
+                                this.switchPage('announcements');
+                            } else {
+                                this.switchPage('important');
+                            }
+                        }
+                    },
+                    getExcerpt(body) {
+                        if (!body || !body.length) return '';
+                        const text = body.join(' ');
+                        return text.length > 100 ? text.substring(0, 100) + '...' : text;
+                    },
+                    getFullText(body) {
+                        if (!body || !body.length) return '';
+                        return body.join(' ');
+                    },
+                    nextSlide() {
+                        if (this.sliderItems.length === 0) return;
+                        this.currentSlideIndex = (this.currentSlideIndex + 1) % this.sliderItems.length;
+                    },
+                    prevSlide() {
+                        if (this.sliderItems.length === 0) return;
+                        this.currentSlideIndex = (this.currentSlideIndex - 1 + this.sliderItems.length) % this.sliderItems.length;
+                    },
+                    startSliderTimer() {
+                        if (this.sliderTimer) clearInterval(this.sliderTimer);
+                        this.sliderTimer = setInterval(() => {
+                            this.nextSlide();
+                        }, 10000);
+                    },
+                    stopSliderTimer() {
+                        if (this.sliderTimer) {
+                            clearInterval(this.sliderTimer);
+                            this.sliderTimer = null;
+                        }
+                    },
+                    getActivityTypeClass(type) {
+                        const classes = {
+                            'login': 'bg-purple-50 dark:bg-purple-950/40 text-purple-600',
+                            'quickaccess': 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600',
+                            'task': 'bg-amber-50 dark:bg-amber-950/40 text-amber-600',
+                            'calendar': 'bg-blue-50 dark:bg-blue-950/40 text-blue-600',
+                            'pending': 'bg-rose-50 dark:bg-rose-950/40 text-rose-600',
+                            'announcement': 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600',
+                        };
+                        return classes[type] || 'bg-slate-100 dark:bg-slate-800 text-slate-500';
+                    },
+
+                    getActivityTypePill(type) {
+                        const classes = {
+                            'login': 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300',
+                            'quickaccess': 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300',
+                            'task': 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300',
+                            'calendar': 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300',
+                            'pending': 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300',
+                            'announcement': 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300',
+                        };
+                        return classes[type] || 'bg-slate-100 dark:bg-slate-800 text-slate-500';
+                    },
+
+                    getActivityTypeIcon(type) {
+                        const icons = {
+                            'login': 'fa-sign-in-alt',
+                            'quickaccess': 'fa-bolt',
+                            'task': 'fa-tasks',
+                            'calendar': 'fa-calendar',
+                            'pending': 'fa-clock',
+                            'announcement': 'fa-bullhorn',
+                        };
+                        return icons[type] || 'fa-circle';
+                    },
                     getCategoryLabel(categoryId) {
                         const category = this.serviceCategories.find(c => c.id === categoryId);
                         return category ? category.label : categoryId;
@@ -3235,9 +3768,8 @@
                         this.hoveredMenuItem = null;
                         this.flyoutSearch = '';
                     },
-                    
-                    viewAllActivities() {
-                        this.switchPage('activities');
+                    viewAllOverview() {
+                        this.switchPage('overview');
                         this.flyoutOpen = false;
                         this.hoveredMenuItem = null;
                     },
@@ -3818,6 +4350,8 @@
                     window.addEventListener("touchend", this.aiDragEnd);
                     window.addEventListener('resize', this.handleResize);
 
+                    this.startSliderTimer();
+
                     this.$watch('drawerOpen', (val) => {
                         if (val) {
                             this.$nextTick(() => {
@@ -3855,6 +4389,7 @@
 
                 beforeDestroy() {
                     window.removeEventListener('resize', this.handleResize);
+                    this.stopSliderTimer();
                 },
 
                 directives: {
