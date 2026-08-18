@@ -763,7 +763,7 @@
                                     <!-- View All (only for Activities) -->
                                     <div v-if="hoveredMenuItem === 'activities'" class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                                         <button @click="viewAllActivities()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950/30 rounded-xl transition">
-                                            <i class="fas fa-arrow-right"></i> View All Activities
+                                            View All Activities
                                         </button>
                                     </div>
                                 </template>
@@ -2560,9 +2560,11 @@
                         // If hovered on Activities
                         if (this.hoveredMenuItem === 'activities') {
                             items.push(
+                                { id: 'tasks', label: 'My Tasks', icon: 'fa-tasks', meta: `${this.tasks.length} tasks pending`, page: 'tasks' },
                                 { id: 'pending', label: 'Pending Actions', icon: 'fa-clock', meta: `${this.pendingActions.length} awaiting action`, page: 'pending' },
                                 { id: 'calendar', label: 'Calendar', icon: 'fa-calendar', meta: 'View your schedule', page: 'calendar' },
                                 { id: 'contacts', label: 'Contacts', icon: 'fa-address-book', meta: 'Company directory', page: 'contacts' },
+                                { id: 'quickaccess', label: 'Quick Access', icon: 'fa-bolt', meta: 'Your shortcuts', page: 'quickaccess' },
                                 { id: 'announcements', label: 'Announcements', icon: 'fa-bullhorn', meta: `${this.announcementList.length} new`, page: 'announcements' },
                                 { id: 'important', label: 'Important Notices', icon: 'fa-exclamation-triangle', meta: `${this.importantNoticeList.length} unread`, page: 'important' }
                             );
@@ -2655,11 +2657,6 @@
                         }
                         
                         return groups;
-                    },
-                
-                    getCategoryLabel(categoryId) {
-                        const category = this.serviceCategories.find(c => c.id === categoryId);
-                        return category ? category.label : categoryId;
                     },
 
                     // Get unique departments from contacts
@@ -2946,6 +2943,10 @@
                             // Optionally auto-open desktop sidebar on larger screens
                             // this.sidebarDesktopOpen = true;
                         }
+                    },
+                    getCategoryLabel(categoryId) {
+                        const category = this.serviceCategories.find(c => c.id === categoryId);
+                        return category ? category.label : categoryId;
                     },
                     getDepartmentColor(dept) {
                         if (!dept) return 'bg-slate-100 dark:bg-slate-800 text-slate-500';
