@@ -449,15 +449,15 @@
             <!-- APP SHELL -->
             <div v-show="isLoggedIn" class="h-screen w-screen flex flex-col bg-slate-100 dark:bg-slate-800">
                 <!-- IMPORTANT NOTICE -->
-                <div v-if="noticeList.length > 0 && showImportantNotice" class="bg-amber-50 dark:bg-amber-950/25 border-b border-amber-200 dark:border-amber-900 shrink-0">
+                <div v-if="importantNoticeList.length > 0 && showImportantNotice" class="bg-amber-50 dark:bg-amber-950/25 border-b border-amber-200 dark:border-amber-900 shrink-0">
                     <div class="flex items-center justify-between px-3.5 md:px-6 py-2 gap-2">
-                        <div @click="activeNoticeId = 'notice2'; switchPage('important')" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition flex-1 min-w-0">
+                        <div @click="activeNoticeId = importantNoticeList[0].id; switchPage('important')" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition flex-1 min-w-0">
                             <span class="w-6 h-6 rounded-full bg-amber-200/50 dark:bg-amber-800/50 flex items-center justify-center text-sm flex-shrink-0">
-                                <i class="fas fa-calendar-day text-amber-600 dark:text-amber-400"></i>
+                                <i class="fas fa-server text-amber-600 dark:text-amber-400"></i>
                             </span>
                             <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 whitespace-nowrap hidden sm:inline-block flex-shrink-0 w-28">IMPORTANT NOTICE</span>
                             <span class="text-xs font-medium truncate min-w-0 text-amber-800 dark:text-amber-200">
-                                Public Holiday – Melaka Governor's Birthday (24 Aug 2026)
+                                {{ importantNoticeList[0].title }}
                             </span>
                             <span class="text-[10px] bg-amber-200 dark:bg-amber-800/50 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full whitespace-nowrap hidden sm:inline-block flex-shrink-0">New</span>
                         </div>
@@ -466,17 +466,17 @@
                         </button>
                     </div>
                 </div>
-                
-                <!-- ANNOUNCEMENT BANNER -->
-                <!--<div v-if="showAnnouncement" class="bg-gradient-to-r from-purple-50 to-emerald-50 dark:from-purple-950/30 dark:to-emerald-950/30 text-slate-700 dark:text-slate-200 border-b border-purple-200 dark:border-purple-800 shrink-0">
+
+                <!-- ANNOUNCEMENT BANNER
+                <div v-if="announcementList.length > 0 && showAnnouncement" class="bg-gradient-to-r from-purple-50 to-emerald-50 dark:from-purple-950/30 dark:to-emerald-950/30 text-slate-700 dark:text-slate-200 border-b border-purple-200 dark:border-purple-800 shrink-0">
                     <div class="flex items-center justify-between px-3.5 md:px-6 py-2 gap-2">
-                        <div @click="activeNoticeId = 'notice1'; switchPage('announcements')" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition flex-1 min-w-0">
+                        <div @click="activeNoticeId = announcementList[0].id; switchPage('announcements')" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition flex-1 min-w-0">
                             <span class="w-6 h-6 rounded-full bg-purple-200/50 dark:bg-purple-800/50 flex items-center justify-center text-sm flex-shrink-0">
                                 <i class="fas fa-bullhorn text-purple-600 dark:text-purple-400"></i>
                             </span>
                             <span class="text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 whitespace-nowrap hidden sm:inline-block flex-shrink-0 w-28">ANNOUNCEMENT</span>
                             <span class="text-xs font-medium truncate min-w-0">
-                                Replacement Holiday – HQ only (31 Aug & 1 Sep 2026)
+                                {{ announcementList[0].title }}
                             </span>
                             <span class="text-[10px] bg-purple-200 dark:bg-purple-800/50 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full whitespace-nowrap hidden sm:inline-block flex-shrink-0">New</span>
                         </div>
@@ -484,8 +484,8 @@
                             <i class="fas fa-times text-xs"></i>
                         </button>
                     </div>
-                </div>-->
-
+                </div> -->
+                
                 <!-- HEADER -->
                 <header class="h-16 md:h-[68px] flex items-center justify-between px-3.5 md:px-6 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 shrink-0 z-20">
                     <div class="flex items-center gap-1 flex-shrink-0">
@@ -1776,7 +1776,7 @@
                             </div>
 
                             <!-- Show Full Announcement Content -->
-                            <div v-if="activeNoticeId && activeNoticeId === 'notice1'" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                            <div v-if="activeNoticeId && activeNotice" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                                 <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
                                     <div class="flex items-center gap-3">
                                         <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm bg-purple-50s dark:bg-purple-950/40 text-purple-600">
@@ -1809,15 +1809,15 @@
                             <!-- Announcements List -->
                             <div v-else>
                                 <!-- Active Announcement Card -->
-                                <div v-if="showAnnouncement" @click="activeNoticeId = 'notice1'" class="bg-gradient-to-r from-purple-50 to-emerald-50 dark:from-purple-950/30 dark:to-emerald-950/30 rounded-2xl border border-purple-200 dark:border-purple-900 p-5 cursor-pointer hover:shadow-lg transition-all hover:-translate-y-0.5">
+                                <div v-if="announcementList.length > 0" @click="activeNoticeId = announcementList[0].id" class="bg-gradient-to-r from-purple-50 to-emerald-50 dark:from-purple-950/30 dark:to-emerald-950/30 rounded-2xl border border-purple-200 dark:border-purple-900 p-5 cursor-pointer hover:shadow-lg transition-all hover:-translate-y-0.5">
                                     <div class="flex items-start gap-4">
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center gap-3 flex-wrap">
                                                 <span class="text-[10px] font-bold uppercase tracking-wide text-purple-700 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/50 px-2.5 py-0.5 rounded-full">Announcement</span>
-                                                <span class="text-xs text-slate-500 dark:text-slate-400">31 Aug & 1 Sep 2026</span>
+                                                <span class="text-xs text-slate-500 dark:text-slate-400">{{ announcementList[0].fullDate || announcementList[0].date }}</span>
                                             </div>
-                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white mt-1">Replacement Holiday – HQ only</h3>
-                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Company closed on 31 Aug & 1 Sep 2026. Operations resume 2 Sep.</p>
+                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white mt-1">{{ announcementList[0].title }}</h3>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">{{ announcementList[0].body[0]?.replace(/<[^>]*>/g, '').substring(0, 100) }}...</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1866,7 +1866,7 @@
                             </div>
 
                             <!-- Show Full Important Notice Content -->
-                            <div v-if="activeNoticeId && activeNoticeId === 'notice2'" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                            <div v-if="activeNoticeId && activeNotice" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                                 <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
                                     <div class="flex items-center gap-3">
                                         <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm bg-amber-50 dark:bg-amber-950/40 text-amber-600">
@@ -1884,30 +1884,21 @@
                                 <div class="px-6 py-5 text-[14px] leading-7 text-slate-600 dark:text-slate-300">
                                     <p v-for="(p, idx) in activeNotice.body" :key="idx" class="mb-3" v-html="p"></p>
                                     <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 italic text-slate-500 dark:text-slate-400" v-html="activeNotice.signoff"></div>
-                                    <div v-if="activeNotice.bm" class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                        <span @click="bmOpen = !bmOpen" class="inline-flex items-center gap-1.5 text-purple-600 font-bold text-[12.5px] cursor-pointer hover:text-purple-800 transition">
-                                            <i class="fas fa-language"></i>Baca dalam Bahasa Malaysia
-                                        </span>
-                                        <div v-show="bmOpen" class="mt-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl p-4 text-[13px] leading-7 text-slate-500 dark:text-slate-400">
-                                            <p class="mb-2 font-bold text-slate-600 dark:text-slate-300">{{ activeNotice.bm.title }}</p>
-                                            <p v-for="(p, idx) in activeNotice.bm.body" :key="idx" class="mb-2" v-html="p"></p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
                             <!-- Important Notices List -->
                             <div v-else>
                                 <!-- Active Important Notice Card -->
-                                <div v-if="showImportantNotice" @click="activeNoticeId = 'notice2'" class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-2xl border border-amber-200 dark:border-amber-900 p-5 cursor-pointer hover:shadow-lg transition-all hover:-translate-y-0.5">
+                                <div v-if="importantNoticeList.length > 0" @click="activeNoticeId = importantNoticeList[0].id" class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-2xl border border-amber-200 dark:border-amber-900 p-5 cursor-pointer hover:shadow-lg transition-all hover:-translate-y-0.5">
                                     <div class="flex items-start gap-4">
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center gap-3 flex-wrap">
                                                 <span class="text-[10px] font-bold uppercase tracking-wide text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/50 px-2.5 py-0.5 rounded-full">Important</span>
-                                                <span class="text-xs text-slate-500 dark:text-slate-400">24 Aug 2026</span>
+                                                <span class="text-xs text-slate-500 dark:text-slate-400">{{ importantNoticeList[0].fullDate || importantNoticeList[0].date }}</span>
                                             </div>
-                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white mt-1">Public Holiday – Melaka Governor's Birthday</h3>
-                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Public holiday on 24 Aug 2026. Employees working will be paid at holiday rate.</p>
+                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white mt-1">{{ importantNoticeList[0].title }}</h3>
+                                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">{{ importantNoticeList[0].body[0]?.replace(/<[^>]*>/g, '').substring(0, 100) }}...</p>
                                         </div>
                                     </div>
                                 </div>
@@ -3021,33 +3012,14 @@
                         noticeModalOpen: false,
                         activeNoticeId: null,
                         bmOpen: false,
-                        noticeData: {
-                            notice1: {
-                                title: "Replacement Holiday – HQ only",
-                                date: "31 Aug & 1 Sep 2026",
-                                fullDate: "31 August & 1 September 2026",
-                                body: [
-                                    "Further to memo dated 16 March 2026 regarding the additional public holiday in conjunction with Hari Raya Aidilfitri, please be informed that the company has designated <strong>1 September 2026 (Tuesday)</strong> as the replacement holiday.",
-                                    "The company will be closed on <strong>31 August 2026 (Monday) &amp; 1 September 2026 (Tuesday)</strong>. Operation will resume on <strong>2 September 2026 (Wednesday)</strong>.",
-                                    '<span class="text-rose-600 font-bold">⚠️</span> Employees who take medical leave (MC) immediately before or after this replacement holiday may be subject to a <strong>six (6) months suspension</strong> of outpatient medical card benefits.',
-                                    "Should you have any queries, kindly refer to the HR Department.",
-                                ],
-                                signoff: "Best regards,<br><strong>Tasha</strong><br>Human Resource Department<br>Kotra Pharma (M) Sdn. Bhd.<br>Tel: 06-3362222",
-                                bm: {
-                                    title: "Cuti Gantian – HQ sahaja",
-                                    body: [
-                                        "Merujuk kepada memo bertarikh 16 Mac 2026 mengenai cuti umum tambahan sempena Hari Raya Aidilfitri, dimaklumkan bahawa syarikat telah menetapkan <strong>1 September 2026 (Selasa)</strong> sebagai cuti gantian.",
-                                        "Syarikat akan ditutup pada <strong>31 Ogos 2026 (Isnin) dan 1 September 2026 (Selasa)</strong>. Operasi akan disambung semula pada <strong>2 September 2026 (Rabu)</strong>.",
-                                        '<span class="text-rose-600 font-bold">⚠️</span> Pekerja yang mengambil cuti sakit (MC) sejurus sebelum atau selepas cuti gantian ini mungkin dikenakan penggantungan kemudahan kad perubatan pesakit luar selama <strong>enam (6) bulan</strong>.',
-                                        "Sekiranya anda mempunyai sebarang pertanyaan, sila rujuk kepada Jabatan Sumber Manusia (HR).",
-                                        "Terima kasih.",
-                                    ],
-                                },
-                            },
-                            notice2: {
+                        
+                        announcementList: [
+                            {
+                                id: 1,
                                 title: "Public Holiday – Melaka Governor's Birthday",
                                 date: "24 Aug 2026",
                                 fullDate: "Monday, 24 August 2026",
+                                type: "announcement",
                                 body: [
                                     "Please be informed that this year's Melaka Governor's Birthday falls on <strong>Monday, 24 August 2026</strong>.",
                                     "Employees who are required to work during the Public Holiday will be paid according to the Public Holiday rate.",
@@ -3069,7 +3041,50 @@
                                     ],
                                 },
                             },
-                        },
+                            {
+                                id: 2,
+                                title: "Replacement Holiday – HQ only",
+                                date: "31 Aug & 1 Sep 2026",
+                                fullDate: "31 August & 1 September 2026",
+                                type: "announcement",
+                                body: [
+                                    "Further to memo dated 16 March 2026 regarding the additional public holiday in conjunction with Hari Raya Aidilfitri, please be informed that the company has designated <strong>1 September 2026 (Tuesday)</strong> as the replacement holiday.",
+                                    "The company will be closed on <strong>31 August 2026 (Monday) &amp; 1 September 2026 (Tuesday)</strong>. Operation will resume on <strong>2 September 2026 (Wednesday)</strong>.",
+                                    '<span class="text-rose-600 font-bold">⚠️</span> Employees who take medical leave (MC) immediately before or after this replacement holiday may be subject to a <strong>six (6) months suspension</strong> of outpatient medical card benefits.',
+                                    "Should you have any queries, kindly refer to the HR Department.",
+                                ],
+                                signoff: "Best regards,<br><strong>Tasha</strong><br>Human Resource Department<br>Kotra Pharma (M) Sdn. Bhd.<br>Tel: 06-3362222",
+                                bm: {
+                                    title: "Cuti Gantian – HQ sahaja",
+                                    body: [
+                                        "Merujuk kepada memo bertarikh 16 Mac 2026 mengenai cuti umum tambahan sempena Hari Raya Aidilfitri, dimaklumkan bahawa syarikat telah menetapkan <strong>1 September 2026 (Selasa)</strong> sebagai cuti gantian.",
+                                        "Syarikat akan ditutup pada <strong>31 Ogos 2026 (Isnin) dan 1 September 2026 (Selasa)</strong>. Operasi akan disambung semula pada <strong>2 September 2026 (Rabu)</strong>.",
+                                        '<span class="text-rose-600 font-bold">⚠️</span> Pekerja yang mengambil cuti sakit (MC) sejurus sebelum atau selepas cuti gantian ini mungkin dikenakan penggantungan kemudahan kad perubatan pesakit luar selama <strong>enam (6) bulan</strong>.',
+                                        "Sekiranya anda mempunyai sebarang pertanyaan, sila rujuk kepada Jabatan Sumber Manusia (HR).",
+                                        "Terima kasih.",
+                                    ],
+                                },
+                            }
+                        ],
+
+                        // Important Notices List
+                        importantNoticeList: [
+                            {
+                                id: 1,
+                                title: "Ad Hoc Preventive System Downtime",
+                                date: "15-16 Aug 2026",
+                                fullDate: "Saturday, 15 August 2026 - Sunday, 16 August 2026",
+                                type: "important",
+                                body: [
+                                    "Please be informed that an ad hoc preventive system downtime will be carried out on <strong>Saturday, 15 August 2026, starting at 10:00PM</strong>. This activity is a precautionary measure following the server issue experienced earlier this week.",
+                                    "The following systems will be temporarily unavailable:",
+                                    '<ul class="list-disc pl-6 mt-2 space-y-1"><li><strong>E-Service</strong></li><li><strong>Kotra File Server</strong></li><li><strong>SAP</strong></li><li><strong>SIS</strong></li></ul>',
+                                    "Services are expected to be restored by <strong>Sunday 10:00PM, 16 August 2026</strong>. An update will be provided once all systems are confirmed operational. We apologize for the short notice and any inconvenience caused.",
+                                    "Thank you for your understanding.",
+                                ],
+                                signoff: "Best Regards,<br><strong>Idzni</strong><br>Associate Infrastructure Engineer (IT)<br>KOTRA PHARMA (M) Sdn Bhd",
+                            }
+                        ],
 
                         // Calendar
                         currentMonth: new Date().getMonth(),
@@ -3180,34 +3195,7 @@
                     },
 
                     overviewBadgeCount() {
-                        // Count all items that have new/unread/urgent indicators
-                        let count = 0;
-                        
-                        // Recent Activities - always has some activities
-                        if (this.recentActivities.length > 0) count++;
-                        
-                        // Announcements
-                        count += this.announcementList.length;
-                        
-                        // Important Notices
-                        count += this.importantNoticeList.length;
-                        
-                        // Quick Access - always has some items
-                        if (this.quickAccessItems.length > 0) count++;
-                        
-                        // Pending Actions - urgent ones
-                        count += this.pendingActions.filter(a => a.urgency === 'urgent').length;
-                        
-                        // My Tasks - high priority ones
-                        count += this.tasks.filter(t => t.priority === 'high').length;
-                        
-                        // Calendar - upcoming events
-                        if (this.upcomingEvents.length > 0) count++;
-                        
-                        // Contacts - always has some contacts
-                        if (this.contacts.length > 0) count++;
-                        
-                        return count;
+                        return this.overviewCategories.length;
                     },
 
                     sidebarQuickAccess() {
@@ -3492,7 +3480,6 @@
 
                     sliderItems() {
                         const items = [];
-                        // Add announcements
                         this.announcementList.forEach(n => {
                             items.push({
                                 type: 'announcement',
@@ -3500,18 +3487,7 @@
                                 excerpt: this.getExcerpt(n.body),
                                 fullText: this.getFullText(n.body),
                                 date: n.fullDate || n.date,
-                                id: n.id  // Make sure id is included
-                            });
-                        });
-                        // Add important notices
-                        this.importantNoticeList.forEach(n => {
-                            items.push({
-                                type: 'important',
-                                title: n.title,
-                                excerpt: this.getExcerpt(n.body),
-                                fullText: this.getFullText(n.body),
-                                date: n.fullDate || n.date,
-                                id: n.id  // Make sure id is included
+                                id: n.id
                             });
                         });
                         return items;
@@ -3583,16 +3559,6 @@
                             });
                         });
                         return items;
-                    },
-
-                    // Filter announcements (notice1)
-                    announcementList() {
-                        return this.noticeList.filter(n => n.id === 'notice1');
-                    },
-                    
-                    // Filter important notices (notice2)
-                    importantNoticeList() {
-                        return this.noticeList.filter(n => n.id === 'notice2');
                     },
 
                     // Selected category
@@ -3674,15 +3640,6 @@
                         return this.tasks.filter(t => t.priority === this.taskFilter);
                     },
 
-                    // Dashboard
-                    noticeList() {
-                        return Object.keys(this.noticeData).map((id) => ({ 
-                            id, 
-                            ...this.noticeData[id],
-                            date: this.noticeData[id].fullDate || this.noticeData[id].date
-                        }));
-                    },
-
                     // Profile
                     profileFields() {
                         return [
@@ -3694,10 +3651,11 @@
                     },
 
                     // Notice
-                    activeNotice() {
+                     activeNotice() {
                         if (!this.activeNoticeId) return null;
-                        const n = this.noticeData[this.activeNoticeId];
-                        return n ? { ...n, date: n.fullDate } : null;
+                        // Search in both announcementList and importantNoticeList
+                        const allNotices = [...this.announcementList, ...this.importantNoticeList];
+                        return allNotices.find(n => n.id === this.activeNoticeId) || null;
                     },
 
                     // Calendar
