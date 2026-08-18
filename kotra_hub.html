@@ -363,7 +363,7 @@
                         <!-- Two Sign In Options -->
                         <div class="flex flex-col gap-1.5">
                             <!-- Sign In (without 2FA) -->
-                            <button @click="loginWithout2FA" class="w-full py-2.5 rounded-xl border-2 border-purple-600 text-purple-600 text-[14px] font-semibold tracking-wide hover:bg-purple-50 hover:-translate-y-0.5 active:translate-y-0 transition shadow-[0_4px_12px_-6px_rgba(139,92,246,0.2)] hover:shadow-[0_8px_25px_-8px_rgba(139,92,246,0.3)]">
+                            <button @click="loginWithout2FA" class="w-full py-2.5 rounded-xl bg-gradient-to-br from-purple-600 to-purple-800 text-white text-[14px] font-semibold tracking-wide shadow-[0_8px_25px_-8px_rgba(139,92,246,0.4)] hover:shadow-[0_12px_35px_-10px_rgba(139,92,246,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition">
                                 <i class="fas fa-arrow-right-to-bracket mr-2"></i>Sign In
                             </button>
                             
@@ -375,7 +375,7 @@
                             </div>
                             
                             <!-- Sign In with 2FA -->
-                            <button @click="verifyCredentials" class="w-full py-2.5 rounded-xl bg-gradient-to-br from-purple-600 to-purple-800 text-white text-[14px] font-semibold tracking-wide shadow-[0_8px_25px_-8px_rgba(139,92,246,0.4)] hover:shadow-[0_12px_35px_-10px_rgba(139,92,246,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition">
+                            <button @click="verifyCredentials" class="w-full py-2.5 rounded-xl border-2 border-purple-600 text-purple-600 text-[14px] font-semibold tracking-wide hover:bg-purple-50 hover:-translate-y-0.5 active:translate-y-0 transition shadow-[0_4px_12px_-6px_rgba(139,92,246,0.2)] hover:shadow-[0_8px_25px_-8px_rgba(139,92,246,0.3)]">
                                 <i class="fas fa-shield-alt mr-2"></i>Sign In with 2FA
                             </button>
                         </div>
