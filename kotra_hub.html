@@ -500,17 +500,61 @@
                         </a>
                     </div>
 
-                    <!-- CENTER: Search Bar -->
-                    <div class="flex-1 max-w-xl mx-3 md:mx-6 hidden md:block">
+                    <!-- CENTER: Search Bar with Dropdown -->
+                    <div class="flex-1 max-w-xl mx-3 md:mx-6 hidden md:block relative">
                         <div class="relative">
                             <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                             <input 
                                 type="text" 
+                                v-model="headerSearchQuery"
+                                @focus="headerSearchOpen = true"
+                                @input="headerSearchOpen = true"
+                                @blur="setTimeout(() => headerSearchOpen = false, 200)"
                                 placeholder="Search apps, services, actions..." 
                                 class="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-900 dark:text-white text-sm focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 focus:bg-white dark:focus:bg-slate-800 outline-none transition"
-                                @click="drawerOpen = true"
                             />
                             <kbd class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] font-semibold text-slate-400 bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded">Ctrl+K</kbd>
+                        </div>
+                        
+                        <!-- Dropdown Results -->
+                        <div v-show="headerSearchOpen && headerSearchQuery.trim().length > 0" 
+                            class="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xl max-h-[400px] overflow-y-auto scrollbar-hide z-50 animate-pop-in">
+                            
+                            <!-- No results -->
+                            <div v-if="filteredHeaderResults.length === 0" class="px-4 py-8 text-center text-slate-400 text-sm">
+                                <i class="fas fa-search text-2xl block mb-2 opacity-50"></i>
+                                No services found for "{{ headerSearchQuery }}"
+                            </div>
+                            
+                            <!-- Results grouped by category -->
+                            <div v-for="(group, categoryId) in groupedHeaderResults" :key="categoryId" class="border-b border-slate-100 dark:border-slate-800 last:border-0">
+                                <div class="px-4 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800/60">
+                                    {{ getCategoryLabel(categoryId) }}
+                                </div>
+                                <div>
+                                    <button v-for="item in group" :key="item.id" 
+                                            @click="selectSearchResult(item)"
+                                            class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition group">
+                                        <span class="w-8 h-8 rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-sm shrink-0">
+                                            <i class="fas" :class="item.icon"></i>
+                                        </span>
+                                        <div class="flex-1 text-left min-w-0">
+                                            <div class="text-[13px] font-semibold text-slate-900 dark:text-white">{{ item.label }}</div>
+                                            <div class="text-[11px] text-slate-400 truncate">{{ item.meta || getServiceDescriptionByName(item.label) }}</div>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-slate-400 group-hover:text-purple-600 transition">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- View All link -->
+                            <div v-if="filteredHeaderResults.length > 0" class="px-4 py-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 rounded-b-xl">
+                                <button @click="openFullSearch" class="w-full text-center text-xs font-semibold text-purple-600 hover:text-purple-700 transition">
+                                    <i class="fas fa-search mr-1.5"></i>View all results in Services →
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -620,60 +664,60 @@
                 </aside>
 
                 <!-- FIND SERVICES DRAWER -->
-                <div v-show="drawerOpen" class="fixed inset-0 z-[200] bg-slate-100 dark:bg-slate-800 flex flex-col p-4 md:p-6 animate-pop-in">
-                    <div class="flex items-center justify-between mb-4 shrink-0">
-                        <h3 class="font-display text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+                <div v-show="drawerOpen" class="fixed inset-0 z-[200] bg-slate-100 dark:bg-slate-800 flex flex-col p-3 md:p-5 animate-pop-in">
+                    <div class="flex items-center justify-between mb-3 shrink-0">
+                        <h3 class="font-display text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
                             <i class="fas fa-search text-purple-600 mr-2"></i>Find Services
                         </h3>
-                        <button @click="closeDrawer()" class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 shadow flex items-center justify-center text-slate-500 hover:bg-rose-50 hover:text-rose-600 transition">
-                            <i class="fas fa-times text-lg"></i>
+                        <button @click="closeDrawer()" class="w-9 h-9 rounded-full bg-white dark:bg-slate-800 shadow flex items-center justify-center text-slate-500 hover:bg-rose-50 hover:text-rose-600 transition">
+                            <i class="fas fa-times text-base"></i>
                         </button>
                     </div>
 
                     <!-- Search Bar -->
-                    <div class="relative mb-5 shrink-0">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
-                        <input ref="drawerSearchInput" v-model="drawerQuery" type="text" placeholder="Search apps, services, actions..." class="w-full pl-12 pr-20 py-4 rounded-2xl border-[1.5px] border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-base focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 outline-none transition" />
-                        <kbd class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">Ctrl+K</kbd>
+                    <div class="relative mb-3 shrink-0">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input ref="drawerSearchInput" v-model="drawerQuery" type="text" placeholder="Search apps, services, actions..." class="w-full pl-10 pr-16 py-2.5 rounded-xl border-[1.5px] border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 outline-none transition" />
+                        <kbd class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-semibold text-slate-400 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded">Ctrl+K</kbd>
                     </div>
 
-                    <div class="flex-1 overflow-y-auto scrollbar-hide pb-6 pt-2">
+                    <div class="flex-1 overflow-y-auto scrollbar-hide pb-4 pt-1">
                         <!-- Quick Chips -->
-                        <div class="flex gap-2 mb-5 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap">
-                            <button v-for="chip in quickChips" :key="chip.label" @click="selectServiceItem(chip)" class="flex items-center gap-1.5 h-9 px-3.5 shrink-0 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-purple-400 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:shadow-sm transition whitespace-nowrap">
-                                <i class="fas text-purple-600 text-sm" :class="chip.icon"></i>
-                                <span class="text-xs font-medium text-slate-700 dark:text-slate-200">{{ chip.label }}</span>
+                        <div class="flex gap-1.5 mb-3 overflow-x-auto scrollbar-hide -mx-3 px-3 md:mx-0 md:px-0 md:flex-wrap">
+                            <button v-for="chip in quickChips" :key="chip.label" @click="selectServiceItem(chip)" class="flex items-center gap-1.5 h-8 px-3 shrink-0 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-purple-400 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:shadow-sm transition whitespace-nowrap text-xs">
+                                <i class="fas text-purple-600 text-xs" :class="chip.icon"></i>
+                                <span class="font-medium text-slate-700 dark:text-slate-200">{{ chip.label }}</span>
                             </button>
                         </div>
 
                         <!-- Categories -->
-                        <div class="flex flex-col gap-3">
-                            <div v-for="cat in filteredCategories" :key="cat.id" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
-                                <button @click="toggleCategory(cat.id)" class="w-full flex items-center gap-3 px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
-                                    <span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg shrink-0" :class="catColorClasses[cat.color].chip">
+                        <div class="flex flex-col gap-2">
+                            <div v-for="cat in filteredCategories" :key="cat.id" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+                                <button @click="toggleCategory(cat.id)" class="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-left hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
+                                    <span class="w-9 h-9 rounded-lg flex items-center justify-center text-base shrink-0" :class="catColorClasses[cat.color].chip">
                                         <i class="fas" :class="cat.icon"></i>
                                     </span>
                                     <span class="flex-1 min-w-0">
-                                        <span class="block font-semibold text-base text-slate-900 dark:text-white">{{ cat.name }}</span>
-                                        <span class="block text-sm text-slate-400">{{ cat.items.length }} services</span>
+                                        <span class="block font-semibold text-sm text-slate-900 dark:text-white">{{ cat.name }}</span>
+                                        <span class="block text-xs text-slate-400">{{ cat.items.length }} services</span>
                                     </span>
-                                    <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform duration-300" :class="isExpanded(cat) ? 'rotate-180' : ''"></i>
+                                    <i class="fas fa-chevron-down text-slate-400 text-xs transition-transform duration-300" :class="isExpanded(cat) ? 'rotate-180' : ''"></i>
                                 </button>
                                 <div class="grid transition-all duration-300 ease-in-out" :class="isExpanded(cat) ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'">
                                     <div class="overflow-hidden">
-                                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-4 pb-4 pt-2">
-                                            <button v-for="item in cat.items" :key="item.name" @click="selectServiceItem(item)" class="relative flex flex-col items-center justify-center gap-2 p-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:border-purple-400 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:-translate-y-0.5 hover:shadow-md transition text-center">
-                                                <span v-if="item.tag" class="absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full" :class="catColorClasses[cat.color].tag">{{ item.tag }}</span>
-                                                <i class="fas text-xl" :class="[item.icon, catColorClasses[cat.color].icon]"></i>
-                                                <span class="text-sm font-medium text-slate-700 dark:text-slate-200 leading-tight">{{ item.name }}</span>
+                                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 px-3.5 pb-3 pt-1">
+                                            <button v-for="item in cat.items" :key="item.name" @click="selectServiceItem(item)" class="relative flex flex-col items-center justify-center gap-1.5 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:border-purple-400 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:-translate-y-0.5 hover:shadow-md transition text-center">
+                                                <span v-if="item.tag" class="absolute top-1 right-1 text-[8px] font-bold px-1.5 py-0.5 rounded-full" :class="catColorClasses[cat.color].tag">{{ item.tag }}</span>
+                                                <i class="fas text-base" :class="[item.icon, catColorClasses[cat.color].icon]"></i>
+                                                <span class="text-xs font-medium text-slate-700 dark:text-slate-200 leading-tight">{{ item.name }}</span>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="filteredCategories.length === 0" class="text-center text-slate-400 py-16">
-                                <i class="fas fa-search-minus text-4xl block mb-3 opacity-50"></i>
-                                <span class="text-base">No services found. Try a different search term.</span>
+                            <div v-if="filteredCategories.length === 0" class="text-center text-slate-400 py-10">
+                                <i class="fas fa-search-minus text-3xl block mb-2 opacity-50"></i>
+                                <span class="text-sm">No services found. Try a different search term.</span>
                             </div>
                         </div>
                     </div>
@@ -1329,82 +1373,110 @@
                                 <p class="text-sm text-slate-500 mt-0.5">Browse all available services across all categories</p>
                             </div>
 
-                            <!-- Category Cards (Mobile/Overview) -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                                <div v-for="cat in serviceCategories" :key="cat.id" 
-                                    @click="navigateToServiceCategory(cat.id)"
-                                    class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <span class="w-12 h-12 rounded-xl bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xl">
-                                            <i class="fas" :class="cat.icon"></i>
-                                        </span>
-                                        <div>
-                                            <h3 class="font-semibold text-[15px] text-slate-900 dark:text-white">{{ cat.label }}</h3>
-                                            <p class="text-[12px] text-slate-400">{{ cat.items.length }} services</p>
+                            <!-- Search and Filter Bar -->
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 mb-4">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <!-- Search -->
+                                    <div class="flex-1 min-w-[200px]">
+                                        <div class="relative">
+                                            <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                                            <input v-model="allServicesSearch" type="text" placeholder="Search services by name, category, or description..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border-[1.5px] border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-900 dark:text-white text-[14px] focus:border-purple-500 focus:ring-4 focus:ring-purple-500/15 focus:bg-white dark:focus:bg-slate-800 outline-none transition" />
                                         </div>
                                     </div>
-                                    <div class="mt-3 flex flex-wrap gap-1.5">
-                                        <span v-for="item in cat.items.slice(0, 3)" :key="item.name" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 truncate max-w-[150px]">
-                                            {{ item.name }}
-                                        </span>
-                                        <span v-if="cat.items.length > 3" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-400">
-                                            +{{ cat.items.length - 3 }} more
-                                        </span>
+                                    
+                                    <!-- Category Filter -->
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Category:</span>
+                                        <button @click="allServicesCategoryFilter = 'all'" 
+                                            class="px-3 py-1 rounded-full text-[11px] font-medium transition"
+                                            :class="allServicesCategoryFilter === 'all' ? 'bg-purple-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'">
+                                            All
+                                        </button>
+                                        <button v-for="cat in allServiceCategories" :key="cat.id" 
+                                            @click="allServicesCategoryFilter = cat.id" 
+                                            class="px-3 py-1 rounded-full text-[11px] font-medium transition"
+                                            :class="allServicesCategoryFilter === cat.id ? 'bg-purple-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'">
+                                            {{ cat.label }}
+                                        </button>
                                     </div>
+                                    
+                                    <!-- Results count - FIXED: count total items across all categories -->
+                                    <span class="text-xs text-slate-400 ml-auto">{{ totalFilteredServices }} service{{ totalFilteredServices !== 1 ? 's' : '' }}</span>
                                 </div>
                             </div>
 
-                            <!-- Full Table View -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-                                <div class="px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
-                                    <span class="font-bold text-sm text-slate-900 dark:text-white"><i class="fas fa-list text-purple-600 mr-2"></i>All Services</span>
+                            <!-- Separate Tables for Each Category -->
+                            <div v-for="cat in filteredServiceCategories" :key="cat.id" class="mb-6">
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                                    <!-- Category Header -->
+                                    <div class="flex items-center gap-3 px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-br from-purple-50/50 dark:from-purple-950/20 to-transparent">
+                                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-base bg-purple-50s dark:bg-purple-950/40 text-purple-600">
+                                            <i class="fas" :class="cat.icon"></i>
+                                        </span>
+                                        <div>
+                                            <h3 class="font-bold text-sm text-slate-900 dark:text-white">{{ cat.label }}</h3>
+                                            <p class="text-xs text-slate-400">{{ cat.items.length }} services</p>
+                                        </div>
+                                        <span class="ml-auto text-xs text-slate-400">{{ filteredServicesByCategory(cat.id).length }} shown</span>
+                                    </div>
+                                    
+                                    <!-- Table -->
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full">
+                                            <thead>
+                                                <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
+                                                    <th class="text-left px-4 py-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Service</th>
+                                                    <th class="text-left px-4 py-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Description</th>
+                                                    <th class="text-left px-4 py-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-if="filteredServicesByCategory(cat.id).length === 0" class="border-b border-slate-100 dark:border-slate-800">
+                                                    <td colspan="3" class="px-4 py-6 text-center text-slate-400 text-sm">
+                                                        <i class="fas fa-search text-lg block mb-1 opacity-50"></i>
+                                                        No services found in this category
+                                                    </td>
+                                                </tr>
+                                                <tr v-for="item in filteredServicesByCategory(cat.id)" :key="item.id" class="service-table-row border-b border-slate-100 dark:border-slate-800 last:border-0">
+                                                    <td class="px-4 py-3">
+                                                        <div class="flex items-center gap-2.5">
+                                                            <span class="w-8 h-8 rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-sm">
+                                                                <i class="fas" :class="item.icon"></i>
+                                                            </span>
+                                                            <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ item.name }}</span>
+                                                            <span v-if="isInQuickAccess(item)" class="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-50s dark:bg-purple-950/40 text-purple-600 whitespace-nowrap">⭐ Added</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-4 py-3 text-sm text-slate-500 dark:text-slate-400 max-w-[200px] truncate">
+                                                        {{ getServiceDescription(item) }}
+                                                    </td>
+                                                    <td class="px-4 py-3">
+                                                        <div class="flex gap-2">
+                                                            <button @click="item.isAI ? openAIPanel() : switchPage(item.page)" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-gradient-to-br from-purple-600 to-purple-800 text-white hover:shadow-lg hover:-translate-y-0.5 transition">
+                                                                Open
+                                                            </button>
+                                                            <button v-if="!isInQuickAccess(item)" @click="addToQuickAccess(item)" class="text-xs font-semibold px-3 py-1.5 rounded-lg border-[1.5px] border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:border-purple-400 transition">
+                                                                Add
+                                                            </button>
+                                                            <button v-else @click="removeFromQuickAccess(item)" class="text-xs font-semibold px-3 py-1.5 rounded-lg border-[1.5px] border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+                                                                Remove
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
-                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Service</th>
-                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Category</th>
-                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in allServiceItems" :key="item.id" class="service-table-row border-b border-slate-100 dark:border-slate-800 last:border-0">
-                                                <td class="px-4 py-3.5">
-                                                    <div class="flex items-center gap-2.5">
-                                                        <span class="w-9 h-9 rounded-lg bg-purple-50s dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-base">
-                                                            <i class="fas" :class="item.icon"></i>
-                                                        </span>
-                                                        <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ item.name }}</span>
-                                                        <span v-if="isInQuickAccess(item)" class="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-50s dark:bg-purple-950/40 text-purple-600 whitespace-nowrap">⭐ Added</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-4 py-3.5">
-                                                    <span class="text-[11px] font-medium px-2.5 py-1 rounded" :class="getCategoryColor(item.category)">
-                                                        {{ item.category }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-4 py-3.5 text-sm text-slate-500 dark:text-slate-400 max-w-[200px] truncate">
-                                                    {{ getServiceDescription(item) }}
-                                                </td>
-                                                <td class="px-4 py-3.5">
-                                                    <div class="flex gap-2">
-                                                        <button @click="item.isAI ? openAIPanel() : switchPage(item.page)" class="text-xs font-semibold px-3.5 py-2 rounded-lg bg-gradient-to-br from-purple-600 to-purple-800 text-white hover:shadow-lg hover:-translate-y-0.5 transition">
-                                                            Open
-                                                        </button>
-                                                        <button v-if="!isInQuickAccess(item)" @click="addToQuickAccess(item)" class="text-xs font-semibold px-3.5 py-2 rounded-lg border-[1.5px] border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-purple-50s dark:hover:bg-purple-950/40 hover:border-purple-400 transition">
-                                                            Add
-                                                        </button>
-                                                        <button v-else @click="removeFromQuickAccess(item)" class="text-xs font-semibold px-3.5 py-2 rounded-lg border-[1.5px] border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
-                                                            Remove
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            </div>
+                            
+                            <!-- No results message -->
+                            <div v-if="filteredServiceCategories.length === 0" class="text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <i class="fas fa-search text-4xl block mb-3 opacity-50 text-slate-400"></i>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">No services found matching your search criteria</p>
+                                <button @click="allServicesSearch = ''; allServicesCategoryFilter = 'all'" class="mt-3 text-sm font-semibold text-purple-600 hover:text-purple-700 transition">
+                                    Clear filters →
+                                </button>
                             </div>
                         </div>
 
@@ -2716,6 +2788,10 @@
                         overviewSearch: '',
                         overviewFilter: 'all',
                         draggedIndex: null,
+                        allServicesSearch: "",
+                        allServicesCategoryFilter: "all",
+                        headerSearchQuery: "",
+                        headerSearchOpen: false,
 
                         // Theme
                         isDark: false,
@@ -3167,6 +3243,109 @@
                         }
                         
                         return results;
+                    },
+
+                    // Get unique service categories for filter
+                    allServiceCategories() {
+                        return this.serviceCategories;
+                    },
+                    
+                    // Filter categories based on search (keeps categories with matching items)
+                    filteredServiceCategories() {
+                        const search = this.allServicesSearch.toLowerCase().trim();
+                        if (!search) {
+                            // If category filter is active, only show matching categories
+                            if (this.allServicesCategoryFilter !== 'all') {
+                                return this.serviceCategories.filter(cat => cat.id === this.allServicesCategoryFilter);
+                            }
+                            return this.serviceCategories;
+                        }
+                        
+                        return this.serviceCategories
+                            .map(cat => {
+                                const matchingItems = cat.items.filter(item => 
+                                    item.name.toLowerCase().includes(search) ||
+                                    this.getServiceDescription(item).toLowerCase().includes(search)
+                                );
+                                return {
+                                    ...cat,
+                                    items: matchingItems
+                                };
+                            })
+                            .filter(cat => cat.items.length > 0);
+                    },
+
+                    // Filter services within each category (for the tables)
+                    filteredServicesByCategory() {
+                        return (categoryId) => {
+                            const category = this.serviceCategories.find(cat => cat.id === categoryId);
+                            if (!category) return [];
+                            
+                            let items = category.items;
+                            
+                            // Apply search filter
+                            const search = this.allServicesSearch.toLowerCase().trim();
+                            if (search) {
+                                items = items.filter(item => 
+                                    item.name.toLowerCase().includes(search) ||
+                                    this.getServiceDescription(item).toLowerCase().includes(search)
+                                );
+                            }
+                            
+                            return items;
+                        };
+                    },
+
+                    // Total filtered services count
+                    totalFilteredServices() {
+                        let total = 0;
+                        this.filteredServiceCategories.forEach(cat => {
+                            total += this.filteredServicesByCategory(cat.id).length;
+                        });
+                        return total;
+                    },
+
+                    // Get all services as searchable items
+                    headerSearchItems() {
+                        const items = [];
+                        this.serviceCategories.forEach(cat => {
+                            cat.items.forEach(item => {
+                                items.push({
+                                    id: cat.id + '-' + item.name,
+                                    label: item.name,
+                                    icon: item.icon || 'fa-star',
+                                    meta: cat.label,
+                                    page: item.page,
+                                    isAI: item.isAI,
+                                    category: cat.id,
+                                    categoryLabel: cat.label
+                                });
+                            });
+                        });
+                        return items;
+                    },
+                    
+                    // Filter results based on search query
+                    filteredHeaderResults() {
+                        const query = this.headerSearchQuery.toLowerCase().trim();
+                        if (!query) return [];
+                        
+                        return this.headerSearchItems.filter(item => 
+                            item.label.toLowerCase().includes(query) ||
+                            item.categoryLabel.toLowerCase().includes(query)
+                        );
+                    },
+                    
+                    // Group results by category for display
+                    groupedHeaderResults() {
+                        const groups = {};
+                        this.filteredHeaderResults.forEach(item => {
+                            if (!groups[item.category]) {
+                                groups[item.category] = [];
+                            }
+                            groups[item.category].push(item);
+                        });
+                        return groups;
                     },
 
                     activityTypes() {
@@ -3646,6 +3825,55 @@
                             // On desktop, toggle the sidebar visibility
                             this.sidebarDesktopOpen = !this.sidebarDesktopOpen;
                         }
+                    },
+                    // Select a search result
+                    selectSearchResult(item) {
+                        this.headerSearchQuery = "";
+                        this.headerSearchOpen = false;
+                        if (item.isAI) {
+                            this.openAIPanel();
+                        } else if (item.page) {
+                            this.switchPage(item.page);
+                        }
+                    },
+                    
+                    // Open full services page
+                    openFullSearch() {
+                        this.headerSearchQuery = "";
+                        this.headerSearchOpen = false;
+                        this.switchPage('all-services');
+                        // Preserve search term in All Services page
+                        this.allServicesSearch = this.headerSearchQuery;
+                    },
+                    
+                    // Helper to get service description
+                    getServiceDescriptionByName(name) {
+                        const descriptions = {
+                            'Apply Leave': 'Submit leave applications and view balance',
+                            'Leave Calendar': 'View team leave calendar and plan ahead',
+                            'Medical Claim': 'Submit medical claims and track status',
+                            'Timesheet': 'Log work hours and manage timesheets',
+                            'Leave Balance': 'Check remaining leave entitlements',
+                            'Employee Profile': 'View and update personal information',
+                            'Payroll': 'Access payslips and payroll information',
+                            'Training': 'View available training programs and register',
+                            'Hardware Request': 'Request new hardware or peripherals',
+                            'Password Reset': 'Reset system passwords securely',
+                            'Email Setup': 'Configure email on devices and apps',
+                            'Access Request': 'Request access to systems and applications',
+                            'Software Request': 'Request software installations and licenses',
+                            'VPN Access': 'Request VPN access for remote work',
+                            'E-Services': 'Customer support and ticket management',
+                            'NDMS Portal': 'R&D documentation and compliance',
+                            'Employee Portal': 'Onboarding and employee self-service',
+                            'Help & Support': 'Get help from KAPAI assistant',
+                            'Documents': 'Access and manage company documents',
+                            'Meeting Rooms': 'Book and manage meeting rooms',
+                            'Parking': 'Request and manage parking spaces',
+                            'Cafeteria': 'View cafeteria menu and hours',
+                            'Maintenance': 'Report facilities maintenance issues',
+                        };
+                        return descriptions[name] || 'Access this service';
                     },
                     handleResize() {
                         if (window.innerWidth >= 768) {
@@ -4452,7 +4680,8 @@
                         if (e.key === "Enter" && !this.isLoggedIn) this.login();
                         if ((e.ctrlKey || e.metaKey) && e.key === "k") {
                             e.preventDefault();
-                            this.drawerOpen = true;
+                            // Focus the header search instead of opening drawer
+                            document.querySelector('header input[type="text"]')?.focus();
                         }
                         if (e.key === "Escape") {
                             this.sidebarOpen = false;
@@ -4461,6 +4690,7 @@
                             this.eventDialogOpen = false;
                             this.noticeModalOpen = false;
                             this.profileMenuOpen = false;
+                            this.headerSearchOpen = false;
                             if (this.aiOpen) this.aiOpen = false;
                         }
                     };
