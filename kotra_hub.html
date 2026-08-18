@@ -1776,15 +1776,15 @@
                             </div>
 
                             <!-- Show Full Announcement Content -->
-                            <div v-if="activeNoticeId && activeNotice" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                            <div v-if="activeNoticeId && activeAnnouncement" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                                 <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
                                     <div class="flex items-center gap-3">
                                         <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm bg-purple-50s dark:bg-purple-950/40 text-purple-600">
                                             <i class="fas fa-bullhorn"></i>
                                         </span>
                                         <div>
-                                            <div class="text-xs text-slate-400">{{ activeNotice.fullDate || activeNotice.date }}</div>
-                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white">{{ activeNotice.title }}</h3>
+                                            <div class="text-xs text-slate-400">{{ activeAnnouncement.fullDate || activeAnnouncement.date }}</div>
+                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white">{{ activeAnnouncement.title }}</h3>
                                         </div>
                                     </div>
                                     <button @click="activeNoticeId = null" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition text-sm font-medium flex items-center gap-1">
@@ -1792,15 +1792,15 @@
                                     </button>
                                 </div>
                                 <div class="px-6 py-5 text-[14px] leading-7 text-slate-600 dark:text-slate-300">
-                                    <p v-for="(p, idx) in activeNotice.body" :key="idx" class="mb-3" v-html="p"></p>
-                                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 italic text-slate-500 dark:text-slate-400" v-html="activeNotice.signoff"></div>
-                                    <div v-if="activeNotice.bm" class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                    <p v-for="(p, idx) in activeAnnouncement.body" :key="idx" class="mb-3" v-html="p"></p>
+                                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 italic text-slate-500 dark:text-slate-400" v-html="activeAnnouncement.signoff"></div>
+                                    <div v-if="activeAnnouncement.bm" class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                                         <span @click="bmOpen = !bmOpen" class="inline-flex items-center gap-1.5 text-purple-600 font-bold text-[12.5px] cursor-pointer hover:text-purple-800 transition">
                                             <i class="fas fa-language"></i>Baca dalam Bahasa Malaysia
                                         </span>
                                         <div v-show="bmOpen" class="mt-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl p-4 text-[13px] leading-7 text-slate-500 dark:text-slate-400">
-                                            <p class="mb-2 font-bold text-slate-600 dark:text-slate-300">{{ activeNotice.bm.title }}</p>
-                                            <p v-for="(p, idx) in activeNotice.bm.body" :key="idx" class="mb-2" v-html="p"></p>
+                                            <p class="mb-2 font-bold text-slate-600 dark:text-slate-300">{{ activeAnnouncement.bm.title }}</p>
+                                            <p v-for="(p, idx) in activeAnnouncement.bm.body" :key="idx" class="mb-2" v-html="p"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -1866,15 +1866,15 @@
                             </div>
 
                             <!-- Show Full Important Notice Content -->
-                            <div v-if="activeNoticeId && activeNotice" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                            <div v-if="activeNoticeId && activeImportantNotice" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                                 <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
                                     <div class="flex items-center gap-3">
                                         <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm bg-amber-50 dark:bg-amber-950/40 text-amber-600">
                                             <i class="fas fa-exclamation-triangle"></i>
                                         </span>
                                         <div>
-                                            <div class="text-xs text-slate-400">{{ activeNotice.fullDate || activeNotice.date }}</div>
-                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white">{{ activeNotice.title }}</h3>
+                                            <div class="text-xs text-slate-400">{{ activeImportantNotice.fullDate || activeImportantNotice.date }}</div>
+                                            <h3 class="font-display font-bold text-[17px] text-slate-900 dark:text-white">{{ activeImportantNotice.title }}</h3>
                                         </div>
                                     </div>
                                     <button @click="activeNoticeId = null" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition text-sm font-medium flex items-center gap-1">
@@ -1882,8 +1882,8 @@
                                     </button>
                                 </div>
                                 <div class="px-6 py-5 text-[14px] leading-7 text-slate-600 dark:text-slate-300">
-                                    <p v-for="(p, idx) in activeNotice.body" :key="idx" class="mb-3" v-html="p"></p>
-                                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 italic text-slate-500 dark:text-slate-400" v-html="activeNotice.signoff"></div>
+                                    <p v-for="(p, idx) in activeImportantNotice.body" :key="idx" class="mb-3" v-html="p"></p>
+                                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 italic text-slate-500 dark:text-slate-400" v-html="activeImportantNotice.signoff"></div>
                                 </div>
                             </div>
 
@@ -3650,12 +3650,16 @@
                         ];
                     },
 
-                    // Notice
-                     activeNotice() {
+                    // Active Announcement
+                    activeAnnouncement() {
                         if (!this.activeNoticeId) return null;
-                        // Search in both announcementList and importantNoticeList
-                        const allNotices = [...this.announcementList, ...this.importantNoticeList];
-                        return allNotices.find(n => n.id === this.activeNoticeId) || null;
+                        return this.announcementList.find(n => n.id === this.activeNoticeId) || null;
+                    },
+                    
+                    // Active Important Notice
+                    activeImportantNotice() {
+                        if (!this.activeNoticeId) return null;
+                        return this.importantNoticeList.find(n => n.id === this.activeNoticeId) || null;
                     },
 
                     // Calendar
@@ -3882,17 +3886,15 @@
                     openSliderNotice(noticeId) {
                         if (!noticeId) return;
                         this.activeNoticeId = noticeId;
-                        if (noticeId === 'notice1') {
+                        
+                        // Check if the notice exists in announcementList
+                        const isAnnouncement = this.announcementList.some(n => n.id === noticeId);
+                        
+                        // Navigate to the correct page based on where the notice belongs
+                        if (isAnnouncement) {
                             this.switchPage('announcements');
-                        } else if (noticeId === 'notice2') {
-                            this.switchPage('important');
                         } else {
-                            const isAnnouncement = this.announcementList.some(n => n.id === noticeId);
-                            if (isAnnouncement) {
-                                this.switchPage('announcements');
-                            } else {
-                                this.switchPage('important');
-                            }
+                            this.switchPage('important');
                         }
                     },
                     getExcerpt(body) {
