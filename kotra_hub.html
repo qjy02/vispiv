@@ -645,7 +645,8 @@
                             <div class="relative"
                                 @mouseenter="showFlyout('services')"
                                 @mouseleave="hideFlyout()">
-                                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition text-left"
+                                <button @click="switchPage('all-services')" 
+                                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition text-left"
                                         :class="hoveredMenuItem === 'services' ? 'bg-violet-50 dark:bg-violet-950/40 text-violet-600' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-violet-600'">
                                     <i class="fas fa-server w-[20px] text-violet-600 text-[15px]"></i>
                                     <span class="flex-1">All Services</span>
@@ -657,7 +658,8 @@
                             <div v-for="category in serviceCategories" :key="category.id" class="relative"
                                 @mouseenter="showFlyout('cat-' + category.id)"
                                 @mouseleave="hideFlyout()">
-                                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition text-left"
+                                <button @click="navigateToServiceCategory(category.id)" 
+                                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition text-left"
                                         :class="hoveredMenuItem === 'cat-' + category.id ? 'bg-teal-50 dark:bg-teal-950/40 text-teal-600' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-teal-600'">
                                     <i class="fas w-[20px] text-teal-600 text-[15px]" :class="category.icon"></i>
                                     <span class="flex-1">{{ category.label }}</span>
@@ -1033,6 +1035,94 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-3.5 text-sm text-slate-500 dark:text-slate-400">
+                                                    {{ getServiceDescription(item) }}
+                                                </td>
+                                                <td class="px-4 py-3.5">
+                                                    <div class="flex gap-2">
+                                                        <button @click="item.isAI ? openAIPanel() : switchPage(item.page)" class="text-xs font-semibold px-3.5 py-2 rounded-lg bg-gradient-to-br from-teal-600 to-teal-800 text-white hover:shadow-lg hover:-translate-y-0.5 transition">
+                                                            Open
+                                                        </button>
+                                                        <button v-if="!isInQuickAccess(item)" @click="addToQuickAccess(item)" class="text-xs font-semibold px-3.5 py-2 rounded-lg border-[1.5px] border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-950/40 hover:border-teal-400 transition">
+                                                            Add
+                                                        </button>
+                                                        <button v-else @click="removeFromQuickAccess(item)" class="text-xs font-semibold px-3.5 py-2 rounded-lg border-[1.5px] border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ALL SERVICES PAGE -->
+                        <div v-show="currentPage === 'all-services'" class="animate-pop-in">
+                            <div class="mb-4">
+                                <h2 class="font-display text-xl font-bold text-slate-900 dark:text-white">
+                                    <i class="fas fa-server text-teal-600 mr-2"></i>All Services
+                                </h2>
+                                <p class="text-sm text-slate-500 mt-0.5">Browse all available services across all categories</p>
+                            </div>
+
+                            <!-- Category Cards (Mobile/Overview) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                                <div v-for="cat in serviceCategories" :key="cat.id" 
+                                    @click="navigateToServiceCategory(cat.id)"
+                                    class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-12 h-12 rounded-xl bg-teal-50 dark:bg-teal-950/40 text-teal-600 flex items-center justify-center text-xl">
+                                            <i class="fas" :class="cat.icon"></i>
+                                        </span>
+                                        <div>
+                                            <h3 class="font-semibold text-[15px] text-slate-900 dark:text-white">{{ cat.label }}</h3>
+                                            <p class="text-[12px] text-slate-400">{{ cat.items.length }} services</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 flex flex-wrap gap-1.5">
+                                        <span v-for="item in cat.items.slice(0, 3)" :key="item.name" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 truncate max-w-[150px]">
+                                            {{ item.name }}
+                                        </span>
+                                        <span v-if="cat.items.length > 3" class="text-[11px] px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-400">
+                                            +{{ cat.items.length - 3 }} more
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Full Table View -->
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                                <div class="px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
+                                    <span class="font-bold text-sm text-slate-900 dark:text-white"><i class="fas fa-list text-teal-600 mr-2"></i>All Services</span>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
+                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Service</th>
+                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Category</th>
+                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Description</th>
+                                                <th class="text-left px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in allServiceItems" :key="item.id" class="service-table-row border-b border-slate-100 dark:border-slate-800 last:border-0">
+                                                <td class="px-4 py-3.5">
+                                                    <div class="flex items-center gap-2.5">
+                                                        <span class="w-9 h-9 rounded-lg bg-teal-50 dark:bg-teal-950/40 text-teal-600 flex items-center justify-center text-base">
+                                                            <i class="fas" :class="item.icon"></i>
+                                                        </span>
+                                                        <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ item.name }}</span>
+                                                        <span v-if="isInQuickAccess(item)" class="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/40 text-teal-600 whitespace-nowrap">⭐ Added</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 py-3.5">
+                                                    <span class="text-[11px] font-medium px-2.5 py-1 rounded" :class="getCategoryColor(item.category)">
+                                                        {{ item.category }}
+                                                    </span>
+                                                </td>
+                                                <td class="px-4 py-3.5 text-sm text-slate-500 dark:text-slate-400 max-w-[200px] truncate">
                                                     {{ getServiceDescription(item) }}
                                                 </td>
                                                 <td class="px-4 py-3.5">
@@ -2947,6 +3037,15 @@
                     getCategoryLabel(categoryId) {
                         const category = this.serviceCategories.find(c => c.id === categoryId);
                         return category ? category.label : categoryId;
+                    },
+                    getCategoryColor(category) {
+                        const colors = {
+                            'HR Services': 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300',
+                            'IT Services': 'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300',
+                            'Other Services': 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300',
+                            'Facilities': 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300',
+                        };
+                        return colors[category] || 'bg-slate-100 dark:bg-slate-800 text-slate-500';
                     },
                     getDepartmentColor(dept) {
                         if (!dept) return 'bg-slate-100 dark:bg-slate-800 text-slate-500';
