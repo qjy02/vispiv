@@ -609,7 +609,8 @@
                 <div v-show="sidebarOpen" @click="sidebarOpen = false" class="md:hidden fixed inset-0 bg-slate-900/45 backdrop-blur-[2px] z-[200]"></div>
 
                 <!-- MOBILE SIDEBAR -->
-                <aside class="md:hidden fixed top-0 left-0 h-full w-[280px] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[201] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-[110%]'">                    <div class="flex items-center justify-between px-4 py-4 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-br from-purple-50 dark:from-purple-950/40 to-transparent">
+                <aside class="md:hidden fixed top-0 left-0 h-full w-[280px] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl z-[201] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-[110%]'">
+                    <div class="flex items-center justify-between px-4 py-4 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-br from-purple-50 dark:from-purple-950/40 to-transparent">
                         <span class="font-display font-bold text-[17px] text-slate-900 dark:text-white">Kotra<span class="text-purple-600">Hub</span></span>
                     </div>
                     <div class="flex-1 overflow-y-auto scrollbar-hide p-2.5">
@@ -620,9 +621,43 @@
                         <div class="h-px bg-slate-200 dark:bg-slate-800 my-2 mx-1.5"></div>-->
 
                         <!-- Navigation -->
-                        <button v-for="nav in [{page: 'dashboard', page:'dashboard', icon:'fa-home', label:'Dashboard'}, {page:'recent-activities', icon:'fa-history', label:'Recent Activities'}, {page:'tasks', icon:'fa-tasks', label:'My Tasks', badge: tasks?.length}, {page:'pending', icon:'fa-clock', label:'Pending Actions', badge: pendingActions?.length}, {page:'calendar', icon:'fa-calendar', label:'Calendar'}, {page:'announcements', icon:'fa-bullhorn', label:'Announcements', badge: announcementList?.length}, {page:'important', icon:'fa-exclamation-triangle', label:'Important Notices', badge: importantNoticeList?.length}]" :key="nav.page" @click="switchPage(nav.page)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
-                            <i class="fas w-[18px] text-purple-600" :class="nav.icon"></i>{{ nav.label }}
-                            <span v-if="nav.badge" class="ml-auto bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ nav.badge }}</span>
+                        <!-- Dashboard -->
+                        <button @click="switchPage('dashboard')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-home w-[18px] text-purple-600"></i>Dashboard
+                        </button>
+
+                        <!-- Recent Activities -->
+                        <button @click="switchPage('recent-activities')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-history w-[18px] text-purple-600"></i>Recent Activities
+                        </button>
+
+                        <!-- My Tasks -->
+                        <button @click="switchPage('tasks')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-tasks w-[18px] text-purple-600"></i>My Tasks
+                            <span v-if="tasks?.length" class="ml-auto bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ tasks.length }}</span>
+                        </button>
+
+                        <!-- Pending Actions -->
+                        <button @click="switchPage('pending')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-clock w-[18px] text-purple-600"></i>Pending Actions
+                            <span v-if="pendingActions?.length" class="ml-auto bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ pendingActions.length }}</span>
+                        </button>
+
+                        <!-- Calendar -->
+                        <button @click="switchPage('calendar')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-calendar w-[18px] text-purple-600"></i>Calendar
+                        </button>
+
+                        <!-- Announcements -->
+                        <button @click="viewAllAnnouncements()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-bullhorn w-[18px] text-purple-600"></i>Announcements
+                            <span v-if="announcementList?.length" class="ml-auto bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ announcementList.length }}</span>
+                        </button>
+
+                        <!-- Important Notices - FIXED: uses viewAllImportant() -->
+                        <button @click="viewAllImportant()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-purple-600 transition text-left">
+                            <i class="fas fa-exclamation-triangle w-[18px] text-purple-600"></i>Important Notices
+                            <span v-if="importantNoticeList?.length" class="ml-auto bg-rose-100 dark:bg-rose-950/50 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ importantNoticeList.length }}</span>
                         </button>
 
                         <!-- Contacts page in sidebar -->
@@ -742,7 +777,7 @@
                                 <i class="fas fa-home w-[20px] text-purple-600 text-[15px]"></i>Dashboard
                             </button>
 
-                            <!-- Overview -->
+                            <!-- OVERVIEW SECTION -->
                             <div class="relative"
                                 @mouseenter="showFlyout('overview')"
                                 @mouseleave="hideFlyout()">
@@ -918,7 +953,7 @@
                                         <span class="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
                                             <span class="w-[26px] h-[26px] rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-xs"><i class="fas fa-bullhorn"></i></span>Announcements
                                         </span>
-                                        <button @click="switchPage('announcements')" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
+                                        <button @click="viewAllAnnouncements()" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full hover:bg-purple-100 transition">
                                             View All
                                         </button>
                                     </div>
@@ -1779,7 +1814,7 @@
                             <div v-if="activeNoticeId && activeAnnouncement" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                                 <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
                                     <div class="flex items-center gap-3">
-                                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm bg-purple-50s dark:bg-purple-950/40 text-purple-600">
+                                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm bg-purple-50 dark:bg-purple-950/40 text-purple-600">
                                             <i class="fas fa-bullhorn"></i>
                                         </span>
                                         <div>
@@ -3384,8 +3419,8 @@
                                 { id: 'calendar', label: 'Calendar', icon: 'fa-calendar', meta: 'View your schedule', page: 'calendar' },
                                 { id: 'contacts', label: 'Contacts', icon: 'fa-address-book', meta: 'Company directory', page: 'contacts' },
                                 { id: 'quickaccess', label: 'Quick Access', icon: 'fa-bolt', meta: 'Your shortcuts', page: 'quickaccess' },
-                                { id: 'announcements', label: 'Announcements', icon: 'fa-bullhorn', meta: `${this.announcementList.length} new`, page: 'announcements' },
-                                { id: 'important', label: 'Important Notices', icon: 'fa-exclamation-triangle', meta: `${this.importantNoticeList.length} unread`, page: 'important' }
+                                { id: 'announcements', label: 'Announcements', icon: 'fa-bullhorn', meta: `${this.announcementList.length} new`, action: 'viewAllAnnouncements' },
+                                { id: 'important', label: 'Important Notices', icon: 'fa-exclamation-triangle', meta: `${this.importantNoticeList.length} unread`, action: 'viewAllImportant' }
                             );
                         }
                         
@@ -4029,6 +4064,14 @@
                         this.flyoutOpen = false;
                         this.hoveredMenuItem = null;
                         this.flyoutSearch = '';
+                    },
+                    viewAllAnnouncements() {
+                        this.activeNoticeId = null;
+                        this.switchPage('announcements');
+                    },
+                    viewAllImportant() {
+                        this.activeNoticeId = null;
+                        this.switchPage('important');
                     },
                     viewAllOverview() {
                         this.switchPage('overview');
