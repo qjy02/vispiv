@@ -4056,15 +4056,22 @@
                     navigateFromFlyout(item) {
                         if (item.isAI) {
                             this.openAIPanel();
+                        } else if (item.action) {
+                            if (item.action === 'viewAllAnnouncements') {
+                                this.viewAllAnnouncements();
+                            } else if (item.action === 'viewAllImportant') {
+                                this.viewAllImportant();
+                            } else if (typeof this[item.action] === 'function') {
+                                this[item.action]();
+                            }
                         } else if (item.page) {
                             this.switchPage(item.page);
-                        } else if (item.action) {
-                            this[item.action]();
                         }
                         this.flyoutOpen = false;
                         this.hoveredMenuItem = null;
                         this.flyoutSearch = '';
                     },
+
                     viewAllAnnouncements() {
                         this.activeNoticeId = null;
                         this.switchPage('announcements');
